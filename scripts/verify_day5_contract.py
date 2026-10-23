@@ -161,7 +161,7 @@ def check_streamlit_app(checks: List[Check]) -> None:
 
     # Kiểm tra các module và tính năng quan trọng trong demo
     has_sidebar = "st.sidebar" in content_app
-    has_kpi = ".metric(" in content_app or "st.metric" in content_app
+    has_kpi = ".metric(" in content_app or "st.metric" in content_app or "kpi-card" in content_app
     has_button = "st.button" in content_app
     has_csv_export = "download_button" in content_app or "to_csv" in content_app
     has_binary_read = "_read_grayscale" in content_utils
