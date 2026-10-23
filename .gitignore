@@ -43,3 +43,14 @@ data/raw_hf/
 
 # Node dependencies
 node_modules/
+
+# AI agent configs, rules, skills & scratch
+.agents/
+AGENTS.md
+CLAUDE.md
+skills-lock.json
+docs/agents/
+.gemini/
+.cursor/
+.windsurf/
+
