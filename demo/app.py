@@ -1,5 +1,5 @@
 """Web demo Streamlit chẩn đoán u não MRI - Giao diện NeuroScan PACS Workstation.
-Khoa Công nghệ Thông tin - Bộ môn Khoa học Dữ liệu - Đại học Công Thương TP.HCM (HUIT).
+Khoa Công nghệ Thông tin - Ngành Khoa học Dữ liệu - Bộ môn Xử lý ảnh số - Đại học Công Thương TP.HCM (HUIT).
 Giao diện chuẩn hóa y tế tiếng Việt đầy đủ, hỗ trợ chuyển đổi giữa Chế độ Sáng (mặc định) và Chế độ Tối.
 """
 
@@ -33,7 +33,7 @@ from src.pipeline import BrainTumorPipeline
 # =============================================================================
 
 st.set_page_config(
-    page_title="NeuroScan Pro - Phân Đoạn U Não MRI | HUIT",
+    page_title="NeuroScan Pro - Phân Đoạn & Phát Hiện Tổn Thương Ảnh Y Tế | HUIT",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -448,13 +448,13 @@ st.markdown(
     """
     <div class="pacs-header">
       <div class="pacs-badge">
-        HUIT DATA SCIENCE LAB · DIGITAL IMAGE PROCESSING
+        HUIT KHOA HỌC DỮ LIỆU · BỘ MÔN XỬ LÝ ẢNH SỐ
       </div>
       <h1 class="pacs-title">
         NEUROSCAN PACS WORKSTATION
       </h1>
       <p class="pacs-subtitle">
-        Hệ thống phân đoạn tự động và định lượng hình học khối u não trên ảnh cộng hưởng từ MRI chuẩn hóa quốc tế TCGA-LGG.
+        Đề tài: Phân đoạn và phát hiện tổn thương trên ảnh y tế &middot; Trọng tâm: Phân đoạn và phát hiện khối u não trên ảnh cộng hưởng từ MRI (TCGA-LGG).
       </p>
       <div class="pacs-status-bar">
         <div class="pacs-pill">Kho dữ liệu: <b>3,929 lát cắt chuẩn</b></div>
@@ -617,9 +617,11 @@ with st.sidebar:
     st.markdown(
         """
         <div style='font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;'>
-          <b>Đồ án Xử lý ảnh số (HUIT - 2026)</b><br>
+          <b>Đề tài: Phân đoạn và phát hiện tổn thương trên ảnh y tế</b><br>
+          <i>(Trọng tâm: Khối u não trên ảnh MRI TCGA-LGG)</i><br>
+          Bộ môn Xử lý ảnh số · Ngành Khoa học Dữ liệu · HUIT<br>
           Nhóm sinh viên: Hà Mạnh Trường & Huỳnh Tâm Trí<br>
-          GVHD: ThS. Đinh Nguyễn Trọng Nghĩa
+          GVHD: ThS. Đỗ Hùng Dũng
         </div>
         """,
         unsafe_allow_html=True,
@@ -1015,7 +1017,7 @@ st.markdown("---")
 st.markdown(
     """
     <div style='text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 1rem 0;'>
-      Đồ án Học phần Xử lý ảnh số (0101006276) - Bộ môn Khoa học Dữ liệu - Khoa CNTT - Trường ĐH Công Thương TP.HCM (HUIT).<br>
+      Đồ án Học phần Xử lý ảnh số (0101006276) - Ngành Khoa học Dữ liệu - Bộ môn Xử lý ảnh số - Khoa CNTT - Trường ĐH Công Thương TP.HCM (HUIT).<br>
       <i>Sản phẩm phục vụ nghiên cứu khoa học và minh chứng đồ án. Không dùng thay thế chỉ định y tế chính thức.</i>
     </div>
     """,

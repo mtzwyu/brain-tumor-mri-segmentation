@@ -145,13 +145,13 @@ class ReportBuilder:
         self,
         university: str = "TRƯỜNG ĐẠI HỌC CÔNG THƯƠNG TP. HỒ CHÍ MINH",
         faculty: str = "KHOA CÔNG NGHỆ THÔNG TIN",
-        department: str = "BỘ MÔN KHOA HỌC DỮ LIỆU",
+        department: str = "BỘ MÔN XỬ LÝ ẢNH SỐ",
         course_type: str = "BÁO CÁO ĐỒ ÁN HỌC PHẦN",
         course_name: str = "XỬ LÝ ẢNH SỐ",
         project_label: str = "ĐỀ TÀI",
-        project_title: str = "PHÂN ĐOẠN VÀ PHÁT HIỆN KHỐI U NÃO TRÊN ẢNH CỘNG HƯỞNG TỪ MRI",
-        dataset_note: str = "(BỘ DỮ LIỆU CHUẨN TCGA-LGG)",
-        advisor: str = "ThS. Đinh Nguyễn Trọng Nghĩa",
+        project_title: str = "PHÂN ĐOẠN VÀ PHÁT HIỆN TỔN THƯƠNG TRÊN ẢNH Y TẾ",
+        dataset_note: str = "(NGHIÊN CỨU TRỌNG TÂM: PHÂN ĐOẠN VÀ PHÁT HIỆN KHỐI U NÃO TRÊN ẢNH CỘNG HƯỞNG TỪ MRI — TCGA-LGG)",
+        advisor: str = "ThS. Đỗ Hùng Dũng",
         students: Optional[List[str]] = None,
         city_year: str = "TP. Hồ Chí Minh, Năm 2026"
     ):

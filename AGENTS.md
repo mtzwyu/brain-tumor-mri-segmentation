@@ -1,5 +1,6 @@
-# Đồ án Xử lý ảnh số: Phân đoạn và phát hiện khối u não trên ảnh cộng hưởng từ MRI
-**Học phần:** Xử lý ảnh số — Bộ môn Khoa học Dữ liệu — Khoa CNTT — Trường ĐH Công Thương TP.HCM (HUIT)  
+# Đồ án Xử lý ảnh số: Phân đoạn và phát hiện tổn thương trên ảnh y tế
+**Trọng tâm nghiên cứu:** Phân đoạn và phát hiện khối u não trên ảnh cộng hưởng từ MRI (TCGA-LGG Benchmark)
+**Học phần:** Xử lý ảnh số — Bộ môn Xử lý ảnh số — Khoa CNTT — Trường ĐH Công Thương TP.HCM (HUIT)  
 **Năm học:** 2026–2027  
 **Repository:** [brain-tumor-mri-segmentation](https://github.com/mtzwyu/brain-tumor-mri-segmentation)
 
@@ -157,12 +158,12 @@ Single-context layout using root `GLOSSARY.md` and `docs/adr/`. See `docs/agents
   * Căn giữa toàn bộ trang bìa, không đánh số trang:
     1. `TRƯỜNG ĐẠI HỌC CÔNG THƯƠNG TP. HỒ CHÍ MINH` (15.0 pt, In hoa, In đậm, Sau 6pt).
     2. `KHOA CÔNG NGHỆ THÔNG TIN` (14.0 pt, In hoa, In đậm, Sau 6pt).
-    3. `BỘ MÔN KHOA HỌC DỮ LIỆU` (14.0 pt, In hoa, In đậm, Sau 6pt).
+    3. `BỘ MÔN XỬ LÝ ẢNH SỐ` (14.0 pt, In hoa, In đậm, Sau 6pt).
     4. `BÁO CÁO ĐỒ ÁN HỌC PHẦN` (13.0 pt, In hoa, Đứng).
     5. `XỬ LÝ ẢNH SỐ` (14.0 pt, In hoa, In đậm, Sau 6pt).
     6. `ĐỀ TÀI` (16.0 pt, In hoa, In đậm).
-    7. `PHÂN ĐOẠN VÀ PHÁT HIỆN KHỐI U NÃO TRÊN ẢNH CỘNG HƯỞNG TỪ MRI` (16.0 pt, In hoa, In đậm).
-    8. `(BỘ DỮ LIỆU CHUẨN TCGA-LGG)` (13.0 pt, In nghiêng).
+    7. `PHÂN ĐOẠN VÀ PHÁT HIỆN TỔN THƯƠNG TRÊN ẢNH Y TẾ` (16.0 pt, In hoa, In đậm).
+    8. `(NGHIÊN CỨU TRỌNG TÂM: PHÂN ĐOẠN VÀ PHÁT HIỆN KHỐI U NÃO TRÊN ẢNH CỘNG HƯỞNG TỪ MRI — TCGA-LGG)` (12.0 pt, In nghiêng).
     9. `Giảng viên hướng dẫn: ...` (13.0 pt).
     10. `Sinh viên thực hiện:` (13.0 pt, In đậm), liệt kê đầy đủ thành viên, MSSV và tỷ lệ đóng góp (50% - 50%).
     11. `TP. Hồ Chí Minh, Năm 2026` (13.0 pt, In đậm).

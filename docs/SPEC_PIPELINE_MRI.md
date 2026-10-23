@@ -1,5 +1,5 @@
 # ĐẶC TẢ KỸ THUẬT KIẾN TRÚC PIPELINE XỬ LÝ ẢNH SỐ
-## Đề tài: Phân đoạn và phát hiện khối u não trên ảnh cộng hưởng từ (MRI)
+## Đề tài: Phân đoạn và phát hiện tổn thương trên ảnh y tế (Trọng tâm: Khối u não trên ảnh cộng hưởng từ MRI)
 **Học phần:** Xử lý ảnh số (2026–2027) — Khoa CNTT — Trường ĐH Công Thương TP.HCM (HUIT)  
 **Tác giả đặc tả:** Hà Mạnh Trường (MSSV: `2045240326`) — Nhóm trưởng  
 **Người phản biện:** Huỳnh Tâm Trí (MSSV: `2045240315`)  

@@ -52,9 +52,9 @@ def generate_test_document() -> Path:
 
     # 1. Trang bìa
     builder.add_cover_page(
-        project_title="PHÂN ĐOẠN VÀ PHÁT HIỆN KHỐI U NÃO TRÊN ẢNH CỘNG HƯỞNG TỪ MRI",
-        dataset_note="(BỘ DỮ LIỆU CHUẨN TCGA-LGG)",
-        advisor="ThS. Đinh Nguyễn Trọng Nghĩa",
+        project_title="PHÂN ĐOẠN VÀ PHÁT HIỆN TỔN THƯƠNG TRÊN ẢNH Y TẾ",
+        dataset_note="(NGHIÊN CỨU TRỌNG TÂM: PHÂN ĐOẠN VÀ PHÁT HIỆN KHỐI U NÃO TRÊN ẢNH CỘNG HƯỞNG TỪ MRI — TCGA-LGG)",
+        advisor="ThS. Đỗ Hùng Dũng",
         students=[
             "1. Hà Mạnh Trường — MSSV: 2045240326 — Nhóm trưởng (50%)",
             "2. Huỳnh Tâm Trí — MSSV: 2045240315 — Thành viên (50%)"

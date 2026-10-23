@@ -40,3 +40,6 @@ data/full/masks/
 data/raw_hf/
 *.parquet
 
+
+# Node dependencies
+node_modules/

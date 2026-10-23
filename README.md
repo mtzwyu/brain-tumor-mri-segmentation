@@ -1,6 +1,6 @@
 # Brain Tumor MRI Segmentation & Quantitative Analysis Pipeline
 
-### Hệ thống Phân đoạn và Phân tích Định lượng Khối u Não trên Ảnh Cộng hưởng từ (MRI) bằng Kỹ thuật Xử lý Ảnh số Cổ điển (DIP)
+### Đề tài: Phân đoạn và phát hiện tổn thương trên ảnh y tế (Trọng tâm: Khối u não trên ảnh cộng hưởng từ MRI — TCGA-LGG Benchmark)
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)

@@ -46,7 +46,7 @@ def code_cell(code):
 # Căn cứ: docs/KHUNG_NOI_DUNG_TONG_QUAT_DO_AN_XLAS.md (Mục II.1 & Mục V.3)
 # ==============================================================================
 nb1_cells = [
-    md_cell("""# 📓 Notebook 1: Thu Thập, Khảo Sát & Chuẩn Bị Tập Dữ Liệu (TCGA-LGG)
+    md_cell("""# Notebook 1: Thu Thập, Khảo Sát & Chuẩn Bị Tập Dữ Liệu (TCGA-LGG)
 **Căn cứ tài liệu:** `docs/KHUNG_NOI_DUNG_TONG_QUAT_DO_AN_XLAS.md`  
 * **Quy trình chuẩn Bộ môn:** **Bước 1 — Thu thập & Chuẩn bị tập dữ liệu (Data Preparation)**  
 * **Ánh xạ Báo cáo đồ án:** **Mục 3 — Mô tả tập dữ liệu thực nghiệm**  
@@ -55,7 +55,7 @@ nb1_cells = [
 
 ---
 
-## 🎯 1. Mục tiêu kỹ thuật (Theo Khung Tổng Quát)
+## 1. Mục tiêu nghiên cứu (Theo Khung Tổng Quát)
 1. **Nguồn gốc dữ liệu:** Bộ dữ liệu cộng hưởng từ sọ não The Cancer Genome Atlas Low-Grade Glioma (**TCGA-LGG**), công bố bởi Buda et al. (2019) trên tạp chí *Computers in Biology and Medicine*.
 2. **Quy cách dữ liệu:** Ảnh cắt lát MRI chuỗi xung FLAIR/T1-CE, kích thước chuẩn hóa $256 \times 256$, thang độ xám Grayscale `uint8` $[0, 255]$.
 3. **Mặt nạ Ground Truth:** Mặt nạ nhị phân $\{0, 255\}$ được bác sĩ chuyên khoa thần kinh khoanh vùng ổ u não (Core Tumor).
@@ -75,7 +75,7 @@ plt.rcParams['figure.figsize'] = (12, 6)
 plt.style.use('seaborn-v0_8-whitegrid' if 'seaborn-v0_8-whitegrid' in plt.style.available else 'default')
 print("Môi trường sẵn sàng. Đang nạp dữ liệu...")"""),
 
-    md_cell("""## 📊 2. Khảo sát Metadata Tập Dữ Liệu
+    md_cell("""##  2. Khảo sát Metadata Tập Dữ Liệu
 Đọc bảng metadata (`data/full/metadata.csv` hoặc fallback `data/full/metadata.csv`) chứa thông tin chi tiết về diện tích và tỷ lệ u của các ca bệnh:"""),
 
     code_cell("""base_dir = "../data/full" if os.path.exists("../data/full/metadata.csv") else "../data/full"
@@ -85,7 +85,7 @@ print(f"Nguồn dữ liệu đang nạp: {base_dir}")
 print(f"Tổng số lát cắt MRI: {len(df)}")
 df[['sample_id', 'patient_id', 'width', 'height', 'tumor_area_pixels', 'tumor_ratio_percent']].head(10)"""),
 
-    md_cell("""## 📈 3. Phân Tích Thống Kê Phân Bố Khối U
+    md_cell("""## 3. Trực quan hóa dữ liệu: Phân tích thống kê phân bố khối u
 Đánh giá độ phân tán của diện tích u và tỷ lệ % u trên thiết diện não:"""),
 
     code_cell("""fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -108,7 +108,7 @@ plt.show()
 print("Thống kê mô tả chi tiết:")
 print(df[['tumor_area_pixels', 'tumor_ratio_percent']].describe().round(2))"""),
 
-    md_cell("""## 🔬 4. Phân Loại 3 Nhóm Ca Bệnh (U Nhỏ, U Vừa, U Lớn)
+    md_cell("""## 4. Quy trình thực nghiệm: Phân loại 3 nhóm ca bệnh (u nhỏ, u vừa, u lớn)
 Căn cứ theo độ khó thuật toán để chuẩn bị kiểm thử ở các bước tiếp theo:"""),
 
     code_cell("""small_tumors = df[df['tumor_ratio_percent'] < 1.5]
@@ -119,7 +119,7 @@ print(f"- Nhóm U Nhỏ (< 1.5% - Thách thức phát hiện biên): {len(small_
 print(f"- Nhóm U Vừa (1.5% - 5.0% - Độ phân đoạn chuẩn): {len(medium_tumors)} ca ({list(medium_tumors['sample_id'])})")
 print(f"- Nhóm U Lớn (> 5.0% - Hiệu ứng chèn ép não thất): {len(large_tumors)} ca ({list(large_tumors['sample_id'])})")"""),
 
-    md_cell("""## 🖼️ 5. Trực Quan Hóa Lưới Ảnh MRI & Ground Truth Mask
+    md_cell("""## 5. Minh họa hình ảnh: Lưới ảnh MRI và Ground Truth Mask
 Hiển thị 6 ca đại diện cho 3 nhóm kích thước u để làm minh chứng cho Báo cáo (Mục 3):"""),
 
     code_cell("""sample_indices = [0, 4, 6, 8, 10, min(19, len(df)-1)]
@@ -154,7 +154,7 @@ plt.show()""")
 # Căn cứ: docs/KHUNG_NOI_DUNG_TONG_QUAT_DO_AN_XLAS.md (Mục II.2, IV & Mục V.4)
 # ==============================================================================
 nb2_cells = [
-    md_cell("""# 📓 Notebook 2: Tiền Xử Lý & Tách Sọ Não (Skull Stripping)
+    md_cell("""# Notebook 2: Tiền Xử Lý & Tách Sọ Não (Skull Stripping)
 **Căn cứ tài liệu:** `docs/KHUNG_NOI_DUNG_TONG_QUAT_DO_AN_XLAS.md`  
 * **Quy trình chuẩn Bộ môn:** **Bước 2 — Tiền xử lý & Cải thiện chất lượng ảnh (Preprocessing & Skull Stripping)**  
 * **Ánh xạ Báo cáo đồ án:** **Mục 4 — Tiền xử lý ảnh**  
@@ -163,7 +163,7 @@ nb2_cells = [
 
 ---
 
-## 🎯 1. Cơ sở lý thuyết DIP (Gonzalez & Woods Ch. 3, 5 & 9)
+## 1. Cơ sở lý thuyết DIP (Gonzalez & Woods Ch. 3, 5 & 9)
 1. **Khử nhiễu Rician:** Áp dụng **Bilateral Filter** phi tuyến nhằm lọc nhiễu hạt y tế nhưng bảo toàn độ dốc cường độ tại ranh giới khối u (tránh làm nhòe biên như bộ lọc Gaussian).
 2. **Cân bằng tương phản:** Áp dụng **CLAHE** (Contrast Limited Adaptive Histogram Equalization) làm rõ cấu trúc mô mềm chất trắng / chất xám.
 3. **Kỹ thuật Tách sọ não kinh điển (Skull Stripping):**
@@ -185,7 +185,7 @@ from src.preprocessing.skull_strip import extract_brain_mask, strip_skull
 
 print("Module tiền xử lý và tách sọ đã được nạp thành công.")"""),
 
-    md_cell("""## 🔬 2. Thử Nghiệm Chi Tiết Từng Bước Tách Sọ Trên Ca Mẫu
+    md_cell("""## 2. Quy trình thực nghiệm: Thử nghiệm chi tiết từng bước tách sọ trên ca mẫu
 Phân tích trực quan 6 giai đoạn xử lý từ ảnh MRI gốc đến ảnh sạch sọ:"""),
 
     code_cell("""img_path = "../data/full/images/mri_brain_tumor_01.png"
@@ -234,7 +234,7 @@ plt.suptitle("Quy Trình 6 Bước Tách Sọ Não Bằng Kỹ Thuật Hình Th�
 plt.tight_layout()
 plt.show()"""),
 
-    md_cell("""## 🩺 3. Đánh Giá Khả Năng Tăng Cường Tương Phản CLAHE
+    md_cell("""## 3. Ý nghĩa y khoa: Đánh giá khả năng tăng cường tương phản CLAHE
 So sánh ảnh não sau tách sọ khi có và không áp dụng CLAHE:"""),
 
     code_cell("""clahe_brain = apply_clahe(stripped_brain, clip_limit=2.0, tile_grid_size=(8, 8))
@@ -251,7 +251,7 @@ axes[1].axis('off')
 plt.tight_layout()
 plt.show()"""),
 
-    md_cell("""## 🔍 4. Kiểm Thử Tính Bền Vững Của Tách Sọ Trên 4 Ca Khác Nhau
+    md_cell("""## 4. Phân tích kết quả: Kiểm thử tính bền vững của tách sọ trên 4 ca khác nhau
 Chứng minh thuật toán hoạt động ổn định trên nhiều kích thước hộp sọ khác nhau:"""),
 
     code_cell("""test_cases = ["mri_brain_tumor_03", "mri_brain_tumor_07", "mri_brain_tumor_12", "mri_brain_tumor_17"]
@@ -286,7 +286,7 @@ plt.show()""")
 # Căn cứ: docs/KHUNG_NOI_DUNG_TONG_QUAT_DO_AN_XLAS.md (Mục II.3, II.4 & Mục V.5)
 # ==============================================================================
 nb3_cells = [
-    md_cell("""# 📓 Notebook 3: Phân Đoạn U Não (So Sánh 2 Phương Án) & Rút Trích Đặc Trưng
+    md_cell("""#  Notebook 3: Phân Đoạn U Não (So Sánh 2 Phương Án) & Rút Trích Đặc Trưng
 **Căn cứ tài liệu:** `docs/KHUNG_NOI_DUNG_TONG_QUAT_DO_AN_XLAS.md`  
 * **Quy trình chuẩn Bộ môn:**  
   * **Bước 3 — Phân đoạn đối tượng cốt lõi (Core Segmentation)**
@@ -297,14 +297,14 @@ nb3_cells = [
 
 ---
 
-## 🎯 1. Quy tắc vàng của Bộ môn: Bắt buộc so sánh tối thiểu 02 phương án
+## 1. Quy tắc vàng của Bộ môn: Bắt buộc so sánh tối thiểu 02 phương án
 Đồ án cài đặt và so sánh đối chứng 2 thuật toán DIP kinh điển:
 * **Phương án A (Baseline chính):** **Marker-controlled Watershed**  
   * Phân vị cường độ cao $\rightarrow$ Biến đổi khoảng cách Euclidean (`cv2.distanceTransform`) $\rightarrow$ Tìm Sure Foreground & Sure Background $\rightarrow$ Đánh dấu Markers $\rightarrow$ Phân thủy Watershed.
 * **Phương án B (Phương án đối chứng):** **Seeded Region Growing**  
   * Tự động tìm hạt giống tại vị trí cực đại cường độ trong nhu mô não $\rightarrow$ Lan truyền 8 hướng láng giềng theo hàng đợi BFS với ngưỡng dung sai $|I(p) - I(seed)| \le \text{tolerance}$ $\rightarrow$ Hậu xử lý hình thái học.
 
-## 📏 2. Rút trích đặc trưng hình học & Đo lường (Bước 4)
+## 2. Đo đạc đặc trưng hình học: Rút trích đặc trưng hình học và đo lường (Bước 4)
 * **Diện tích u:** $S_{\text{tumor}} = \sum \text{pixel}$ và tỷ lệ $\%$ u / diện tích não.
 * **Độ tròn (Circularity / Compactness):** $C = \frac{4\pi \cdot \text{Area}}{\text{Perimeter}^2}$ ($C \approx 1$: u tròn đều lành tính Meningioma; $C \ll 1$: bờ gồ ghề ác tính Glioma).
 * **Định vị:** Trích xuất Bounding Box màu đỏ cảnh báo quanh khối u."""),
@@ -325,7 +325,7 @@ from src.evaluation.metrics import calculate_dice, calculate_iou
 
 print("Đã nạp đầy đủ các module phân đoạn và đo lường đặc trưng.")"""),
 
-    md_cell("""## 🔬 3. So Sánh Trực Quan 2 Phương Án Trên 3 Nhóm Ca Bệnh
+    md_cell("""##  3. So Sánh Trực Quan 2 Phương Án Trên 3 Nhóm Ca Bệnh
 Thực nghiệm so sánh Watershed vs. Region Growing trên Ca u nhỏ, Ca u trung bình và Ca u lớn:"""),
 
     code_cell("""test_cases = [
@@ -381,7 +381,7 @@ plt.suptitle("Thực Nghiệm So Sánh Đối Chứng: Watershed (Baseline) vs. 
 plt.tight_layout()
 plt.show()"""),
 
-    md_cell("""## 📝 4. Bảng Nhận Xét So Sánh Kỹ Thuật Giữa 2 Phương Pháp
+    md_cell("""##  4. Bảng Nhận Xét So Sánh Kỹ Thuật Giữa 2 Phương Pháp
 Tổng kết các ưu nhược điểm phát hiện được từ thực nghiệm:"""),
 
     code_cell("""compare_table = pd.DataFrame({
@@ -416,7 +416,7 @@ compare_table""")
 # Căn cứ: docs/KHUNG_NOI_DUNG_TONG_QUAT_DO_AN_XLAS.md (Mục II.5, II.6, IV & Mục V.6)
 # ==============================================================================
 nb4_cells = [
-    md_cell("""# 📓 Notebook 4: Đánh Giá Định Lượng & Phân Tích Trường Hợp Thất Bại
+    md_cell("""#  Notebook 4: Đánh Giá Định Lượng & Phân Tích Trường Hợp Thất Bại
 **Căn cứ tài liệu:** `docs/KHUNG_NOI_DUNG_TONG_QUAT_DO_AN_XLAS.md`  
 * **Quy trình chuẩn Bộ môn:**  
   * **Bước 5 — Xây dựng Baseline & Thực nghiệm so sánh (Comparative Experiments)**
@@ -427,7 +427,7 @@ nb4_cells = [
 
 ---
 
-## 🎯 1. Bộ đo định lượng y khoa chuẩn mực (Theo Khung Tổng Quát Mục II.6 & IV)
+## 1. Bộ đo định lượng y khoa chuẩn mực (Theo Khung Tổng Quát Mục II.6 & IV)
 1. **Dice Similarity Coefficient (DSC / F1):** $\text{Dice} = \frac{2|P \cap G|}{|P| + |G|}$
 2. **Jaccard Index (IoU):** $\text{IoU} = \frac{|P \cap G|}{|P \cup G|} = \frac{\text{Dice}}{2 - \text{Dice}}$
 3. **Độ nhạy (Sensitivity / Recall):** $\text{Sensitivity} = \frac{\text{TP}}{\text{TP} + \text{FN}}$ (Đo khả năng không bỏ sót pixel u)
@@ -450,7 +450,7 @@ img_dir = os.path.join(base_dir, "images")
 mask_dir = os.path.join(base_dir, "masks")
 print(f"Sẵn sàng thực thi benchmark trên tập dữ liệu: {base_dir} ({len(os.listdir(img_dir))} lát cắt)...")"""),
 
-    md_cell("""## 🚀 2. Chạy Thực Nghiệm Đánh Giá Hàng Loạt (Batch Benchmark) 20 Mẫu"""),
+    md_cell("""##  2. Chạy Thực Nghiệm Đánh Giá Hàng Loạt (Batch Benchmark) 20 Mẫu"""),
 
     code_cell("""def predict_ws(img):
     stripped, _ = strip_skull(img)
@@ -466,7 +466,7 @@ df_rg = run_benchmark(img_dir, mask_dir, predict_rg, method_name="Region Growing
 
 print(f"Đã hoàn thành đánh giá {len(df_ws)} mẫu cho Watershed và {len(df_rg)} mẫu cho Region Growing.")"""),
 
-    md_cell("""## 📊 3. Bảng Tổng Hợp Kết Quả Định Lượng (Mean ± Std)
+    md_cell("""##  3. Bảng Tổng Hợp Kết Quả Định Lượng (Mean ± Std)
 Đây là bảng số liệu trọng tâm để đưa vào Mục 6 của Báo cáo đồ án:"""),
 
     code_cell("""summary_df = pd.DataFrame({
@@ -495,7 +495,7 @@ print(f"Đã hoàn thành đánh giá {len(df_ws)} mẫu cho Watershed và {len(
 
 summary_df"""),
 
-    md_cell("""## 📉 4. Biểu Đồ Cột So Sánh Điểm Dice Trên Từng Ca Bệnh
+    md_cell("""## 4. Trực quan hóa dữ liệu: Biểu đồ cột so sánh điểm Dice trên từng ca bệnh
 Trực quan hóa sự khác biệt giữa 2 thuật toán trên toàn bộ tập thử nghiệm:"""),
 
     code_cell("""x = np.arange(len(df_ws))
@@ -516,7 +516,7 @@ ax.grid(True, linestyle='--', alpha=0.5)
 plt.tight_layout()
 plt.show()"""),
 
-    md_cell("""## ⚠️ 5. Phân Tích Trường Hợp Thất Bại (Failure Cases Analysis)
+    md_cell("""##  5. Phân Tích Trường Hợp Thất Bại (Failure Cases Analysis)
 Theo yêu cầu bắt buộc của Khung tổng quát (Mục II.6): Phải chỉ ra và lý giải nguyên nhân sai lệch."""),
 
     code_cell("""# Tìm các ca có điểm Dice thấp nhất

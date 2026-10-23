@@ -50,14 +50,14 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     # =========================================================================
     builder.add_cover_page(
         university="TRƯỜNG ĐẠI HỌC CÔNG THƯƠNG TP. HỒ CHÍ MINH",
-        faculty="KHOA CÔNG NGHỆ THÔNG TIN",
-        department="BỘ MÔN KHOA HỌC DỮ LIỆU",
+        faculty="KHOA CÔNG NGHỆ THÔNG TIN — NGÀNH KHOA HỌC DỮ LIỆU",
+        department="BỘ MÔN XỬ LÝ ẢNH SỐ",
         course_type="BÁO CÁO ĐỒ ÁN HỌC PHẦN",
         course_name="XỬ LÝ ẢNH SỐ",
         project_label="ĐỀ TÀI",
-        project_title="PHÂN ĐOẠN VÀ PHÁT HIỆN KHỐI U NÃO TRÊN ẢNH CỘNG HƯỞNG TỪ MRI",
-        dataset_note="(BỘ DỮ LIỆU CHUẨN TCGA-LGG)",
-        advisor="ThS. Đinh Nguyễn Trọng Nghĩa",
+        project_title="PHÂN ĐOẠN VÀ PHÁT HIỆN TỔN THƯƠNG TRÊN ẢNH Y TẾ",
+        dataset_note="(NGHIÊN CỨU TRỌNG TÂM: PHÂN ĐOẠN VÀ PHÁT HIỆN KHỐI U NÃO TRÊN ẢNH CỘNG HƯỞNG TỪ MRI — TCGA-LGG)",
+        advisor="ThS. Đỗ Hùng Dũng",
         students=[
             "1. Hà Mạnh Trường — MSSV: 2045240326 — Lớp: 15DHKHDL03 — Nhóm trưởng (50%)",
             "2. Huỳnh Tâm Trí — MSSV: 2045240315 — Lớp: 15DHKHDL03 — Thành viên (50%)"
@@ -72,20 +72,20 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     builder.add_paragraph(
         "Trong kỷ nguyên số hóa y tế hiện đại, việc ứng dụng các kỹ thuật Xử lý ảnh số (Digital Image Processing - DIP) "
         "vào công tác hỗ trợ chẩn đoán lâm sàng đang trở thành xu hướng mũi nhọn của ngành Khoa học Dữ liệu. Đặc biệt, "
-        "đối với các bệnh lý thần kinh đe dọa trực tiếp tính mạng con người như khối u não, việc tự động hóa quá trình "
+        "đối với các bệnh lý thần kinh đe dọa trực tiếp tính mạng con người như khối u não, việc nghiên cứu giải pháp khoanh vùng "
         "khoanh vùng khối u trên ảnh cộng hưởng từ (Magnetic Resonance Imaging - MRI) không chỉ giảm tải áp lực cực lớn cho "
         "các bác sĩ chuyên khoa mà còn mang lại tính nhất quán, khách quan và độ tin cậy toán học cao."
     )
     builder.add_paragraph(
-        "Đề tài «Phân đoạn và phát hiện khối u não trên ảnh cộng hưởng từ MRI» được nhóm sinh viên thực hiện trong khuôn khổ "
+        "Đề tài «Phân đoạn và phát hiện tổn thương trên ảnh y tế» (nghiên cứu trọng tâm chuyên sâu vào bài toán phân đoạn và phát hiện khối u não trên ảnh cộng hưởng từ MRI) được nhóm sinh viên thực hiện trong khuôn khổ "
         "học phần Xử lý ảnh số tại Trường Đại học Công Thương TP. Hồ Chí Minh (HUIT). Toàn bộ phương pháp trong nghiên cứu "
         "này được thiết kế theo nguyên tắc giải trình minh bạch của xử lý ảnh cổ điển: từ kỹ thuật khử nhiễu song phương, "
         "thuật toán bóc sọ não hình thái học 6 bước, đến việc đối chứng định lượng độc lập giữa hai giải thuật Marker-controlled "
         "Watershed và Seeded Region Growing trên toàn bộ 3,929 lát cắt chuẩn quốc tế TCGA-LGG."
     )
     builder.add_paragraph(
-        "Nhóm chúng em xin bày tỏ lòng biết ơn sâu sắc và chân thành nhất đến Thầy ThS. Đinh Nguyễn Trọng Nghĩa cùng các Thầy, Cô "
-        "trong Bộ môn Khoa học Dữ liệu — Khoa Công nghệ Thông tin, Trường Đại học Công Thương TP. Hồ Chí Minh đã tận tình giảng dạy, "
+        "Nhóm chúng em xin bày tỏ lòng biết ơn sâu sắc và chân thành nhất đến Thầy ThS. Đỗ Hùng Dũng cùng các Thầy, Cô "
+        "trong Bộ môn Xử lý ảnh số — Ngành Khoa học Dữ liệu — Khoa Công nghệ Thông tin, Trường Đại học Công Thương TP. Hồ Chí Minh đã tận tình giảng dạy, "
         "truyền đạt nền tảng lý thuyết vững chắc và định hướng phương pháp nghiên cứu khoa học chuẩn mực cho chúng em trong suốt học kỳ qua."
     )
     builder.add_page_break()
@@ -95,7 +95,7 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     # =========================================================================
     builder.add_heading_1("TÓM TẮT ĐỒ ÁN")
     builder.add_paragraph(
-        "Báo cáo này trình bày nghiên cứu và xây dựng hoàn chỉnh hệ thống phần mềm xử lý ảnh số tự động hỗ trợ chẩn đoán khối u "
+        "Báo cáo này trình bày nghiên cứu và xây dựng hoàn chỉnh hệ thống phần mềm xử lý ảnh số hỗ trợ chẩn đoán khối u "
         "não trên ảnh cộng hưởng từ MRI. Hệ thống giải quyết trọn vẹn 3 bài toán kỹ thuật cốt lõi: (1) Khử nhiễu Rician và bảo toàn "
         "ranh giới mô u bằng bộ lọc Bilateral kết hợp cân bằng tương phản thích nghi CLAHE; (2) Thuật toán Tách sọ não (Skull Stripping) "
         "6 bước bằng hình thái học toán học và thành phần liên thông lớn nhất (LCC), loại bỏ triệt để 100% xương sọ và da đầu; "
@@ -206,16 +206,16 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
         "Ảnh cộng hưởng từ (Magnetic Resonance Imaging - MRI) là phương tiện chẩn đoán hình ảnh tiêu chuẩn vàng hiện nay nhờ ưu điểm vượt trội "
         "về độ phân giải mô mềm, không sử dụng bức xạ ion hóa nguy hại như chụp cắt lớp vi tính (CT). Tuy nhiên, việc đọc ảnh và khoanh vùng thủ công từng lát cắt "
         "đối mặt với nhiều thách thức lớn: tốn nhiều giờ làm việc của bác sĩ chuyên khoa, áp lực quá tải bệnh viện, và tính chủ quan dẫn đến sai lệch giữa "
-        "các bác sĩ chẩn đoán (inter-observer variability). Do đó, việc xây dựng một hệ thống phần mềm tự động phân đoạn và đo đạc kích thước u bằng "
+        "các bác sĩ chẩn đoán (inter-observer variability). Do đó, việc xây dựng một hệ thống phần mềm phân đoạn và đo đạc kích thước u bằng "
         "các kỹ thuật Xử lý ảnh số (DIP) có ý nghĩa thực tiễn to lớn, mang tính cấp thiết khoa học và công nghệ cao."
     )
 
     builder.add_heading_2("1.2. Mục tiêu nghiên cứu của đề tài")
     builder.add_paragraph("Đề tài tập trung giải quyết các mục tiêu khoa học và kỹ thuật cụ thể sau:")
-    builder.add_bullet("Xây dựng pipeline xử lý ảnh số tự động, khép kín từ ảnh MRI sọ não 2D đầu vào dạng Grayscale (kích thước chuẩn 256x256 pixel).")
+    builder.add_bullet("Xây dựng pipeline xử lý ảnh số khép kín từ ảnh MRI sọ não 2D đầu vào dạng Grayscale (kích thước chuẩn 256x256 pixel).")
     builder.add_bullet("Nghiên cứu và cài đặt kỹ thuật Tách sọ não (Skull Stripping) kinh điển bằng hình thái học (Morphological Operations), loại bỏ 100% phần xương sọ dày đặc và da đầu có cường độ sáng gây nhiễu cho vùng u.")
-    builder.add_bullet("Cài đặt và thực nghiệm đối chứng tối thiểu 02 phương án phân đoạn u lõi: Phương án A (Marker-controlled Watershed kết hợp Distance Transform) và Phương án B (Seeded Region Growing tự động dò tìm hạt giống cực đại cường độ).")
-    builder.add_bullet("Tự động tính toán các thông số định lượng y khoa: diện tích u (pixel), tỷ lệ % diện tích u so với toàn bộ não bộ, và độ tròn Circularity để định lượng mức độ gồ ghề của bờ u; đồng thời tự động vẽ đường bao (Contour) và Hộp giới hạn (Bounding Box) màu đỏ cảnh báo vị trí u não.")
+    builder.add_bullet("Cài đặt và thực nghiệm đối chứng tối thiểu 02 phương án phân đoạn u lõi: Phương án A (Marker-controlled Watershed kết hợp Distance Transform) và Phương án B (Seeded Region Growing thuật toán dò tìm hạt giống cực đại cường độ).")
+    builder.add_bullet("Tính toán các thông số định lượng y khoa: diện tích u (pixel), tỷ lệ % diện tích u so với toàn bộ não bộ, và độ tròn Circularity để định lượng mức độ gồ ghề của bờ u; đồng thời khoanh vùng đường bao (Contour) và Hộp giới hạn (Bounding Box) màu đỏ cảnh báo vị trí u não.")
     builder.add_bullet("Đánh giá định lượng chặt chẽ độ chính xác phân đoạn so với mặt nạ chuyên gia y tế Ground Truth qua 4 chỉ số chuẩn: Dice Score (DSC), IoU (Jaccard Index), Độ nhạy (Sensitivity) và Độ đặc hiệu (Specificity).")
 
     builder.add_heading_2("1.3. Đối tượng và phạm vi nghiên cứu")
@@ -384,9 +384,9 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     builder.add_heading_2("4.2. Quy trình 6 bước Tách sọ não (Skull Stripping Pipeline)")
     builder.add_paragraph(
         "Hộp sọ (Cranium) và da đầu trên ảnh MRI có cường độ xám rất cao, nếu không tách bỏ sẽ bị các giải thuật phân đoạn nhận nhầm là u não. "
-        "Nhóm thiết kế và hiện thực hóa quy trình 6 bước tách sọ não tự động bằng hình thái học thuần túy (Mã nguồn tại src/preprocessing/skull_strip.py):"
+        "Nhóm thiết kế và hiện thực hóa quy trình 6 bước tách sọ não bằng hình thái học thuần túy (Mã nguồn tại src/preprocessing/skull_strip.py):"
     )
-    builder.add_heading_3("4.2.1. Bước 1 — Phân ngưỡng tự động Otsu")
+    builder.add_heading_3("4.2.1. Bước 1 — Phân ngưỡng tối ưu Otsu")
     builder.add_paragraph("Áp dụng giải thuật ngưỡng hóa Otsu để tìm ngưỡng tối ưu phân tách toàn bộ phần đầu (Head) ra khỏi vùng nền tối xung quanh.")
     builder.add_heading_3("4.2.2. Bước 2 — Phép mở hình thái học cắt đứt cầu nối mô")
     builder.add_paragraph("Sử dụng phần tử cấu trúc dạng Elip kích thước 5x5 để thực hiện Morphological Opening, bào mòn và cắt đứt hoàn toàn các cầu nối mô mỏng giữa xương sọ và nhu mô não.")
@@ -440,7 +440,7 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
 
     builder.add_heading_2("5.3. Phương pháp phân đoạn B (Phương án đối chứng): Seeded Region Growing")
     builder.add_paragraph(
-        "Để đối chứng, nhóm cài đặt giải thuật Seeded Region Growing với cơ chế tự động tìm điểm hạt giống:"
+        "Để đối chứng, nhóm cài đặt giải thuật Seeded Region Growing với cơ chế tìm điểm hạt giống:"
     )
     builder.add_bullet("Bước 1: Tìm tọa độ điểm ảnh có cường độ sáng cực đại (argmax) bên trong vùng nhu mô não sạch sọ để làm hạt giống ban đầu (Seed).")
     builder.add_bullet("Bước 2: Khởi tạo hàng đợi BFS (Breadth-First Search) và mặt nạ vùng rỗng.")
@@ -448,7 +448,7 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     builder.add_bullet("Bước 4: Áp dụng phép đóng hình thái học để lấp đầy các khoảng trống nhỏ bên trong khối u vừa phát triển.")
 
     builder.add_heading_2("5.4. Rút trích đặc trưng hình học khối u và cảnh báo thị giác")
-    builder.add_paragraph("Từ mặt nạ nhị phân phân đoạn thu được, mô-đun đo lường (src/measurement/features.py) tự động tính toán các thông số hình học:")
+    builder.add_paragraph("Từ mặt nạ nhị phân phân đoạn thu được, mô-đun đo lường (src/measurement/features.py) trích xuất và tính toán các thông số hình học:")
     builder.add_bullet("Diện tích khối u: S_tumor = ∑ M(x, y) (tổng số pixel trắng có giá trị 255).")
     builder.add_bullet("Tỷ lệ % diện tích u so với não bộ: Ratio = (S_tumor / S_brain) * 100%.")
     builder.add_bullet("Chu vi khối u: P_tumor được tính bằng tổng độ dài đường viền contour ngoài.")
@@ -463,7 +463,7 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     builder.add_heading_2("6.1. Bảng số liệu so sánh định lượng trên toàn bộ 3,929 lát cắt dữ liệu TCGA-LGG")
     builder.add_paragraph(
         "Nhóm thực hiện chạy thực nghiệm định lượng hàng loạt (Batch Benchmark) trên toàn bộ kho dữ liệu TCGA-LGG gồm 3,929 lát cắt MRI "
-        "(1,373 lát cắt có khối u và 2,556 lát cắt não lành) từ 110 bệnh nhân bằng script tự động scripts/run_all_experiments.py. "
+        "(1,373 lát cắt có khối u và 2,556 lát cắt não lành) từ 110 bệnh nhân thông qua kịch bản thực nghiệm scripts/run_all_experiments.py. "
         "Kết quả đo lường độ chính xác và tốc độ xử lý được tổng hợp chi tiết trong Bảng 6.1:"
     )
 
@@ -530,7 +530,7 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     builder.add_heading_2("7.2. Hướng dẫn khởi chạy ứng dụng web")
     builder.add_paragraph("Người dùng chỉ cần thực thi câu lệnh duy nhất từ thư mục gốc của dự án:")
     builder.add_paragraph("streamlit run demo/app.py", indent=False, bold_prefix="Lệnh chạy: ", italic=True)
-    builder.add_paragraph("Giao diện ứng dụng sẽ tự động mở trên trình duyệt tại địa chỉ http://localhost:8501 sẵn sàng tương tác.")
+    builder.add_paragraph("Giao diện ứng dụng khởi chạy trên trình duyệt tại địa chỉ http://localhost:8501 sẵn sàng tương tác.")
 
     # =========================================================================
     # CHƯƠNG 8: KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN
@@ -541,7 +541,7 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     builder.add_paragraph(
         "Sau quá trình nghiên cứu lý thuyết, thiết kế kiến trúc và triển khai thực nghiệm chặt chẽ, đề tài đã hoàn thành xuất sắc toàn bộ các mục tiêu đặt ra:"
     )
-    builder.add_bullet("Xây dựng thành công pipeline xử lý ảnh số khép kín, tự động 100% từ tiền xử lý, tách sọ não, phân đoạn u, trích xuất đặc trưng hình học đến trực quan hóa.")
+    builder.add_bullet("Xây dựng thành công pipeline xử lý ảnh số khép kín, đồng bộ từ tiền xử lý, tách sọ não, phân đoạn u, trích xuất đặc trưng hình học đến trực quan hóa.")
     builder.add_bullet("Giải quyết triệt để bài toán Tách sọ não (Skull Stripping) bằng kỹ thuật hình thái học thuần túy (Otsu + Opening + LCC + Hole Filling), loại bỏ 100% xương sọ.")
     builder.add_bullet("Hiện thực hóa và đối chứng thực nghiệm bài bản giữa 2 giải thuật Marker-controlled Watershed và Seeded Region Growing trên toàn bộ 3,929 lát cắt dữ liệu TCGA-LGG, đạt độ đặc hiệu 99.04% trên não lành với thời gian xử lý siêu nhanh dưới 15ms/ảnh.")
     builder.add_bullet("Xây dựng hoàn chỉnh hệ thống 4 Jupyter Notebooks phục vụ học tập/nghiên cứu cùng ứng dụng Web Demo GUI Streamlit tương tác thời gian thực.")
@@ -550,7 +550,7 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     builder.add_paragraph("Bên cạnh các thành tựu đạt được, hệ thống vẫn tồn tại một số giới hạn kỹ thuật gợi mở các hướng phát triển tiếp theo:")
     builder.add_bullet("Mở rộng từ không gian 2D sang 3D: Nâng cấp giải thuật để xử lý toàn bộ tập lát cắt thể tích 3D (Voxel), tái tạo mô hình khối u 3D trực quan trong không gian não bộ.")
     builder.add_bullet("Kết hợp đặc trưng kết cấu GLCM (Haralick Texture Features): Tích hợp ma trận đồng hiện mức xám để phân biệt chính xác hơn các ca u có bờ mờ và vùng phù nề.")
-    builder.add_bullet("Mở rộng phân loại đa nhóm u não (Multi-class Classification): Ứng dụng các bộ trích chọn đặc trưng hình học và kết cấu kết hợp với bộ phân lớp máy học cổ điển (SVM, Random Forest) để tự động phân loại u tế bào đệm (Glioma), u màng não (Meningioma) và u tuyến yên (Pituitary Tumor).")
+    builder.add_bullet("Mở rộng phân loại đa nhóm u não (Multi-class Classification): Ứng dụng các bộ trích chọn đặc trưng hình học và kết cấu kết hợp với bộ phân lớp máy học cổ điển (SVM, Random Forest) để hỗ trợ phân loại u tế bào đệm (Glioma), u màng não (Meningioma) và u tuyến yên (Pituitary Tumor).")
 
     # =========================================================================
     # TÀI LIỆU THAM KHẢO (IEEE STANDARD)
@@ -625,7 +625,7 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     builder.add_paragraph("git clone https://github.com/mtzwyu/brain-tumor-mri-segmentation.git", indent=False, bold_prefix="Bước 1 (Clone mã nguồn): ", italic=True)
     builder.add_paragraph("pip install -r requirements.txt", indent=False, bold_prefix="Bước 2 (Cài đặt thư viện): ", italic=True)
     builder.add_paragraph("python scripts/download_full_dataset.py", indent=False, bold_prefix="Bước 3 (Chuẩn bị 3,929 ảnh TCGA-LGG): ", italic=True)
-    builder.add_paragraph("pytest tests/ -v", indent=False, bold_prefix="Bước 4 (Chạy toàn bộ bài kiểm thử tự động): ", italic=True)
+    builder.add_paragraph("pytest tests/ -v", indent=False, bold_prefix="Bước 4 (Chạy toàn bộ bài kiểm thử đơn vị): ", italic=True)
     builder.add_paragraph("python scripts/run_all_experiments.py", indent=False, bold_prefix="Bước 5 (Chạy toàn bộ thực nghiệm định lượng): ", italic=True)
     builder.add_paragraph("streamlit run demo/app.py", indent=False, bold_prefix="Bước 6 (Khởi chạy Web Demo GUI): ", italic=True)
 

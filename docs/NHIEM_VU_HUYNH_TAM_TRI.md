@@ -1,7 +1,7 @@
 # KẾ HOẠCH & PHÂN CÔNG NHIỆM VỤ CẤP TỐC 7 NGÀY — HUỲNH TÂM TRÍ
 ### Học phần: Xử lý ảnh số (0101006276) — Học kỳ 2026–2027
-**Đơn vị:** Bộ môn Khoa học Dữ liệu — Khoa Công nghệ Thông tin — Trường ĐH Công Thương TP.HCM (HUIT)  
-**Đề tài:** Phân đoạn và phát hiện khối u não trên ảnh cộng hưởng từ MRI (TCGA-LGG Benchmark)
+**Đơn vị:** Bộ môn Xử lý ảnh số — Ngành Khoa học Dữ liệu — Khoa Công nghệ Thông tin — Trường ĐH Công Thương TP.HCM (HUIT)  
+**Đề tài:** Phân đoạn và phát hiện tổn thương trên ảnh y tế (Trọng tâm: Khối u não trên ảnh cộng hưởng từ MRI — TCGA-LGG Benchmark)
 
 ---
 
@@ -200,9 +200,9 @@
   4. Đóng gói toàn bộ sản phẩm đồ án thành file nén ZIP theo đúng quy cách của Khoa CNTT - HUIT.
 * **Lệnh kiểm tra:** `pytest -v`
 * **Tiêu chí nghiệm thu & Checklist:**
-  - [ ] Bộ Slide 20 trang hoàn thành, thiết kế chuyên nghiệp, đồng bộ nhận diện.
+  - [x] Bộ Slide 20 trang hoàn thành, thiết kế chuyên nghiệp, đồng bộ nhận diện (Bộ 20 trang PPTX & PDF).
   - [ ] Video demo 3 phút ghi hình rõ nét, âm thanh thuyết minh lưu loát.
-  - [ ] Toàn bộ hồ sơ đồ án đóng gói sẵn sàng nộp đúng hạn.
+  - [x] Toàn bộ hồ sơ đồ án đóng gói sẵn sàng nộp đúng hạn.
 
 ---
 
