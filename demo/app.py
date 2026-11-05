@@ -75,6 +75,9 @@ if is_light:
         --input-bg: #ffffff;
         --input-border: #cbd5e1;
         --input-text: #0f172a;
+        --scrollbar-track: #f1f5f9;
+        --scrollbar-thumb: #94a3b8;
+        --scrollbar-thumb-hover: #0284c7;
     """
 else:
     theme_vars = """
@@ -106,6 +109,9 @@ else:
         --input-bg: #111827;
         --input-border: #1f293d;
         --input-text: #f8fafc;
+        --scrollbar-track: #0d1322;
+        --scrollbar-thumb: #475569;
+        --scrollbar-thumb-hover: #0284c7;
     """
 
 st.markdown(
@@ -261,42 +267,53 @@ st.markdown(
       /* Danh sách chọn ảnh dạng menu xổ xuống (Virtual Dropdown & Popover) */
       [data-testid="stSelectboxVirtualDropdown"],
       [data-testid="stSelectboxVirtualDropdown"] > div,
-      [data-testid="stSelectboxVirtualDropdown"] ul,
       [data-baseweb="popover"],
       [data-baseweb="menu"],
       [role="listbox"] {
         background-color: var(--bg-card) !important;
-        color: var(--text-primary) !important;
         border: 1px solid var(--border-color) !important;
         border-radius: 8px !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
       }
-      [data-testid="stSelectboxVirtualDropdown"] *,
-      [data-baseweb="popover"] *,
-      [data-baseweb="menu"] *,
-      [role="listbox"] *,
-      [role="option"] {
+      [data-testid="stSelectboxVirtualDropdown"] [role="option"],
+      [data-baseweb="menu"] li {
         background-color: var(--bg-card) !important;
         color: var(--text-primary) !important;
         -webkit-text-fill-color: var(--text-primary) !important;
       }
-      [data-testid="stSelectboxVirtualDropdown"] li:hover,
       [data-testid="stSelectboxVirtualDropdown"] [role="option"]:hover,
-      [data-testid="stSelectboxVirtualDropdown"] [aria-selected="true"],
-      [data-baseweb="menu"] li:hover,
-      [role="option"]:hover,
-      [role="option"][aria-selected="true"] {
+      [data-testid="stSelectboxVirtualDropdown"] [role="option"][aria-selected="true"],
+      [data-baseweb="menu"] li:hover {
         background-color: var(--bg-card-hover) !important;
         color: #38bdf8 !important;
         -webkit-text-fill-color: #38bdf8 !important;
       }
-      [data-testid="stSelectboxVirtualDropdown"] li:hover *,
-      [data-testid="stSelectboxVirtualDropdown"] [role="option"]:hover *,
-      [data-testid="stSelectboxVirtualDropdown"] [aria-selected="true"] *,
-      [data-baseweb="menu"] li:hover *,
-      [role="option"]:hover *,
-      [role="option"][aria-selected="true"] * {
-        color: #38bdf8 !important;
-        -webkit-text-fill-color: #38bdf8 !important;
+      [data-testid="stSelectboxVirtualDropdown"] [role="option"] *,
+      [data-baseweb="menu"] li * {
+        color: inherit !important;
+        -webkit-text-fill-color: inherit !important;
+      }
+
+      /* Thanh cuộn (Scrollbar) hiển thị nổi bật cho danh sách chọn ảnh và toàn ứng dụng */
+      ::-webkit-scrollbar {
+        width: 10px !important;
+        height: 10px !important;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--scrollbar-track) !important;
+        border-radius: 6px !important;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb) !important;
+        border: 2px solid var(--scrollbar-track) !important;
+        border-radius: 6px !important;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--scrollbar-thumb-hover) !important;
+      }
+      * {
+        scrollbar-width: thin !important;
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track) !important;
       }
 
       /* Tải ảnh từ máy tính (File Uploader) */
@@ -750,60 +767,11 @@ all_files = list_sample_cases(image_dir)
 
 
 # =============================================================================
-# 3. TOP BANNER / HEADER TRẠM CHẨN ĐOÁN
-# =============================================================================
-
-st.markdown(
-    """
-    <div class="pacs-header">
-      <div class="pacs-badge">
-        HUIT KHOA HỌC DỮ LIỆU · BỘ MÔN XỬ LÝ ẢNH SỐ
-      </div>
-      <h1 class="pacs-title">
-        NEUROSCAN PACS WORKSTATION
-      </h1>
-      <p class="pacs-subtitle">
-        Đề tài: Phân đoạn và phát hiện tổn thương trên ảnh y tế &middot; Trọng tâm: Phân đoạn và phát hiện khối u não trên ảnh cộng hưởng từ MRI (TCGA-LGG).
-      </p>
-      <div class="pacs-status-bar">
-        <div class="pacs-pill">Kho dữ liệu: <b>3,929 lát cắt chuẩn</b></div>
-        <div class="pacs-pill">Quy mô: <b>110 bệnh nhân</b></div>
-        <div class="pacs-pill">Bộ giải thuật: <b>Watershed EDT vs Region Growing</b></div>
-        <div class="pacs-pill">Độ đặc hiệu não lành: <b>99.04%</b></div>
-        <div class="pacs-pill">Độ trễ xử lý: <b>~6.13 ms / lát</b></div>
-      </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-
-# =============================================================================
-# 4. THANH TRẢI NGHIỆM NHANH 4 CA LÂM SÀNG TIÊU BIỂU (CURATED PRESETS)
-# =============================================================================
-
-st.markdown(
-    "<div class='preset-bar-title'>Danh Mục Ca Lâm Sàng Tiêu Biểu (Phân Tích Nhanh):</div>",
-    unsafe_allow_html=True,
-)
-
-preset_cols = st.columns(4)
-for idx, (col, preset) in enumerate(zip(preset_cols, PRESET_CASES)):
-    with col:
-        is_active = st.session_state.get("current_sample_id") == preset["id"]
-        btn_label = f"{preset['title']} [{preset['badge']}]"
-        btn_type = "primary" if is_active else "secondary"
-        if st.button(btn_label, key=f"btn_preset_{idx}", type=btn_type, use_container_width=True):
-            st.session_state["current_sample_id"] = preset["id"]
-            st.rerun()
-
-
-# =============================================================================
-# 5. SIDEBAR: BẢNG ĐIỀU KHIỂN THAM SỐ VÀ DỮ LIỆU
+# 3. SIDEBAR: BẢNG ĐIỀU KHIỂN NGUỒN DỮ LIỆU VÀ THAM SỐ
 # =============================================================================
 
 with st.sidebar:
-    # 5.1. BỘ CHỌN CHẾ ĐỘ GIAO DIỆN SÁNG / TỐI
+    # 3.1. BỘ CHỌN CHẾ ĐỘ GIAO DIỆN SÁNG / TỐI
     st.markdown("### Giao Diện Hiển Thị")
     st.radio(
         "Chế độ màu",
@@ -814,20 +782,69 @@ with st.sidebar:
     )
 
     st.markdown("---")
-    st.markdown("### Bảng Điều Khiển")
-    st.caption("Cấu hình nguồn ảnh, giải thuật và các siêu tham số xử lý.")
+    st.markdown("### Nguồn Dữ Liệu Đầu Vào")
+    st.caption("Chọn chế độ nạp dữ liệu: ca tiêu biểu, toàn bộ kho 3,929 lát hoặc tải ảnh ngoài.")
 
     source_mode = st.radio(
-        "Nguồn ảnh đầu vào",
-        ("Kho chuẩn TCGA-LGG (3,929 lát)", "Tải ảnh từ máy tính"),
+        "Chức năng nạp dữ liệu",
+        (
+            "4 Ca lâm sàng tiêu biểu (Benchmark Presets)",
+            "Kho chuẩn TCGA-LGG (3,929 lát cắt)",
+            "Tải ảnh từ máy tính (Tùy chọn tải lên)",
+        ),
         index=0,
+        label_visibility="collapsed",
     )
 
     input_img: np.ndarray | None = None
     input_gt_mask: np.ndarray | None = None
     sample_id: str | None = None
+    case_clinical_desc: str = ""
 
-    if source_mode == "Kho chuẩn TCGA-LGG (3,929 lát)":
+    # Chức năng 1: 4 Ca lâm sàng tiêu biểu (Benchmark Presets)
+    if source_mode == "4 Ca lâm sàng tiêu biểu (Benchmark Presets)":
+        st.markdown("---")
+        st.markdown("### Ca Lâm Sàng Tiêu Biểu")
+        st.caption("4 ca bệnh đại diện đa dạng hình thái được thẩm định y khoa chuẩn hóa.")
+
+        preset_titles = [f"{p['title']} [{p['badge']}]" for p in PRESET_CASES]
+        curr_id = st.session_state.get("current_sample_id", PRESET_CASES[0]["id"])
+        curr_idx = 0
+        for i, p in enumerate(PRESET_CASES):
+            if p["id"] == curr_id:
+                curr_idx = i
+                break
+
+        selected_preset_title = st.selectbox(
+            "Chọn ca phân tích nhanh:",
+            preset_titles,
+            index=curr_idx,
+        )
+        selected_preset = PRESET_CASES[preset_titles.index(selected_preset_title)]
+        sample_id = selected_preset["id"]
+        st.session_state["current_sample_id"] = sample_id
+        input_img, input_gt_mask = load_image_and_mask(sample_id)
+        case_clinical_desc = selected_preset["desc"]
+
+        # Hiển thị thẻ thông tin lâm sàng tóm tắt
+        st.markdown(
+            f"""
+            <div class="stat-box" style="margin-top: 0.6rem; font-size: 0.82rem; border-left: 3px solid {selected_preset['badge_color']};">
+              <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.2rem;">{selected_preset['title']}</div>
+              <div style="color: var(--text-secondary); margin-bottom: 0.35rem; line-height: 1.4;">{selected_preset['desc']}</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted);">
+                Mã lát: <code>{selected_preset['id']}</code> &bull; <b style="color: {selected_preset['badge_color']};">{selected_preset['badge']}</b>
+              </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # Chức năng 2: Tra cứu toàn bộ kho dữ liệu TCGA-LGG (3,929 lát cắt)
+    elif source_mode == "Kho chuẩn TCGA-LGG (3,929 lát cắt)":
+        st.markdown("---")
+        st.markdown("### Tra Cứu Kho Chuẩn TCGA-LGG")
+        st.caption("Toàn bộ 3,929 lát cắt MRI từ 110 bệnh nhân The Cancer Genome Atlas.")
         if all_files:
             patient_filter = st.text_input(
                 "Tìm nhanh mã bệnh nhân",
@@ -841,7 +858,6 @@ with st.sidebar:
             )
 
             if filtered:
-                # Tìm index của preset hiện tại nếu có trong danh sách
                 curr_id = st.session_state.get("current_sample_id", "")
                 default_idx = 0
                 for i, fname in enumerate(filtered):
@@ -850,18 +866,24 @@ with st.sidebar:
                         break
 
                 selected_file = st.selectbox(
-                    f"Lát cắt MRI ({len(filtered)} ảnh)",
+                    f"Danh sách lát cắt MRI ({len(filtered)} ảnh):",
                     filtered,
                     index=default_idx,
                 )
                 sample_id = os.path.splitext(selected_file)[0]
                 st.session_state["current_sample_id"] = sample_id
                 input_img, input_gt_mask = load_image_and_mask(sample_id)
+                case_clinical_desc = f"Lát cắt chuẩn hóa từ kho dữ liệu TCGA-LGG ({len(filtered)} ảnh phù hợp bộ lọc)."
             else:
                 st.warning("Không tìm thấy ảnh nào khớp với mã lọc.")
         else:
             st.error("Chưa tìm thấy thư mục data/full/images.")
+
+    # Chức năng 3: Tải ảnh tùy chọn từ máy tính
     else:
+        st.markdown("---")
+        st.markdown("### Tải Ảnh Từ Máy Tính")
+        st.caption("Hỗ trợ định dạng PNG, JPG, JPEG, TIF, TIFF.")
         uploaded_image = st.file_uploader(
             "Ảnh MRI cắt lát",
             type=("png", "jpg", "jpeg", "tif", "tiff"),
@@ -873,6 +895,7 @@ with st.sidebar:
         )
         input_gt_mask = decode_upload(uploaded_mask)
         sample_id = uploaded_image.name if uploaded_image else "Uploaded_Case"
+        case_clinical_desc = "Dữ liệu chụp MRI ngoài được tải lên trực tiếp từ máy tính người dùng."
 
     st.markdown("---")
     st.markdown("### Chế Độ Chẩn Đoán")
@@ -935,7 +958,7 @@ with st.sidebar:
         <div style='font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;'>
           <b>Đề tài: Phân đoạn và phát hiện tổn thương trên ảnh y tế</b><br>
           <i>(Trọng tâm: Khối u não trên ảnh MRI TCGA-LGG)</i><br>
-          Bộ môn Xử lý ảnh số · Ngành Khoa học Dữ liệu · HUIT<br>
+          Bộ môn Xử lý ảnh số &middot; Ngành Khoa học Dữ liệu &middot; HUIT<br>
           Nhóm sinh viên: Hà Mạnh Trường & Huỳnh Tâm Trí<br>
           GVHD: ThS. Đỗ Hùng Dũng
         </div>
@@ -943,6 +966,60 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
+
+# =============================================================================
+# 4. TOP BANNER / HEADER TRẠM CHẨN ĐOÁN
+# =============================================================================
+
+st.markdown(
+    """
+    <div class="pacs-header">
+      <div class="pacs-badge">
+        HUIT KHOA HỌC DỮ LIỆU · BỘ MÔN XỬ LÝ ẢNH SỐ
+      </div>
+      <h1 class="pacs-title">
+        NEUROSCAN PACS WORKSTATION
+      </h1>
+      <p class="pacs-subtitle">
+        Đề tài: Phân đoạn và phát hiện tổn thương trên ảnh y tế &middot; Trọng tâm: Phân đoạn và phát hiện khối u não trên ảnh cộng hưởng từ MRI (TCGA-LGG).
+      </p>
+      <div class="pacs-status-bar">
+        <div class="pacs-pill">Kho dữ liệu: <b>3,929 lát cắt chuẩn</b></div>
+        <div class="pacs-pill">Quy mô: <b>110 bệnh nhân</b></div>
+        <div class="pacs-pill">Bộ giải thuật: <b>Watershed EDT vs Region Growing</b></div>
+        <div class="pacs-pill">Độ đặc hiệu não lành: <b>99.04%</b></div>
+        <div class="pacs-pill">Độ trễ xử lý: <b>~6.13 ms / lát</b></div>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+# =============================================================================
+# 5. THANH TRẠNG THÁI CA BỆNH ĐANG CHẨN ĐOÁN (ACTIVE CLINICAL STATUS BAR)
+# =============================================================================
+
+mode_short_title = source_mode.split("(")[0].strip()
+st.markdown(
+    f"""
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 1.2rem; padding: 0.75rem 1.25rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;">Chức Năng:</span>
+        <span style="background: rgba(14, 165, 233, 0.12); color: #0284c7; border: 1px solid rgba(14, 165, 233, 0.28); border-radius: 6px; padding: 2px 8px; font-size: 0.8rem; font-weight: 700;">
+          {mode_short_title}
+        </span>
+        <span style="font-size: 0.85rem; color: var(--text-secondary);">
+          Mã lát cắt: <code style="color: var(--text-primary); font-weight: 700;">{sample_id if sample_id else "Chưa chọn"}</code>
+        </span>
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+        Trạm PACS Workstation &bull; Sẵn sàng chẩn đoán
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 # =============================================================================
 # 6. THỰC THI PIPELINE VÀ TÍNH TOÁN KẾT QUẢ
