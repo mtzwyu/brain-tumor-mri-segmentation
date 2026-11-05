@@ -115,3 +115,35 @@ def test_pipeline_custom_parameters(sample_mri_image):
     diag_res, intermediates = pipeline.process(sample_mri_image)
     assert isinstance(diag_res, DiagnosticResult)
     assert intermediates["tumor_mask"].shape == sample_mri_image.shape[:2]
+
+
+def test_pipeline_healthy_brain_slice():
+    """Kiem tra bo loc sang loc mo lanh (Clinical Anomaly Gate) loai bo u gia tren nao lanh."""
+    import cv2
+    import os
+
+    healthy_path = "data/full/images/TCGA_DU_5851_19950428_2.png"
+    if os.path.exists(healthy_path):
+        healthy_img = cv2.imread(healthy_path, cv2.IMREAD_GRAYSCALE)
+    else:
+        # Fallback tao mo nao dong nhat khong u
+        healthy_img = np.zeros((256, 256), dtype=np.uint8)
+        cv2.circle(healthy_img, (128, 128), 70, 80, -1)
+
+    empty_gt = np.zeros_like(healthy_img)
+
+    for method in ["watershed", "region_growing"]:
+        # Khi bat gate (mac dinh): Phai xac dinh dung mo lanh, 0 px u
+        pipe_gated = BrainTumorPipeline(method=method, params={"enable_presence_gate": True})
+        diag, inter = pipe_gated.process(healthy_img, gt_mask=empty_gt)
+
+        assert diag.tumor_detected is False
+        assert diag.tumor_area_px == 0
+        assert diag.tumor_ratio_percent == 0.0
+        assert np.count_nonzero(inter["tumor_mask"]) == 0
+        assert diag.dice_score == 1.0  # Khop am tinh hoan hao
+
+        # Khi tat gate: Ho tro tuong thich nguoc khao sat phan doan tho
+        pipe_ungated = BrainTumorPipeline(method=method, params={"enable_presence_gate": False})
+        diag_raw, _ = pipe_ungated.process(healthy_img)
+        assert isinstance(diag_raw, DiagnosticResult)

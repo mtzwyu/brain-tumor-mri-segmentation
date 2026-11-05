@@ -611,6 +611,13 @@ with st.sidebar:
             )
             pipeline_params = {"intensity_tolerance": tolerance}
 
+        enable_presence_gate = st.checkbox(
+            "Sàng lọc ca não lành (Clinical Anomaly Gate)",
+            value=True,
+            help="Tự động kiểm định Z-Score và độ tương phản bất thường để loại trừ báo nhầm trên lát cắt não lành.",
+        )
+        pipeline_params["enable_presence_gate"] = enable_presence_gate
+
         st.caption("Lưu ý: Mặc định tối ưu: Watershed ratio = 0.4, Region Growing tolerance = 15.")
 
     st.markdown("---")
@@ -644,7 +651,7 @@ else:
     # 2. Chạy thuật toán phụ phục vụ chế độ so sánh song song
     t_start_sec = time.perf_counter()
     secondary_method_key = "region_growing" if is_ws else "watershed"
-    sec_params = {"intensity_tolerance": 15} if secondary_method_key == "region_growing" else {"dist_thresh_ratio": 0.4}
+    sec_params = {"intensity_tolerance": 15, "enable_presence_gate": enable_presence_gate} if secondary_method_key == "region_growing" else {"dist_thresh_ratio": 0.4, "enable_presence_gate": enable_presence_gate}
     pipeline_sec = BrainTumorPipeline(method=secondary_method_key, params=sec_params)
     diag_sec, inter_sec = pipeline_sec.process(input_img, gt_mask=input_gt_mask)
     latency_sec = (time.perf_counter() - t_start_sec) * 1000.0
@@ -687,9 +694,14 @@ else:
 
     # Điểm Dice và IoU
     if has_gt and gt_tumor_px == 0:
-        dice_val = "0.0000 (Ca âm tính)"
-        iou_val = "0.0000 (Ca âm tính)"
-        dice_color = "#64748b"
+        if not has_pred_tumor:
+            dice_val = "1.0000 (Khớp âm tính)"
+            iou_val = "1.0000 (Khớp âm tính)"
+            dice_color = "#059669"
+        else:
+            dice_val = "0.0000 (Báo nhầm u)"
+            iou_val = "0.0000 (Báo nhầm u)"
+            dice_color = "#dc2626"
     elif diag_primary.dice_score is not None:
         dice_val = f"{diag_primary.dice_score:.4f}"
         iou_val = f"{diag_primary.iou_score:.4f}"
@@ -701,7 +713,7 @@ else:
 
     # Nhận xét hình thái học
     if not has_pred_tumor or diag_primary.tumor_area_px == 0:
-        circ_note = "Không ghi nhận bờ tổn thương"
+        circ_note = "Không ghi nhận bờ tổn thương (Não lành)"
     elif diag_primary.circularity >= 0.6:
         circ_note = "Bờ u tròn đều (Lành tính)"
     elif diag_primary.circularity >= 0.4:
