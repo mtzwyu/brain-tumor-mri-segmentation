@@ -176,12 +176,18 @@ st.markdown(
         background-color: var(--bg-sidebar) !important;
         border-right: 1px solid var(--border-color) !important;
       }
-      [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p,
+      [data-testid="stSidebar"] h1,
+      [data-testid="stSidebar"] h2,
+      [data-testid="stSidebar"] h3,
+      [data-testid="stSidebar"] h4,
+      [data-testid="stSidebar"] p,
       [data-testid="stSidebar"] span,
-      [data-testid="stSidebar"] label {
+      [data-testid="stSidebar"] label,
+      [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
         color: var(--text-primary) !important;
       }
       [data-testid="stSidebar"] .stCaption,
+      [data-testid="stSidebar"] [data-testid="stCaption"] *,
       [data-testid="stSidebar"] small,
       .stCaption,
       small {
@@ -337,21 +343,48 @@ st.markdown(
         color: var(--text-primary) !important;
       }
 
-      /* Expander */
+      /* Expander (Tinh chỉnh tham số nâng cao) */
       [data-testid="stExpander"] {
         background-color: var(--bg-card) !important;
         border: 1px solid var(--border-color) !important;
         border-radius: 10px !important;
-      }
-      [data-testid="stExpander"] summary,
-      [data-testid="stExpander"] summary p,
-      [data-testid="stExpander"] summary span,
-      [data-testid="stExpander"] summary * {
-        color: var(--text-primary) !important;
+        margin-bottom: 0.8rem !important;
       }
       [data-testid="stExpander"] details {
         background-color: var(--bg-card) !important;
         border-color: var(--border-color) !important;
+        border-radius: 10px !important;
+      }
+      [data-testid="stExpander"] summary {
+        background-color: var(--bg-card) !important;
+        color: var(--text-primary) !important;
+        border-radius: 10px !important;
+        padding: 0.6rem 0.8rem !important;
+      }
+      [data-testid="stExpander"] summary:hover {
+        background-color: var(--bg-card-hover) !important;
+      }
+      [data-testid="stExpander"] summary *,
+      [data-testid="stExpanderStepChevron"] svg,
+      [data-testid="stExpanderIcon"] svg {
+        color: var(--text-primary) !important;
+        fill: var(--text-primary) !important;
+      }
+      /* Toàn bộ nội dung khi mở Expander (stExpanderDetails) */
+      [data-testid="stExpanderDetails"] {
+        background-color: var(--bg-card) !important;
+        color: var(--text-primary) !important;
+        border-top: 1px solid var(--border-color) !important;
+        padding: 0.8rem !important;
+      }
+      [data-testid="stExpanderDetails"] * {
+        color: var(--text-primary) !important;
+      }
+      [data-testid="stExpanderDetails"] .stCaption,
+      [data-testid="stExpanderDetails"] small,
+      [data-testid="stExpanderDetails"] p.caption,
+      [data-testid="stExpanderDetails"] [data-testid="stCaption"] * {
+        color: var(--text-secondary) !important;
       }
 
       /* Thanh chọn nhanh 4 ca mẫu (Preset Buttons) - Chuẩn testid Streamlit 1.30+ & fallback */
@@ -394,26 +427,83 @@ st.markdown(
         color: #ffffff !important;
       }
 
-      /* Tooltips & Popovers */
+      /* Tooltip Icons & Popovers (? help) */
+      [data-testid="stTooltipHoverTarget"],
+      [data-testid="stTooltipHoverTarget"] * {
+        color: var(--text-secondary) !important;
+        fill: var(--text-secondary) !important;
+      }
+      [data-testid="stTooltipHoverTarget"]:hover,
+      [data-testid="stTooltipHoverTarget"]:hover * {
+        color: #38bdf8 !important;
+        fill: #38bdf8 !important;
+      }
       div[data-testid="stTooltipContent"],
       [data-baseweb="tooltip"] {
         background-color: var(--bg-card) !important;
         color: var(--text-primary) !important;
         border: 1px solid var(--border-color) !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
       }
       div[data-testid="stTooltipContent"] *,
       [data-baseweb="tooltip"] * {
         color: var(--text-primary) !important;
       }
 
-      /* Sliders Full Children Styling */
+      /* Sliders Chi Tiết (Thanh trượt EDT ratio / tolerance) */
+      [data-testid="stSlider"] {
+        color: var(--text-primary) !important;
+      }
+      [data-testid="stSlider"] * {
+        color: var(--text-primary) !important;
+      }
       [data-testid="stSlider"] label,
       [data-testid="stSlider"] [data-testid="stWidgetLabel"] *,
-      [data-testid="stSliderTickBar"] *,
-      [data-testid="stSlider"] div,
-      [data-testid="stSlider"] p,
-      [data-testid="stSlider"] span {
+      [data-testid="stSliderThumbValue"],
+      [data-testid="stSliderThumbValue"] *,
+      [data-testid="stSlider"] div[data-testid="stSliderThumbValue"] div {
         color: var(--text-primary) !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
+        font-weight: 600 !important;
+      }
+      [data-testid="stSliderTickBar"],
+      [data-testid="stSliderTickBar"] *,
+      [data-testid="stSlider"] [data-testid="stSliderTickBar"] div,
+      [data-testid="stSlider"] [data-testid="stSliderTickBar"] span {
+        color: var(--text-secondary) !important;
+        -webkit-text-fill-color: var(--text-secondary) !important;
+      }
+      [data-testid="stSlider"] div[role="slider"] {
+        background-color: #0284c7 !important;
+        border: 2px solid #ffffff !important;
+      }
+      [data-testid="stSlider"] div[data-baseweb="slider"] > div {
+        background-color: var(--border-subtle) !important;
+      }
+      [data-testid="stSlider"] div[data-baseweb="slider"] > div > div {
+        background-color: #0284c7 !important;
+      }
+
+      /* Checkbox Chi Tiết (Sàng lọc ca não lành) */
+      [data-testid="stCheckbox"] {
+        color: var(--text-primary) !important;
+      }
+      [data-testid="stCheckbox"] * {
+        color: var(--text-primary) !important;
+      }
+      [data-testid="stCheckbox"] label,
+      [data-testid="stCheckbox"] label p,
+      [data-testid="stCheckbox"] label span,
+      [data-testid="stCheckbox"] [data-testid="stWidgetLabel"] * {
+        color: var(--text-primary) !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
+      }
+      [data-testid="stCheckbox"] span[role="checkbox"] {
+        border-color: var(--border-subtle) !important;
+      }
+      [data-testid="stCheckbox"] span[role="checkbox"][aria-checked="true"] {
+        background-color: #0284c7 !important;
+        border-color: #0284c7 !important;
       }
 
       /* Top Header Hub */
