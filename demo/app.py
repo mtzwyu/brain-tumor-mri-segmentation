@@ -85,8 +85,8 @@ else:
         --border-color: #1f293d;
         --border-subtle: #334155;
         --text-primary: #f8fafc;
-        --text-secondary: #94a3b8;
-        --text-muted: #64748b;
+        --text-secondary: #cbd5e1;
+        --text-muted: #94a3b8;
         --accent-blue: #0284c7;
         --accent-cyan: #06b6d4;
         --accent-green: #10b981;
@@ -192,40 +192,149 @@ st.markdown(
       [data-testid="stRadio"] label,
       [data-testid="stRadio"] label p,
       [data-testid="stRadio"] div[role="radiogroup"] span,
+      [data-testid="stRadio"] div[role="radiogroup"] p,
+      [data-testid="stRadio"] div[role="radiogroup"] label,
+      [data-testid="stRadio"] div[role="radiogroup"] *,
       .stCheckbox label,
       .stCheckbox label p,
       .stCheckbox label span,
+      .stCheckbox label *,
       .stSlider label,
-      .stSlider label p {
+      .stSlider label p,
+      .stSlider label span,
+      .stSlider [data-testid="stWidgetLabel"] * {
         color: var(--text-primary) !important;
       }
 
-      /* Inputs & Dropdowns */
+      /* Text Input (Tìm kiếm mã bệnh nhân) */
+      [data-testid="stTextInput"] label,
+      [data-testid="stTextInput"] label p,
+      [data-testid="stTextInput"] label * {
+        color: var(--text-primary) !important;
+      }
       [data-testid="stTextInput"] input {
         background-color: var(--input-bg) !important;
         color: var(--input-text) !important;
+        -webkit-text-fill-color: var(--input-text) !important;
         border: 1px solid var(--input-border) !important;
         border-radius: 8px !important;
       }
-      [data-testid="stSelectbox"] > div > div {
+      [data-testid="stTextInput"] input::placeholder {
+        color: var(--text-muted) !important;
+        opacity: 0.85 !important;
+      }
+
+      /* Selectbox (Trình chọn ảnh MRI lát cắt & giải thuật) */
+      [data-testid="stSelectbox"] label,
+      [data-testid="stSelectbox"] label p,
+      [data-testid="stSelectbox"] label * {
+        color: var(--text-primary) !important;
+      }
+      [data-testid="stSelectbox"] > div > div,
+      [data-testid="stSelectbox"] [data-baseweb="select"],
+      [data-testid="stSelectbox"] [data-baseweb="select"] > div {
         background-color: var(--input-bg) !important;
         color: var(--input-text) !important;
         border: 1px solid var(--input-border) !important;
         border-radius: 8px !important;
       }
-      [data-testid="stSelectbox"] div[data-testid="stMarkdownContainer"] p {
+      /* Chữ hiển thị lát ảnh được chọn (hỗ trợ cả thẻ input, span, div bên trong Streamlit Selectbox) */
+      [data-testid="stSelectbox"] input,
+      [data-testid="stSelectbox"] [data-baseweb="select"] span,
+      [data-testid="stSelectbox"] [data-baseweb="select"] div,
+      [data-testid="stSelectbox"] [data-baseweb="select"] p,
+      [data-testid="stSelectbox"] [data-baseweb="select"] * {
         color: var(--input-text) !important;
+        -webkit-text-fill-color: var(--input-text) !important;
       }
-      [data-baseweb="popover"], [data-baseweb="menu"], [role="listbox"] {
+      [data-testid="stSelectbox"] svg {
+        color: var(--text-primary) !important;
+        fill: var(--text-primary) !important;
+      }
+
+      /* Danh sách chọn ảnh dạng menu xổ xuống (Virtual Dropdown & Popover) */
+      [data-testid="stSelectboxVirtualDropdown"],
+      [data-testid="stSelectboxVirtualDropdown"] > div,
+      [data-testid="stSelectboxVirtualDropdown"] ul,
+      [data-baseweb="popover"],
+      [data-baseweb="menu"],
+      [role="listbox"] {
         background-color: var(--bg-card) !important;
         color: var(--text-primary) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 8px !important;
       }
-      [data-baseweb="menu"] li {
+      [data-testid="stSelectboxVirtualDropdown"] *,
+      [data-baseweb="popover"] *,
+      [data-baseweb="menu"] *,
+      [role="listbox"] *,
+      [role="option"] {
         background-color: var(--bg-card) !important;
         color: var(--text-primary) !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
       }
-      [data-baseweb="menu"] li:hover {
+      [data-testid="stSelectboxVirtualDropdown"] li:hover,
+      [data-testid="stSelectboxVirtualDropdown"] [role="option"]:hover,
+      [data-testid="stSelectboxVirtualDropdown"] [aria-selected="true"],
+      [data-baseweb="menu"] li:hover,
+      [role="option"]:hover,
+      [role="option"][aria-selected="true"] {
         background-color: var(--bg-card-hover) !important;
+        color: #38bdf8 !important;
+        -webkit-text-fill-color: #38bdf8 !important;
+      }
+      [data-testid="stSelectboxVirtualDropdown"] li:hover *,
+      [data-testid="stSelectboxVirtualDropdown"] [role="option"]:hover *,
+      [data-testid="stSelectboxVirtualDropdown"] [aria-selected="true"] *,
+      [data-baseweb="menu"] li:hover *,
+      [role="option"]:hover *,
+      [role="option"][aria-selected="true"] * {
+        color: #38bdf8 !important;
+        -webkit-text-fill-color: #38bdf8 !important;
+      }
+
+      /* Tải ảnh từ máy tính (File Uploader) */
+      [data-testid="stFileUploader"] label,
+      [data-testid="stFileUploader"] label * {
+        color: var(--text-primary) !important;
+      }
+      [data-testid="stFileUploaderDropzone"],
+      [data-testid="stFileUploader"] section {
+        background-color: var(--input-bg) !important;
+        border: 2px dashed var(--input-border) !important;
+        border-radius: 10px !important;
+        color: var(--text-primary) !important;
+      }
+      [data-testid="stFileUploaderDropzoneInstructions"],
+      [data-testid="stFileUploaderDropzoneInstructions"] *,
+      [data-testid="stFileUploader"] span,
+      [data-testid="stFileUploader"] p,
+      [data-testid="stFileUploader"] div {
+        color: var(--text-primary) !important;
+      }
+      [data-testid="stFileUploader"] small,
+      [data-testid="stFileUploaderDropzoneInstructions"] small {
+        color: var(--text-muted) !important;
+      }
+      [data-testid="stFileUploader"] button {
+        background-color: var(--bg-card) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 8px !important;
+      }
+      [data-testid="stFileUploader"] button * {
+        color: var(--text-primary) !important;
+      }
+      [data-testid="stFileUploader"] button:hover {
+        border-color: #0284c7 !important;
+        color: #38bdf8 !important;
+      }
+      [data-testid="stFileUploader"] button:hover * {
+        color: #38bdf8 !important;
+      }
+      [data-testid="stFileUploaderFile"],
+      [data-testid="stFileUploaderFile"] * {
+        color: var(--text-primary) !important;
       }
 
       /* Expander */
@@ -236,7 +345,8 @@ st.markdown(
       }
       [data-testid="stExpander"] summary,
       [data-testid="stExpander"] summary p,
-      [data-testid="stExpander"] summary span {
+      [data-testid="stExpander"] summary span,
+      [data-testid="stExpander"] summary * {
         color: var(--text-primary) !important;
       }
       [data-testid="stExpander"] details {
@@ -244,8 +354,10 @@ st.markdown(
         border-color: var(--border-color) !important;
       }
 
-      /* Secondary Buttons (Preset selection) */
-      div[data-testid="stButton"] button[kind="secondary"] {
+      /* Thanh chọn nhanh 4 ca mẫu (Preset Buttons) - Chuẩn testid Streamlit 1.30+ & fallback */
+      button[data-testid="stBaseButton-secondary"],
+      div[data-testid="stButton"] button[kind="secondary"],
+      div[data-testid="stButton"] button {
         background-color: var(--bg-card) !important;
         color: var(--text-primary) !important;
         border: 1px solid var(--border-color) !important;
@@ -253,26 +365,55 @@ st.markdown(
         font-weight: 600 !important;
         transition: all 0.2s ease !important;
       }
-      div[data-testid="stButton"] button[kind="secondary"] p,
-      div[data-testid="stButton"] button[kind="secondary"] span {
+      button[data-testid="stBaseButton-secondary"] *,
+      div[data-testid="stButton"] button * {
         color: var(--text-primary) !important;
       }
-      div[data-testid="stButton"] button[kind="secondary"]:hover {
+      button[data-testid="stBaseButton-secondary"]:hover,
+      div[data-testid="stButton"] button:hover {
         border-color: #0284c7 !important;
-        color: #0284c7 !important;
+        background-color: var(--bg-card-hover) !important;
+        color: #38bdf8 !important;
       }
-      div[data-testid="stButton"] button[kind="secondary"]:hover p {
-        color: #0284c7 !important;
+      button[data-testid="stBaseButton-secondary"]:hover *,
+      div[data-testid="stButton"] button:hover * {
+        color: #38bdf8 !important;
       }
 
-      /* Primary Button (Active Preset) */
+      /* Ca đang kích hoạt (Active Preset - Primary Button) */
+      button[data-testid="stBaseButton-primary"],
+      div[data-testid="stButton"] button[data-testid="stBaseButton-primary"],
       div[data-testid="stButton"] button[kind="primary"] {
         background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
         color: #ffffff !important;
-        border: none !important;
+        border: 1px solid #38bdf8 !important;
+        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35) !important;
       }
-      div[data-testid="stButton"] button[kind="primary"] p {
+      button[data-testid="stBaseButton-primary"] *,
+      div[data-testid="stButton"] button[data-testid="stBaseButton-primary"] * {
         color: #ffffff !important;
+      }
+
+      /* Tooltips & Popovers */
+      div[data-testid="stTooltipContent"],
+      [data-baseweb="tooltip"] {
+        background-color: var(--bg-card) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border-color) !important;
+      }
+      div[data-testid="stTooltipContent"] *,
+      [data-baseweb="tooltip"] * {
+        color: var(--text-primary) !important;
+      }
+
+      /* Sliders Full Children Styling */
+      [data-testid="stSlider"] label,
+      [data-testid="stSlider"] [data-testid="stWidgetLabel"] *,
+      [data-testid="stSliderTickBar"] *,
+      [data-testid="stSlider"] div,
+      [data-testid="stSlider"] p,
+      [data-testid="stSlider"] span {
+        color: var(--text-primary) !important;
       }
 
       /* Top Header Hub */
@@ -342,7 +483,7 @@ st.markdown(
       .preset-bar-title {
         font-size: 0.82rem;
         font-weight: 700;
-        color: var(--text-muted) !important;
+        color: var(--text-secondary) !important;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         margin-bottom: 0.5rem;
