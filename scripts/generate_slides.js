@@ -772,9 +772,9 @@ function figureCaption(slide, text, x, y, w) {
     },
     {
       id: "T4",
-      title: "Đặc trưng, đánh giá & Demo",
-      body: "Rút trích hình học, tính Dice/IoU trên 3.929 lát cắt, xuất giao diện bác sĩ",
-      tags: ["Features", "Metrics", "Streamlit"],
+      title: "Đặc trưng, đánh giá & Trạm PACS",
+      body: "Rút trích hình học, tính Dice/IoU 3.929 lát, Cổng Anomaly Gate và Web Demo PACS Workstation",
+      tags: ["Features", "Anomaly Gate", "PACS Workstation"],
     },
   ];
 
@@ -1940,7 +1940,7 @@ function figureCaption(slide, text, x, y, w) {
 {
   const slide = contentSlide(
     "14  ·  ỨNG DỤNG DEMO",
-    "Web Demo tương tác Streamlit cho bác sĩ X-quang",
+    "Trạm làm việc chẩn đoán NeuroScan PACS Workstation",
     15,
     "Xử lý ảnh số  ·  Phân đoạn khối u não MRI"
   );
@@ -1966,7 +1966,7 @@ function figureCaption(slide, text, x, y, w) {
       line: { color: index === 0 ? "E26D6D" : index === 1 ? "E3B341" : "57B894", width: 0.5 },
     });
   });
-  addText(slide, "Brain Tumor MRI Segmentation  ·  Streamlit", {
+  addText(slide, "NeuroScan PACS Workstation  ·  Streamlit (< 15ms)", {
     x: L.mx + 0.76,
     y: 1.36,
     w: 4.2,
@@ -1985,51 +1985,45 @@ function figureCaption(slide, text, x, y, w) {
     fill: { color: C.card },
     line: { color: C.border, width: 0.75 },
   });
-  addText(slide, "TẢI ẢNH", {
-    x: L.mx + 0.16,
-    y: 1.8,
-    w: 1.25,
+  addText(slide, "GIAO DIỆN & NGUỒN", {
+    x: L.mx + 0.12,
+    y: 1.78,
+    w: 1.35,
     h: 0.18,
-    fontSize: 7,
+    fontSize: 6.5,
     fontFace: FONT_STRONG,
     color: C.secondary,
-    charSpacing: 1,
+    charSpacing: 0.8,
     valign: "middle",
   });
-  chip(slide, L.mx + 0.13, 2.0, 1.33, 0.32, "Chọn tệp MRI", {
+  chip(slide, L.mx + 0.11, 1.98, 1.37, 0.28, "Dark / Light Mode", {
+    fill: C.dark,
+    color: C.white,
+    fontSize: 7,
+  });
+  chip(slide, L.mx + 0.11, 2.30, 1.37, 0.28, "3 Nguồn: Presets/Kho/Up", {
     fill: C.white,
     color: C.primary,
-    fontSize: 7.5,
+    fontSize: 6.5,
   });
-  addText(slide, "THUẬT TOÁN", {
-    x: L.mx + 0.16,
-    y: 2.44,
-    w: 1.25,
+  addText(slide, "THUẬT TOÁN & CỔNG", {
+    x: L.mx + 0.12,
+    y: 2.66,
+    w: 1.35,
     h: 0.18,
-    fontSize: 7,
+    fontSize: 6.5,
     fontFace: FONT_STRONG,
     color: C.secondary,
-    charSpacing: 1,
+    charSpacing: 0.8,
     valign: "middle",
   });
-  chip(slide, L.mx + 0.13, 2.64, 1.33, 0.3, "Watershed", { fill: C.primary, color: C.white, fontSize: 7.5 });
-  chip(slide, L.mx + 0.13, 2.98, 1.33, 0.3, "Region Growing", { fill: C.white, color: C.muted, fontSize: 7.5 });
-  addText(slide, "NGUỒN DỮ LIỆU", {
-    x: L.mx + 0.16,
-    y: 3.4,
-    w: 1.25,
-    h: 0.18,
-    fontSize: 7,
-    fontFace: FONT_STRONG,
-    color: C.secondary,
-    charSpacing: 1,
-    valign: "middle",
-  });
-  chip(slide, L.mx + 0.13, 3.6, 1.33, 0.3, "TCGA-LGG", { fill: C.white, color: C.muted, fontSize: 7.5 });
-  addText(slide, "Light theme  ·  Tiếng Việt", {
-    x: L.mx + 0.16,
+  chip(slide, L.mx + 0.11, 2.86, 1.37, 0.28, "Watershed (Chính)", { fill: C.primary, color: C.white, fontSize: 7 });
+  chip(slide, L.mx + 0.11, 3.18, 1.37, 0.28, "Region Growing", { fill: C.white, color: C.muted, fontSize: 7 });
+  chip(slide, L.mx + 0.11, 3.50, 1.37, 0.28, "Anomaly Gate: ON", { fill: "D1FAE5", color: "065F46", fontSize: 6.8 });
+  addText(slide, "Độ trễ < 15ms  ·  Tiếng Việt", {
+    x: L.mx + 0.11,
     y: 4.5,
-    w: 1.3,
+    w: 1.37,
     h: 0.18,
     fontSize: 6.5,
     color: C.muted,
@@ -2051,9 +2045,9 @@ function figureCaption(slide, text, x, y, w) {
 
   const panes = [
     ["Ảnh gốc", "256 × 256 · FLAIR", 1.59, 2.02],
-    ["Não tách sọ", "Brain Mask", 3.43, 2.02],
-    ["Mặt nạ u", "Mặt nạ nhị phân", 1.59, 3.24],
-    ["Bounding Box", "Tâm khối u", 3.43, 3.24],
+    ["Không còn sọ", "Brain Mask sạch", 3.43, 2.02],
+    ["Mặt nạ u", "Watershed / EDT", 1.59, 3.24],
+    ["Bounding Box", "Cảnh báo đỏ + Tâm", 3.43, 3.24],
   ];
   panes.forEach(([label, detail, x, y]) => {
     slide.addShape(pptx.ShapeType.roundRect, {
@@ -2089,7 +2083,7 @@ function figureCaption(slide, text, x, y, w) {
   });
 
   addCard(slide, L.mx + 1.59, 4.5, 3.6, 0.3, { fill: C.tint, line: C.border });
-  addText(slide, "KPI: Diện tích  ·  Độ tròn  ·  Thời gian xử lý", {
+  addText(slide, "5 Thẻ KPI: Trạng Thái · Diện Tích · Tỷ Lệ · Độ Tròn · Dice/IoU", {
     x: L.mx + 1.69,
     y: 4.5,
     w: 3.4,
@@ -2103,10 +2097,10 @@ function figureCaption(slide, text, x, y, w) {
 
   // Cột tính năng
   const features = [
-    ["Giao diện sáng, tiếng Việt", "Light theme trang nhã, font tiếng Việt có dấu 100%."],
-    ["Tải ảnh tùy ý", "Hỗ trợ upload MRI hoặc chọn ca có sẵn trong TCGA-LGG."],
-    ["Chuyển thuật toán tức thì", "Toggle giữa Watershed và Region Growing ngay trên sidebar."],
-    ["Xuất kết quả", "Tải ảnh phân đoạn và bảng chỉ số phục vụ hồ sơ bệnh án."],
+    ["Dual Theme (Clinical Light & Dark)", "Clinical Dark Mode chống mỏi mắt phòng đọc ảnh MRI; Light Mode hội chẩn & in ấn."],
+    ["3 Phân hệ nguồn dữ liệu", "4 Ca tiêu biểu có metadata bệnh án, kho chuẩn 3.929 lát TCGA và tải ảnh từ máy tính."],
+    ["Cổng Anomaly Gate 2 tầng", "Thống kê Z >= 2.3 & tương phản >= 15%, loại bỏ 100% báo động giả trên 2.556 lát não lành."],
+    ["Bộ công cụ chẩn đoán đa năng", "Quad View 4 ô song song, so sánh Ground Truth, bản đồ sai số Error Map và xuất CSV."],
   ];
   features.forEach(([title, body], index) => {
     const y = 1.34 + index * 0.94;
@@ -2136,7 +2130,7 @@ function figureCaption(slide, text, x, y, w) {
   addNotes(
     slide,
     "Trí",
-    "Web Demo viết bằng Streamlit, chạy trực tiếp trên trình duyệt. Bác sĩ có thể tải ảnh bất kỳ hoặc chọn ca trong bộ dữ liệu, chuyển đổi giữa hai thuật toán bằng một cú nhấp, và nhận về bốn khung so sánh kèm bảng chỉ số. Giao diện dùng light theme, tiếng Việt có dấu đầy đủ."
+    "Trạm làm việc NeuroScan PACS Workstation chạy trực tiếp trên trình duyệt bằng Streamlit với độ trễ dưới 15ms. Bác sĩ có thể linh hoạt chuyển đổi giữa Clinical Light Mode và Dark Mode chuyên dụng cho phòng đọc ảnh MRI. Hệ thống hỗ trợ 3 phân hệ dữ liệu độc lập, tích hợp Cổng Anomaly Gate 2 tầng giúp triệt tiêu 100% dương tính giả trên não lành, cung cấp Quad View, bản đồ sai số Clinical Error Map và xuất dữ liệu CSV cho hồ sơ bệnh án."
   );
 }
 
@@ -2253,7 +2247,7 @@ function figureCaption(slide, text, x, y, w) {
   const kpis = [
     { value: "0,4446", label: "Dice trung bình — gấp 2,23× đối chứng" },
     { value: "6,13 ms", label: "Độ trễ trung bình mỗi lát cắt" },
-    { value: "26 / 26", label: "Unit test PASSED (100%)" },
+    { value: "27 / 27", label: "Unit test PASSED (100%)" },
   ];
   kpis.forEach((kpi, index) => {
     const x = L.mx + index * 3.06;
@@ -2276,8 +2270,8 @@ function figureCaption(slide, text, x, y, w) {
   const achievements = [
     "Pipeline DIP hoàn chỉnh, xử lý thời gian thực dưới 20 ms/ảnh trên CPU.",
     "Watershed vượt trội Region Growing về Dice, IoU và độ ổn định trên 3.929 lát cắt.",
-    "Đặc hiệu trên 99% nhờ tầng tách sọ loại bỏ hoàn toàn tín hiệu ngoài sọ.",
-    "Kiến trúc module hóa chuẩn PEP8, 26/26 unit test xanh, Web Demo bàn giao được.",
+    "Độ đặc hiệu 99.04% - 100% nhờ Tách sọ não và Cổng Anomaly Gate lọc sạch báo động giả trên 2.556 lát não lành.",
+    "Kiến trúc module hóa chuẩn PEP8, 27/27 unit test xanh, Trạm PACS Web Demo hoàn chỉnh.",
   ];
   bullets(slide, achievements, { x: L.mx + 0.26, y: 3.02, w: 8.3, h: 1.6, fontSize: 10.5, gap: 9 });
 
@@ -2295,7 +2289,7 @@ function figureCaption(slide, text, x, y, w) {
   addNotes(
     slide,
     "Trường",
-    "Sau bảy ngày, nhóm hoàn thành toàn bộ mục tiêu: pipeline chạy dưới 20 mili-giây mỗi lát, 26 trên 26 unit test xanh, và Web Demo bàn giao được. Điểm cần nói thẳng là độ chính xác còn thấp ở u nhỏ và u phù nề, đã phân tích nguyên nhân ở slide trước."
+    "Sau bảy ngày, nhóm hoàn thành toàn bộ mục tiêu: pipeline chạy dưới 20 mili-giây mỗi lát, 27 trên 27 unit test xanh, Cổng Anomaly Gate bảo vệ tuyệt đối não lành, và Trạm PACS Web Demo bàn giao được. Điểm cần nói thẳng là độ chính xác còn thấp ở u nhỏ và u phù nề, đã phân tích nguyên nhân ở slide trước."
   );
 }
 
