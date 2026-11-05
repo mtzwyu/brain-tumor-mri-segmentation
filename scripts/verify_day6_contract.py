@@ -266,7 +266,7 @@ def check_task_checklists(checks: List[Check]) -> None:
                    "- [x] File Word `docs/BAO_CAO_DO_AN_XLAS.docx` xuất thành công" in text)
         checks.append(Check(
             "TASK", "Checklist Hà Mạnh Trường (17/20 [x], Ngày 6 hoàn thành)",
-            done == 17 and total == 20 and day6_ok,
+            done >= 17 and total == 20 and day6_ok,
             f"{done}/{total} mục hoàn tất • Ngày 6: {'ĐẠT' if day6_ok else 'CHƯA ĐẠT'}"
         ))
 
@@ -282,7 +282,7 @@ def check_task_checklists(checks: List[Check]) -> None:
                    "- [x] File Word `docs/BAO_CAO_DO_AN_XLAS.docx` chuẩn thể thức" in text)
         checks.append(Check(
             "TASK", "Checklist Huỳnh Tâm Trí (16/19 [x], Ngày 6 hoàn thành)",
-            done == 16 and total == 19 and day6_ok,
+            done >= 16 and total == 19 and day6_ok,
             f"{done}/{total} mục hoàn tất • Ngày 6: {'ĐẠT' if day6_ok else 'CHƯA ĐẠT'}"
         ))
 

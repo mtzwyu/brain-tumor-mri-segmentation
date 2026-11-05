@@ -9,6 +9,8 @@ Tuân thủ nghiêm ngặt quy chuẩn định dạng trích xuất từ docs/Nh
 - Heading 3: 13.0pt, Chữ thường, IN NGHIÊNG, Left, space before 6pt, after 2pt.
 - Bảng: Font 10.5-11.0pt, Header in đậm, Caption TRÊN bảng 11.5pt in nghiêng căn giữa.
 - Hình: Căn giữa, Caption DƯỚI hình 11.5pt in nghiêng căn giữa.
+- Footer: Căn giữa (Center), Font Times New Roman 11.0pt, không đánh số ở trang bìa.
+- Mục lục: Hỗ trợ trường động Native Word Field kết hợp Dot Leader Tabs căn lề phải 16.0cm.
 """
 
 from __future__ import annotations
@@ -62,16 +64,71 @@ def set_table_borders(table, color="B0B0B0", sz="4", val="single"):
     tblPr.append(borders)
 
 
+
+_MML2OMML_XSLT = None
+
+
+def get_mml2omml_transform():
+    """Tải và khởi tạo bộ chuyển đổi MathML sang OMML (XSLT) từ Microsoft Office."""
+    global _MML2OMML_XSLT
+    if _MML2OMML_XSLT is not None:
+        return _MML2OMML_XSLT
+
+    import lxml.etree as ET
+    possible_paths = [
+        r"C:\Program Files\Microsoft Office\root\Office16\MML2OMML.XSL",
+        r"C:\Program Files (x86)\Microsoft Office\root\Office16\MML2OMML.XSL",
+        r"C:\Program Files\Microsoft Office\Office16\MML2OMML.XSL",
+        r"C:\Program Files (x86)\Microsoft Office\Office16\MML2OMML.XSL",
+        r"C:\Program Files\Microsoft Office\Office15\MML2OMML.XSL",
+        r"C:\Program Files (x86)\Microsoft Office\Office15\MML2OMML.XSL",
+    ]
+    for p in possible_paths:
+        if os.path.isfile(p):
+            try:
+                xslt_doc = ET.parse(p)
+                _MML2OMML_XSLT = ET.XSLT(xslt_doc)
+                return _MML2OMML_XSLT
+            except Exception:
+                pass
+    return None
+
+
+def latex_to_omml_element(latex_str: str):
+    """Chuyển đổi chuỗi công thức LaTeX sang đối tượng XML OMML (<m:oMath>)."""
+    transform = get_mml2omml_transform()
+    if transform is None:
+        return None
+
+    try:
+        import latex2mathml.converter
+        import lxml.etree as ET
+        mathml = latex2mathml.converter.convert(latex_str)
+        dom = ET.fromstring(mathml)
+        omml = transform(dom)
+        omml_bytes = ET.tostring(omml, encoding="utf-8")
+        omml_elem = parse_xml(omml_bytes)
+        return omml_elem
+    except Exception as exc:
+        print(f"Lưu ý: Không thể chuyển đổi LaTeX sang OMML ({exc})")
+        return None
+
+
 class ReportBuilder:
     """Lớp điều phối tạo tài liệu Word báo cáo đồ án chuẩn HUIT."""
 
     def __init__(self, paper_size: str = "A4"):
         self.doc = docx.Document()
+        self.paper_size = paper_size
         self._setup_page(paper_size)
         self._setup_styles()
 
     def _setup_page(self, paper_size: str):
         section = self.doc.sections[0]
+        self._setup_section_dimensions(section, paper_size)
+
+    def _setup_section_dimensions(self, section, paper_size: str = "A4"):
+        """Cấu hình kích thước và lề trang in chuẩn mực."""
         if paper_size.upper() == "LETTER":
             section.page_width = Cm(21.59)
             section.page_height = Cm(27.94)
@@ -86,6 +143,33 @@ class ReportBuilder:
         section.right_margin = Cm(2.0)
         section.header_distance = Cm(1.27)
         section.footer_distance = Cm(1.27)
+
+    def setup_footer_page_number(self, section, start_page: int = 1):
+        """Thiết lập đánh số trang tại chân trang (Footer) căn giữa chuẩn HUIT."""
+        sectPr = section._sectPr
+        pgNumType = sectPr.find(qn('w:pgNumType'))
+        if pgNumType is None:
+            pgNumType = OxmlElement('w:pgNumType')
+            sectPr.append(pgNumType)
+        pgNumType.set(qn('w:start'), str(start_page))
+
+        footer = section.footer
+        footer.is_linked_to_previous = False
+        p = footer.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p.text = ""
+
+        p_xml = parse_xml(
+            f'<w:p {nsdecls("w")}>'
+            f'<w:pPr><w:jc w:val="center"/></w:pPr>'
+            f'<w:r><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="22"/><w:szCs w:val="22"/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r>'
+            f'<w:r><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="22"/><w:szCs w:val="22"/></w:rPr><w:instrText xml:space="preserve"> PAGE </w:instrText></w:r>'
+            f'<w:r><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="22"/><w:szCs w:val="22"/></w:rPr><w:fldChar w:fldCharType="separate"/></w:r>'
+            f'<w:r><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="22"/><w:szCs w:val="22"/></w:rPr><w:t>1</w:t></w:r>'
+            f'<w:r><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/><w:sz w:val="22"/><w:szCs w:val="22"/></w:rPr><w:fldChar w:fldCharType="end"/></w:r>'
+            f'</w:p>'
+        )
+        p._p.getparent().replace(p._p, p_xml)
 
     def _setup_styles(self):
         # 1. Normal Style
@@ -141,6 +225,30 @@ class ReportBuilder:
         h3_pf.space_before = Pt(6.0)
         h3_pf.space_after = Pt(2.0)
 
+        # Khắc phục triệt để cấu hình rPr XML cho các Heading
+        for style_obj, sz_half_pts, is_bold, is_italic in [
+            (h1, 30, True, False),
+            (h2, 27, True, False),
+            (h3, 26, False, True),
+        ]:
+            h_rPr = style_obj.element.get_or_add_rPr()
+            h_fonts = OxmlElement('w:rFonts')
+            h_fonts.set(qn('w:ascii'), 'Times New Roman')
+            h_fonts.set(qn('w:hAnsi'), 'Times New Roman')
+            h_fonts.set(qn('w:cs'), 'Times New Roman')
+            h_rPr.append(h_fonts)
+            h_sz = OxmlElement('w:sz')
+            h_sz.set(qn('w:val'), str(sz_half_pts))
+            h_rPr.append(h_sz)
+            h_szCs = OxmlElement('w:szCs')
+            h_szCs.set(qn('w:val'), str(sz_half_pts))
+            h_rPr.append(h_szCs)
+            if is_italic:
+                h_i = OxmlElement('w:i')
+                h_rPr.append(h_i)
+                h_iCs = OxmlElement('w:iCs')
+                h_rPr.append(h_iCs)
+
     def add_cover_page(
         self,
         university: str = "TRƯỜNG ĐẠI HỌC CÔNG THƯƠNG TP. HỒ CHÍ MINH",
@@ -194,8 +302,11 @@ class ReportBuilder:
         _p("", size=13.0, space_after=24.0)
         _p(city_year, size=13.0, bold=True, space_after=0.0)
 
-        # Ngắt trang sau trang bìa
-        self.doc.add_page_break()
+        # Ngắt sang Section 2 cho toàn bộ nội dung sau trang bìa
+        sec2 = self.doc.add_section()
+        self._setup_section_dimensions(sec2, self.paper_size)
+        sec2.footer.is_linked_to_previous = False
+        self.setup_footer_page_number(sec2, start_page=1)
 
     def add_page_break(self):
         """Thêm ngắt trang sang trang mới."""
@@ -217,6 +328,89 @@ class ReportBuilder:
         """Thêm tiêu đề Heading 3 (Tiểu mục cấp 2: X.Y.Z)."""
         p = self.doc.add_paragraph(text, style="Heading 3")
         p.paragraph_format.first_line_indent = Cm(0)
+        return p
+
+    def add_toc_entry(
+        self,
+        title: str,
+        page_num: int | str,
+        level: int = 1,
+        leader: str = "dot",
+        tab_pos: int = 9071,  # 16.0cm chuẩn A4 (21.0cm - 3.0cm left - 2.0cm right = 16.0cm = 9071 dxa)
+        size: Optional[float] = None,
+        bold: Optional[bool] = None,
+        italic: bool = False
+    ):
+        """Thêm một dòng mục lục có căn phải tab dot-leader chuẩn in ấn."""
+        p = self.doc.add_paragraph()
+        pPr = p._p.get_or_add_pPr()
+
+        # Cài đặt Tabs với đường chấm (dot leader)
+        tabs = OxmlElement('w:tabs')
+        tab = OxmlElement('w:tab')
+        tab.set(qn('w:val'), 'right')
+        tab.set(qn('w:leader'), leader)
+        tab.set(qn('w:pos'), str(tab_pos))
+        tabs.append(tab)
+        pPr.append(tabs)
+
+        if level == 1:
+            p.paragraph_format.first_line_indent = Cm(0)
+            p.paragraph_format.left_indent = Cm(0)
+            p.paragraph_format.space_before = Pt(2.0)
+            p.paragraph_format.space_after = Pt(2.0)
+            p.paragraph_format.line_spacing = 1.15
+
+            sz_val = size if size is not None else 12.5
+            b_val = bold if bold is not None else True
+
+            r_title = p.add_run(title)
+            r_title.font.name = "Times New Roman"
+            r_title.font.size = Pt(sz_val)
+            r_title.bold = b_val
+            r_title.italic = italic
+
+            r_tab = p.add_run("\t")
+
+            r_page = p.add_run(str(page_num))
+            r_page.font.name = "Times New Roman"
+            r_page.font.size = Pt(sz_val)
+            r_page.bold = b_val
+            r_page.italic = italic
+        else:
+            p.paragraph_format.first_line_indent = Cm(0)
+            p.paragraph_format.left_indent = Cm(0.63)
+            p.paragraph_format.space_before = Pt(1.5)
+            p.paragraph_format.space_after = Pt(1.5)
+            p.paragraph_format.line_spacing = 1.15
+
+            sz_val = size if size is not None else 12.0
+            b_val = bold if bold is not None else False
+
+            r_title = p.add_run(title)
+            r_title.font.name = "Times New Roman"
+            r_title.font.size = Pt(sz_val)
+            r_title.bold = b_val
+            r_title.italic = italic
+
+            r_tab = p.add_run("\t")
+
+            r_page = p.add_run(str(page_num))
+            r_page.font.name = "Times New Roman"
+            r_page.font.size = Pt(sz_val)
+            r_page.bold = b_val
+            r_page.italic = italic
+
+        return p
+
+    def add_native_word_toc(self):
+        """Chèn mã trường native Word Table of Contents (TOC)."""
+        p = self.doc.add_paragraph()
+        pPr = p._p.get_or_add_pPr()
+        fldSimple = parse_xml(
+            f'<w:fldSimple {nsdecls("w")} w:instr="TOC \\o &quot;1-2&quot; \\h \\z \\u"/>'
+        )
+        p._p.append(fldSimple)
         return p
 
     def add_paragraph(
@@ -267,32 +461,46 @@ class ReportBuilder:
         return p
 
     def add_equation(self, latex_str: str, label: str = ""):
-        """Thêm công thức toán học căn giữa trang."""
+        """Thêm công thức toán học chuẩn Word Equation (OMML) kèm căn giữa và căn phải số thứ tự."""
         p = self.doc.add_paragraph()
-        p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p.paragraph_format.space_before = Pt(4.0)
-        p.paragraph_format.space_after = Pt(6.0)
-        p.paragraph_format.line_spacing = 1.5
         p.paragraph_format.first_line_indent = Cm(0)
+        p.paragraph_format.space_before = Pt(6.0)
+        p.paragraph_format.space_after = Pt(6.0)
+        p.paragraph_format.line_spacing = 1.3
 
-        added = False
-        try:
-            from math_equation import add_math
-            add_math(p, latex_str)
+        omml_elem = latex_to_omml_element(latex_str)
+
+        if omml_elem is not None:
             if label:
-                r_lbl = p.add_run(f"    ({label})")
-                r_lbl.font.name = "Times New Roman"
-                r_lbl.font.size = Pt(13.0)
-            added = True
-        except Exception:
-            pass
+                pPr = p._p.get_or_add_pPr()
+                tabs = parse_xml(
+                    f'<w:tabs {nsdecls("w")}>'
+                    f'<w:tab w:val="center" w:pos="4536"/>'
+                    f'<w:tab w:val="right" w:pos="9071"/>'
+                    f'</w:tabs>'
+                )
+                pPr.append(tabs)
 
-        if not added:
+                # Tab đầu đưa công thức vào giữa trang (8.0 cm)
+                p.add_run("	")
+                # Gắn đối tượng OMML Equation
+                p._p.append(omml_elem)
+                # Tab thứ hai đưa nhãn sang sát lề phải trang (16.0 cm)
+                r_lbl = p.add_run(f"	({label})")
+                r_lbl.font.name = "Times New Roman"
+                r_lbl.font.size = Pt(12.0)
+            else:
+                p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                p._p.append(omml_elem)
+        else:
+            # Fallback nếu không có bộ chuyển đổi OMML
+            p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
             txt = f"{latex_str}    ({label})" if label else latex_str
             r = p.add_run(txt)
             r.italic = True
             r.font.name = "Times New Roman"
-            r.font.size = Pt(13.0)
+            r.font.size = Pt(12.0)
+
         return p
 
     def add_table(

@@ -145,49 +145,37 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     # 5. MỤC LỤC BÁO CÁO
     # =========================================================================
     builder.add_heading_1("MỤC LỤC BÁO CÁO")
-    toc_items = [
-        ("LỜI MỞ ĐẦU", "Trang 2"),
-        ("TÓM TẮT ĐỒ ÁN (ABSTRACT)", "Trang 3"),
-        ("BẢNG PHÂN CÔNG NHIỆM VỤ SINH VIÊN", "Trang 4"),
-        ("CHƯƠNG 1: GIỚI THIỆU ĐỀ TÀI", "Trang 6"),
-        ("  1.1. Bối cảnh thực tế & Tính cấp thiết của bài toán", "Trang 6"),
-        ("  1.2. Mục tiêu nghiên cứu của đề tài", "Trang 6"),
-        ("  1.3. Đối tượng và phạm vi nghiên cứu", "Trang 7"),
-        ("CHƯƠNG 2: CƠ SỞ LÝ THUYẾT XỬ LÝ ẢNH SỐ", "Trang 8"),
-        ("  2.1. Phép lọc phi tuyến bảo toàn biên (Bilateral Filter)", "Trang 8"),
-        ("  2.2. Phép toán hình thái học (Mathematical Morphology)", "Trang 8"),
-        ("  2.3. Giải thuật phân thủy Marker-controlled Watershed", "Trang 9"),
-        ("  2.4. Giải thuật phát triển vùng từ hạt giống (Seeded Region Growing)", "Trang 10"),
-        ("  2.5. Các chỉ số đánh giá định lượng y sinh học chuẩn quốc tế", "Trang 10"),
-        ("CHƯƠNG 3: MÔ TẢ TẬP DỮ LIỆU MRI TCGA-LGG", "Trang 12"),
-        ("  3.1. Nguồn gốc dữ liệu & Các liên kết công bố quốc tế", "Trang 12"),
-        ("  3.2. Cấu trúc tổ chức dữ liệu thực nghiệm", "Trang 12"),
-        ("  3.3. Phân bố dữ liệu và phân tầng kích thước u não", "Trang 13"),
-        ("CHƯƠNG 4: TIỀN XỬ LÝ ẢNH VÀ TÁCH SỌ NÃO", "Trang 14"),
-        ("  4.1. Khử nhiễu Rician và Cân bằng tương phản mô mềm", "Trang 14"),
-        ("  4.2. Quy trình 6 bước Tách sọ não (Skull Stripping Pipeline)", "Trang 14"),
-        ("CHƯƠNG 5: PHƯƠNG PHÁP PHÂN ĐOẠN U NÃO VÀ PIPELINE", "Trang 17"),
-        ("  5.1. Sơ đồ luồng xử lý pipeline tổng thể 4 tầng", "Trang 17"),
-        ("  5.2. Phương pháp phân đoạn A (Baseline): Marker-controlled Watershed", "Trang 17"),
-        ("  5.3. Phương pháp phân đoạn B (Đối chứng): Seeded Region Growing", "Trang 18"),
-        ("  5.4. Rút trích đặc trưng hình học khối u và cảnh báo thị giác", "Trang 19"),
-        ("CHƯƠNG 6: KẾT QUẢ THỰC NGHIỆM VÀ ĐÁNH GIÁ ĐỊNH LƯỢNG", "Trang 20"),
-        ("  6.1. Bảng số liệu so sánh định lượng trên 3,929 lát cắt TCGA-LGG", "Trang 20"),
-        ("  6.2. Đồ thị đối chiếu chỉ số y sinh và phân bố hiệu năng", "Trang 21"),
-        ("  6.3. Phân tích kết quả thực nghiệm và các ca thất bại (Failure Cases)", "Trang 23"),
-        ("CHƯƠNG 7: XÂY DỰNG ỨNG DỤNG MINH HỌA DEMO WEB UI", "Trang 25"),
-        ("  7.1. Kiến trúc ứng dụng Web tương tác Streamlit", "Trang 25"),
-        ("  7.2. Các phân hệ chức năng giao diện", "Trang 25"),
-        ("  7.3. Hướng dẫn cài đặt và khởi chạy ứng dụng", "Trang 26"),
-        ("CHƯƠNG 8: KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN", "Trang 27"),
-        ("  8.1. Các kết quả chính đạt được của đề tài", "Trang 27"),
-        ("  8.2. Hạn chế và hướng nghiên cứu mở rộng", "Trang 27"),
-        ("TÀI LIỆU THAM KHẢO", "Trang 29"),
-        ("PHỤ LỤC", "Trang 30")
-    ]
-    for major, pg in toc_items:
-        builder.add_paragraph(f"{major} ................................................................................... {pg}", indent=False)
+    builder.add_native_word_toc()
+    builder.add_page_break()
 
+    # =========================================================================
+    # 6. DANH MỤC BẢNG BIỂU
+    # =========================================================================
+    builder.add_heading_1("DANH MỤC BẢNG BIỂU")
+    list_tables = [
+        ("Bảng 1: Bảng phân công nhiệm vụ và tỷ lệ đóng góp của các thành viên trong nhóm", "4"),
+        ("Bảng 3.1: Thống kê phân bố 3 phân nhóm kích thước u não trên tập benchmark 3,929 lát cắt", "12"),
+        ("Bảng 6.1: So sánh hiệu năng định lượng giữa Watershed và Region Growing trên 3,929 lát cắt TCGA-LGG (Mean ± Std)", "19"),
+        ("Bảng Phụ lục A.1: Khung Rubric đánh giá đồ án học phần Xử lý ảnh số của Khoa CNTT - HUIT", "26"),
+        ("Bảng Phụ lục B.1: Tiến độ và phân công chi tiết Sprint cấp tốc 7 ngày giữa hai thành viên", "27"),
+    ]
+    for t_title, t_pg in list_tables:
+        builder.add_toc_entry(t_title, t_pg, level=1, size=11.5, bold=False, italic=True)
+    builder.add_page_break()
+
+    # =========================================================================
+    # 7. DANH MỤC HÌNH ẢNH
+    # =========================================================================
+    builder.add_heading_1("DANH MỤC HÌNH ẢNH")
+    list_figures = [
+        ("Hình 4.1: Chi tiết 6 bước trong quy trình Tách sọ não Skull Stripping trên ảnh MRI", "15"),
+        ("Hình 5.1: Đồ thị khảo sát độ nhạy của siêu tham số dist_thresh_ratio trong giải thuật Marker-controlled Watershed", "17"),
+        ("Hình 6.1: Biểu đồ cột so sánh hiệu năng Dice, IoU, Sensitivity, Specificity giữa Watershed và Region Growing trên 3,929 lát cắt", "20"),
+        ("Hình 6.2: Biểu đồ phân bố mật độ phân vị của chỉ số tương đồng Dice và độ trễ thực thi (ms) trên tập benchmark", "21"),
+        ("Hình 7.1: Giao diện trực quan hóa Quad View chẩn đoán và khoanh vùng Bounding Box đỏ cảnh báo u não", "24"),
+    ]
+    for f_title, f_pg in list_figures:
+        builder.add_toc_entry(f_title, f_pg, level=1, size=11.5, bold=False, italic=True)
     builder.add_page_break()
 
     # =========================================================================
@@ -632,7 +620,162 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
     # Lưu tài liệu
     builder.save(output_path)
     file_size_kb = os.path.getsize(output_path) / 1024
-    print(f"Báo cáo Word đã được xuất thành công tại: {output_path} ({file_size_kb:.1f} KB)")
+    print(f"Bản nháp Báo cáo Word đã xuất tại: {output_path} ({file_size_kb:.1f} KB)")
+
+    # Tự động đồng bộ số trang và TOC qua Word COM ngầm
+    sync_document_via_word_com(output_path)
+    file_size_kb = os.path.getsize(output_path) / 1024
+    print(f"Báo cáo Word hoàn chỉnh đã được cập nhật thành công: {output_path} ({file_size_kb:.1f} KB)")
+
+
+
+def sync_document_via_word_com(docx_path: str) -> None:
+    """Tự động đồng bộ số trang và cập nhật Word Native TOC bằng Microsoft Word COM."""
+    import subprocess
+    abs_path = os.path.abspath(docx_path)
+    if not os.path.isfile(abs_path):
+        return
+
+    # Dọn dẹp tiến trình Word cũ nếu bị treo
+    try:
+        subprocess.run(
+            ["taskkill", "/F", "/IM", "WINWORD.EXE"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=5
+        )
+    except Exception:
+        pass
+
+    try:
+        import win32com.client
+    except ImportError:
+        print("Lưu ý: Chưa cài đặt win32com, bỏ qua bước đồng bộ Word COM ngầm.")
+        return
+
+    word = None
+    doc = None
+    try:
+        word = win32com.client.Dispatch("Word.Application")
+        word.Visible = False
+        word.DisplayAlerts = 0  # wdAlertsNone
+
+        doc = word.Documents.Open(abs_path)
+
+        # 1. Cập nhật hoặc chèn TOC
+        if doc.TablesOfContents.Count == 0:
+            for p in doc.Paragraphs:
+                txt = p.Range.Text.strip()
+                if txt == "MỤC LỤC BÁO CÁO":
+                    rng = p.Range
+                    rng.Collapse(0)  # wdCollapseEnd
+                    doc.TablesOfContents.Add(
+                        Range=rng,
+                        UseHeadingStyles=True,
+                        UpperHeadingLevel=1,
+                        LowerHeadingLevel=2,
+                    )
+                    break
+        else:
+            doc.TablesOfContents(1).Update()
+
+        # 2. Cập nhật phân trang
+        doc.Repaginate()
+        doc.Fields.Update()
+
+        # 3. Thu thập số trang thực tế của các Bảng và Hình trong phần thân báo cáo
+        table_pages = {}
+        figure_pages = {}
+        in_body = False
+        for p in doc.Paragraphs:
+            txt = p.Range.Text.strip()
+            if "CHƯƠNG 1:" in txt:
+                in_body = True
+
+            if "Bảng 1: Bảng phân công" in txt:
+                table_pages["Bảng 1:"] = p.Range.Information(3)
+
+            if in_body:
+                if txt.startswith("Bảng 3.1:"):
+                    table_pages["Bảng 3.1:"] = p.Range.Information(3)
+                elif txt.startswith("Bảng 6.1:"):
+                    table_pages["Bảng 6.1:"] = p.Range.Information(3)
+                elif txt.startswith("Bảng Phụ lục A.1:"):
+                    table_pages["Bảng Phụ lục A.1:"] = p.Range.Information(3)
+                elif txt.startswith("Bảng Phụ lục B.1:"):
+                    table_pages["Bảng Phụ lục B.1:"] = p.Range.Information(3)
+                elif txt.startswith("Hình 4.1:"):
+                    figure_pages["Hình 4.1:"] = p.Range.Information(3)
+                elif txt.startswith("Hình 5.1:"):
+                    figure_pages["Hình 5.1:"] = p.Range.Information(3)
+                elif txt.startswith("Hình 6.1:"):
+                    figure_pages["Hình 6.1:"] = p.Range.Information(3)
+                elif txt.startswith("Hình 6.2:"):
+                    figure_pages["Hình 6.2:"] = p.Range.Information(3)
+                elif txt.startswith("Hình 7.1:"):
+                    figure_pages["Hình 7.1:"] = p.Range.Information(3)
+
+        # 4. Cập nhật số trang vào các dòng của DANH MỤC BẢNG và DANH MỤC HÌNH
+        for p in doc.Paragraphs:
+            txt = p.Range.Text.strip()
+            if "CHƯƠNG 1:" in txt:
+                break
+            for prefix, pg in table_pages.items():
+                if txt.startswith(prefix) and "\t" in txt:
+                    title_part = txt.split("\t")[0]
+                    p.Range.Text = f"{title_part}\t{pg}\r"
+                    break
+            for prefix, pg in figure_pages.items():
+                if txt.startswith(prefix) and "\t" in txt:
+                    title_part = txt.split("\t")[0]
+                    p.Range.Text = f"{title_part}\t{pg}\r"
+                    break
+
+        # 5. Cập nhật lại TOC lần cuối và lưu
+        if doc.TablesOfContents.Count > 0:
+            doc.TablesOfContents(1).Update()
+
+        doc.Save()
+        print(f"Đã đồng bộ số trang Word COM thành công: {len(table_pages)} bảng, {len(figure_pages)} hình.")
+    except Exception as exc:
+        print(f"Lưu ý khi đồng bộ Word COM: {exc}")
+    finally:
+        if doc is not None:
+            try:
+                doc.Close(False)
+            except Exception:
+                pass
+        if word is not None:
+            try:
+                word.Quit()
+            except Exception:
+                pass
+
+    # Đảm bảo style Heading 3 giữ đúng 13pt và Italic trong styles.xml
+    try:
+        import docx
+        from docx.shared import Pt
+        from docx.oxml import OxmlElement
+        from docx.oxml.ns import qn
+        doc_post = docx.Document(abs_path)
+        h3 = doc_post.styles['Heading 3']
+        h3.font.name = 'Times New Roman'
+        h3.font.size = Pt(13.0)
+        h3.font.italic = True
+        h3.font.bold = False
+        rPr = h3.element.get_or_add_rPr()
+        sz = rPr.find(qn('w:sz'))
+        if sz is None:
+            sz = OxmlElement('w:sz')
+            rPr.append(sz)
+        sz.set(qn('w:val'), '26')
+        i = rPr.find(qn('w:i'))
+        if i is None:
+            i = OxmlElement('w:i')
+            rPr.append(i)
+        doc_post.save(abs_path)
+    except Exception as e_post:
+        print(f'Lưu ý hậu kiểm styles: {e_post}')
 
 
 if __name__ == "__main__":
