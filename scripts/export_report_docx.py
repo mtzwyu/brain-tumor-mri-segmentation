@@ -342,19 +342,21 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
 
     builder.add_heading_2("3.3. Phân bố dữ liệu và phân tầng kích thước u não")
     builder.add_paragraph(
-        "Nhóm tiến hành phân tầng 1,373 lát cắt u thành 3 nhóm độ khó theo tỷ lệ diện tích u so với diện tích não bộ để khảo sát tính bền vững:"
+        "Tập dữ liệu chuẩn TCGA-LGG gồm 3,929 lát cắt của 110 bệnh nhân. Trong đó, nhóm tiến hành phân tầng 1,373 lát cắt u thành 3 nhóm độ khó theo tỷ lệ diện tích u so với diện tích não bộ để khảo sát tính bền vững:"
     )
 
-    headers_dist = ["Phân Nhóm Kích Thước Khối U", "Tiêu Chuẩn Diện Tích U", "Số Lượng Trên Tập Full", "Tỷ Lệ Toàn Tập"]
+    headers_dist = ["Phân Nhóm Dữ Liệu", "Tiêu Chuẩn Diện Tích", "Số Lượng Lát Cắt", "Tỷ Lệ / Tập U", "Tỷ Lệ / Toàn Tập"]
     data_dist = [
-        ["Khối u nhỏ (Small Tumors)", "< 1.5% diện tích não", "463 lát cắt", "33.72%"],
-        ["Khối u trung bình (Medium Tumors)", "1.5% - 5.0% diện tích não", "667 lát cắt", "48.58%"],
-        ["Khối u lớn (Large Tumors)", "> 5.0% diện tích não", "243 lát cắt", "17.70%"]
+        ["Não lành (Không có u)", "0.0% diện tích", "2,556 lát cắt", "—", "65.05%"],
+        ["Khối u nhỏ (Small Tumors)", "< 1.5% diện tích não", "463 lát cắt", "33.72%", "11.78%"],
+        ["Khối u trung bình (Medium Tumors)", "1.5% - 5.0% diện tích não", "667 lát cắt", "48.58%", "16.98%"],
+        ["Khối u lớn (Large Tumors)", "> 5.0% diện tích não", "243 lát cắt", "17.70%", "6.19%"],
+        ["Tổng cộng toàn bộ", "Toàn dải dữ liệu", "3,929 lát cắt", "100.0%", "100.0%"]
     ]
     builder.add_table(
         headers_dist, data_dist,
-        caption="Bảng 3.1: Thống kê phân bố 3 phân nhóm kích thước u não trên tập benchmark 3,929 lát cắt",
-        col_widths=[4.5, 4.0, 3.5, 3.0]
+        caption="Bảng 3.1: Thống kê phân bố phân nhóm kích thước u não trên tập benchmark 3,929 lát cắt",
+        col_widths=[4.0, 3.5, 2.5, 2.5, 2.5]
     )
 
     # =========================================================================

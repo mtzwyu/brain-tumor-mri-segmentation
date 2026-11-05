@@ -78,56 +78,113 @@ print("Môi trường sẵn sàng. Đang nạp dữ liệu...")"""),
     md_cell("""##  2. Khảo sát Metadata Tập Dữ Liệu
 Đọc bảng metadata (`data/full/metadata.csv` hoặc fallback `data/full/metadata.csv`) chứa thông tin chi tiết về diện tích và tỷ lệ u của các ca bệnh:"""),
 
-    code_cell("""base_dir = "../data/full" if os.path.exists("../data/full/metadata.csv") else "../data/full"
+    code_cell("""base_dir = "../data/full" if os.path.exists("../data/full/metadata.csv") else "data/full"
 meta_path = os.path.join(base_dir, "metadata.csv")
 df = pd.read_csv(meta_path)
 print(f"Nguồn dữ liệu đang nạp: {base_dir}")
-print(f"Tổng số lát cắt MRI: {len(df)}")
-df[['sample_id', 'patient_id', 'width', 'height', 'tumor_area_pixels', 'tumor_ratio_percent']].head(10)"""),
+print(f"Tổng số bệnh nhân nghiên cứu: {df['patient_id'].nunique()} bệnh nhân")
+print(f"Tổng số lát cắt MRI: {len(df):,} lát cắt")
+
+healthy_df = df[~df['has_tumor']]
+tumor_df = df[df['has_tumor']]
+print(f"  + Lát cắt âm tính (Não lành, 0% u): {len(healthy_df):,} lát ({len(healthy_df)/len(df)*100:.2f}%)")
+print(f"  + Lát cắt dương tính (Có khối u): {len(tumor_df):,} lát ({len(tumor_df)/len(df)*100:.2f}%)")
+
+df[['sample_id', 'patient_id', 'width', 'height', 'tumor_area_pixels', 'tumor_ratio_percent']].head(5)"""),
 
     md_cell("""## 3. Trực quan hóa dữ liệu: Phân tích thống kê phân bố khối u
-Đánh giá độ phân tán của diện tích u và tỷ lệ % u trên thiết diện não:"""),
+Đánh giá độ phân tán của diện tích u và tỷ lệ % u trên thiết diện não (khảo sát trên 1,373 lát cắt có u):"""),
 
-    code_cell("""fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+    code_cell("""tumor_df = df[df['has_tumor']]
 
-# 1. Histogram diện tích pixel
-axes[0].hist(df['tumor_area_pixels'], bins=8, color='#3B82F6', edgecolor='black', alpha=0.8)
-axes[0].set_title("Phân Bố Diện Tích Khối U (Pixels)", fontsize=13, fontweight='bold')
-axes[0].set_xlabel("Diện tích (pixels)")
-axes[0].set_ylabel("Số lượng ca bệnh")
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-# 2. Histogram tỷ lệ phần trăm
-axes[1].hist(df['tumor_ratio_percent'], bins=8, color='#10B981', edgecolor='black', alpha=0.8)
-axes[1].set_title("Phân Bố Tỷ Lệ % U / Thiết Diện Ảnh", fontsize=13, fontweight='bold')
-axes[1].set_xlabel("Tỷ lệ diện tích (%)")
-axes[1].set_ylabel("Số lượng ca bệnh")
+# 1. Histogram diện tích pixel trên tập lát cắt có u
+axes[0].hist(tumor_df['tumor_area_pixels'], bins=12, color='#3B82F6', edgecolor='black', alpha=0.8)
+axes[0].set_title("Phân Bố Diện Tích Khối U (Pixels) — 1,373 Lát Cắt Có U", fontsize=12, fontweight='bold')
+axes[0].set_xlabel("Diện tích khối u (pixels)")
+axes[0].set_ylabel("Số lượng lát cắt")
+
+# 2. Histogram tỷ lệ phần trăm trên tập lát cắt có u
+axes[1].hist(tumor_df['tumor_ratio_percent'], bins=12, color='#10B981', edgecolor='black', alpha=0.8)
+axes[1].set_title("Phân Bố Tỷ Lệ % U / Thiết Diện Não — 1,373 Lát Cắt Có U", fontsize=12, fontweight='bold')
+axes[1].set_xlabel("Tỷ lệ diện tích u (%)")
+axes[1].set_ylabel("Số lượng lát cắt")
 
 plt.tight_layout()
 plt.show()
 
-print("Thống kê mô tả chi tiết:")
-print(df[['tumor_area_pixels', 'tumor_ratio_percent']].describe().round(2))"""),
+print("Thống kê mô tả chi tiết trên 1,373 lát cắt có khối u (Khớp 100% Báo cáo Mục 3):")
+print(tumor_df[['tumor_area_pixels', 'tumor_ratio_percent']].describe().round(2))"""),
 
     md_cell("""## 4. Quy trình thực nghiệm: Phân loại 3 nhóm ca bệnh (u nhỏ, u vừa, u lớn)
-Căn cứ theo độ khó thuật toán để chuẩn bị kiểm thử ở các bước tiếp theo:"""),
+Căn cứ theo độ khó thuật toán để chuẩn bị kiểm thử ở các bước tiếp theo (Đồng bộ Bảng 3.1 trong Báo cáo Đồ án):"""),
 
-    code_cell("""small_tumors = df[df['tumor_ratio_percent'] < 1.5]
-medium_tumors = df[(df['tumor_ratio_percent'] >= 1.5) & (df['tumor_ratio_percent'] <= 5.0)]
-large_tumors = df[df['tumor_ratio_percent'] > 5.0]
+    code_cell("""healthy_df = df[~df['has_tumor']]
+tumor_df = df[df['has_tumor']]
 
-print(f"- Nhóm U Nhỏ (< 1.5% - Thách thức phát hiện biên): {len(small_tumors)} ca ({list(small_tumors['sample_id'])})")
-print(f"- Nhóm U Vừa (1.5% - 5.0% - Độ phân đoạn chuẩn): {len(medium_tumors)} ca ({list(medium_tumors['sample_id'])})")
-print(f"- Nhóm U Lớn (> 5.0% - Hiệu ứng chèn ép não thất): {len(large_tumors)} ca ({list(large_tumors['sample_id'])})")"""),
+small_tumors = tumor_df[tumor_df['tumor_ratio_percent'] < 1.5]
+medium_tumors = tumor_df[(tumor_df['tumor_ratio_percent'] >= 1.5) & (tumor_df['tumor_ratio_percent'] <= 5.0)]
+large_tumors = tumor_df[tumor_df['tumor_ratio_percent'] > 5.0]
+
+summary_rows = [
+    {
+        "Phân Nhóm Dữ Liệu": "Não lành (Không u)",
+        "Tiêu Chuẩn Diện Tích": "0.0% diện tích",
+        "Số Lượng Lát Cắt": len(healthy_df),
+        "Tỷ Lệ / Tập U (%)": "—",
+        "Tỷ Lệ / Toàn Tập (%)": f"{len(healthy_df)/len(df)*100:.2f}%",
+        "Mẫu Tiêu Biểu": ", ".join(healthy_df['sample_id'].iloc[:3].tolist()) + "..."
+    },
+    {
+        "Phân Nhóm Dữ Liệu": "Khối u nhỏ (Small)",
+        "Tiêu Chuẩn Diện Tích": "< 1.5% diện tích",
+        "Số Lượng Lát Cắt": len(small_tumors),
+        "Tỷ Lệ / Tập U (%)": f"{len(small_tumors)/len(tumor_df)*100:.2f}%",
+        "Tỷ Lệ / Toàn Tập (%)": f"{len(small_tumors)/len(df)*100:.2f}%",
+        "Mẫu Tiêu Biểu": ", ".join(small_tumors['sample_id'].iloc[:3].tolist()) + "..."
+    },
+    {
+        "Phân Nhóm Dữ Liệu": "Khối u trung bình (Medium)",
+        "Tiêu Chuẩn Diện Tích": "1.5% - 5.0% diện tích",
+        "Số Lượng Lát Cắt": len(medium_tumors),
+        "Tỷ Lệ / Tập U (%)": f"{len(medium_tumors)/len(tumor_df)*100:.2f}%",
+        "Tỷ Lệ / Toàn Tập (%)": f"{len(medium_tumors)/len(df)*100:.2f}%",
+        "Mẫu Tiêu Biểu": ", ".join(medium_tumors['sample_id'].iloc[:3].tolist()) + "..."
+    },
+    {
+        "Phân Nhóm Dữ Liệu": "Khối u lớn (Large)",
+        "Tiêu Chuẩn Diện Tích": "> 5.0% diện tích",
+        "Số Lượng Lát Cắt": len(large_tumors),
+        "Tỷ Lệ / Tập U (%)": f"{len(large_tumors)/len(tumor_df)*100:.2f}%",
+        "Tỷ Lệ / Toàn Tập (%)": f"{len(large_tumors)/len(df)*100:.2f}%",
+        "Mẫu Tiêu Biểu": ", ".join(large_tumors['sample_id'].iloc[:3].tolist()) + "..."
+    }
+]
+
+summary_df = pd.DataFrame(summary_rows)
+print(f"Tổng số lát cắt toàn tập: {len(df):,} | Tập có u: {len(tumor_df):,} | Não lành: {len(healthy_df):,}")
+print("Bảng thống kê phân tầng độ khó khớp tuyệt đối Bảng 3.1 Báo cáo Đồ án:")
+print(summary_df[['Phân Nhóm Dữ Liệu', 'Tiêu Chuẩn Diện Tích', 'Số Lượng Lát Cắt', 'Tỷ Lệ / Tập U (%)', 'Tỷ Lệ / Toàn Tập (%)']].to_string(index=False))"""),
 
     md_cell("""## 5. Minh họa hình ảnh: Lưới ảnh MRI và Ground Truth Mask
-Hiển thị 6 ca đại diện cho 3 nhóm kích thước u để làm minh chứng cho Báo cáo (Mục 3):"""),
+Hiển thị 6 ca đại diện cho các nhóm kích thước u và đối chứng não lành (Mục 3 Báo cáo):"""),
 
-    code_cell("""sample_indices = [0, 4, 6, 8, 10, min(19, len(df)-1)]
+    code_cell("""sample_indices = [
+    healthy_df.index[0],     # Não lành đối chứng (0% u)
+    small_tumors.index[0],   # Khối u nhỏ (< 1.5%)
+    medium_tumors.index[0],  # Khối u trung bình (1.5% - 5.0%)
+    medium_tumors.index[1],  # Khối u trung bình (1.5% - 5.0%)
+    large_tumors.index[0],   # Khối u lớn (> 5.0%)
+    large_tumors.index[1],   # Khối u lớn (> 5.0%)
+]
+
+group_labels = ["Não lành (0%)", "U nhỏ (<1.5%)", "U vừa (1.5-5%)", "U vừa (1.5-5%)", "U lớn (>5%)", "U lớn (>5%)"]
 
 fig, axes = plt.subplots(2, len(sample_indices), figsize=(18, 6))
 
-for col_idx, idx in enumerate(sample_indices):
-    row = df.iloc[idx]
+for col_idx, (idx, grp) in enumerate(zip(sample_indices, group_labels)):
+    row = df.loc[idx]
     img_p = os.path.join(base_dir, "images", row['image_file'])
     mask_p = os.path.join(base_dir, "masks", row['mask_file'])
     
@@ -136,15 +193,15 @@ for col_idx, idx in enumerate(sample_indices):
     
     # Hàng 1: Ảnh gốc
     axes[0, col_idx].imshow(img, cmap='gray')
-    axes[0, col_idx].set_title(f"{row['sample_id']}\\n({row['tumor_ratio_percent']}%)", fontsize=10)
+    axes[0, col_idx].set_title(f"[{grp}]\\n{row['sample_id']}\\n({row['tumor_ratio_percent']}%)", fontsize=9)
     axes[0, col_idx].axis('off')
     
     # Hàng 2: Mặt nạ Ground Truth
     axes[1, col_idx].imshow(mask, cmap='hot')
-    axes[1, col_idx].set_title(f"Area: {row['tumor_area_pixels']}px", fontsize=10)
+    axes[1, col_idx].set_title(f"Area: {row['tumor_area_pixels']} px", fontsize=9)
     axes[1, col_idx].axis('off')
 
-plt.suptitle("Một Số Mẫu Ảnh MRI Não & Mặt Nạ Ground Truth Chuyên Gia (TCGA-LGG Benchmark)", fontsize=14, fontweight='bold')
+plt.suptitle("Một Số Mẫu Ảnh MRI Não & Mặt Nạ Ground Truth Chuyên Gia Theo Từng Nhóm Độ Khó (TCGA-LGG Benchmark)", fontsize=13, fontweight='bold')
 plt.tight_layout()
 plt.show()""")
 ]
@@ -561,9 +618,9 @@ with open("notebooks/01_data_exploration.ipynb", "w", encoding="utf-8") as f:
     json.dump(make_notebook(nb1_cells), f, indent=1, ensure_ascii=False)
 print("Da tao notebooks/01_data_exploration.ipynb (Buoc 1 & Muc 3)")
 
-with open("notebooks/02_skull_stripping.ipynb", "w", encoding="utf-8") as f:
+with open("notebooks/02_preprocessing_and_skull_stripping.ipynb", "w", encoding="utf-8") as f:
     json.dump(make_notebook(nb2_cells), f, indent=1, ensure_ascii=False)
-print("Da tao notebooks/02_skull_stripping.ipynb (Buoc 2 & Muc 4)")
+print("Da tao notebooks/02_preprocessing_and_skull_stripping.ipynb (Buoc 2 & Muc 4)")
 
 with open("notebooks/03_tumor_segmentation_comparison.ipynb", "w", encoding="utf-8") as f:
     json.dump(make_notebook(nb3_cells), f, indent=1, ensure_ascii=False)

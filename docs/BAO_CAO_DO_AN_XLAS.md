@@ -158,12 +158,14 @@ Toàn bộ dữ liệu thực nghiệm của đồ án được lưu trữ tập
 * **Lát cắt có khối u (Positive):** 1,373 lát cắt (34.95%).
 * **Lát cắt não lành (Healthy / Negative):** 2,556 lát cắt (65.05%).
 
-*Bảng 3.1: Thống kê phân bố 3 phân nhóm kích thước u não trên tập benchmark 3,929 lát cắt*
-| Phân Nhóm Kích Thước Khối U | Tiêu Chuẩn Diện Tích U | Số Lượng Trên Tập Full | Tỷ Lệ Toàn Tập |
-| :--- | :---: | :---: | :---: |
-| Khối u nhỏ (Small Tumors) | $< 1.5\%$ diện tích não | 463 lát cắt | 33.72% |
-| Khối u trung bình (Medium Tumors) | $1.5\% - 5.0\%$ diện tích não | 667 lát cắt | 48.58% |
-| Khối u lớn (Large Tumors) | $> 5.0\%$ diện tích não | 243 lát cắt | 17.70% |
+*Bảng 3.1: Thống kê phân bố phân nhóm kích thước u não trên tập benchmark 3,929 lát cắt*
+| Phân Nhóm Dữ Liệu | Tiêu Chuẩn Diện Tích | Số Lượng Lát Cắt | Tỷ Lệ / Tập U (1,373 lát) | Tỷ Lệ / Toàn Tập (3,929 lát) |
+| :--- | :---: | :---: | :---: | :---: |
+| Não lành (Không có u) | $0.0\%$ diện tích | 2,556 lát cắt | — | 65.05% |
+| Khối u nhỏ (Small Tumors) | $< 1.5\%$ diện tích não | 463 lát cắt | 33.72% | 11.78% |
+| Khối u trung bình (Medium Tumors) | $1.5\% - 5.0\%$ diện tích não | 667 lát cắt | 48.58% | 16.98% |
+| Khối u lớn (Large Tumors) | $> 5.0\%$ diện tích não | 243 lát cắt | 17.70% | 6.19% |
+| **Tổng cộng toàn bộ** | **Toàn dải dữ liệu** | **3,929 lát cắt** | **100.0%** (1,373 u) | **100.0%** |
 
 ---
 
