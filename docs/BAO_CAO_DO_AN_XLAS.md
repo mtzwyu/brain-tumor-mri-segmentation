@@ -78,9 +78,12 @@ Hệ thống được kiểm thử thực nghiệm quy mô lớn trên toàn b�
   * 6.2. Đồ thị đối chiếu chỉ số y sinh và phân bố hiệu năng
   * 6.3. Phân tích kết quả thực nghiệm và các ca thất bại (Failure Cases)
 * **CHƯƠNG 7: XÂY DỰNG ỨNG DỤNG MINH HỌA DEMO WEB UI**
-  * 7.1. Kiến trúc ứng dụng Web tương tác Streamlit
-  * 7.2. Các phân hệ chức năng giao diện
-  * 7.3. Hướng dẫn cài đặt và khởi chạy ứng dụng
+  * 7.1. Tổng quan trạm làm việc chẩn đoán NeuroScan PACS Workstation
+  * 7.2. Cơ chế chuyển đổi giao diện kép (Clinical Light & Dark Mode)
+  * 7.3. Ba phân hệ nạp dữ liệu lâm sàng độc lập
+  * 7.4. Phân hệ Phân đoạn u & Tích hợp Cổng Anomaly Gate tiền lọc
+  * 7.5. Khu vực Chẩn đoán đa chế độ & Trực quan hóa y sinh chuyên sâu
+  * 7.6. Hướng dẫn cài đặt và vận hành hệ thống
 * **CHƯƠNG 8: KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN**
   * 8.1. Các kết quả chính đạt được của đề tài
   * 8.2. Hạn chế và hướng nghiên cứu mở rộng
@@ -258,20 +261,61 @@ Thuật toán xác định tọa độ điểm pixel có cường độ sáng c�
 
 # CHƯƠNG 7: XÂY DỰNG ỨNG DỤNG MINH HỌA DEMO WEB UI
 
-### 7.1. Kiến trúc ứng dụng Web tương tác Streamlit
-Ứng dụng demo được thiết kế theo cấu trúc module gọn gàng (`demo/app.py` và `demo/utils.py`), gồm:
-* **Sidebar điều khiển:** Duyệt toàn bộ kho 3,929 lát cắt chuẩn hoặc lọc 110 bệnh nhân, chọn thuật toán phân đoạn và thanh trượt tinh chỉnh siêu tham số thời gian thực.
-* **Khu vực hiển thị trung tâm:** 5 thẻ KPI chẩn đoán (Trạng thái phát hiện, Diện tích u, Tỷ lệ u/não, Độ tròn bờ u, Điểm tương đồng Dice).
-* **Lưới hiển thị Quad View:** Bố trí 4 khung ảnh song song $[Ảnh MRI gốc \mid Não sạch sọ \mid Mặt nạ u \mid Khoanh vùng Bounding Box đỏ]$ và so sánh đối chiếu trực tiếp với Ground Truth.
+### 7.1. Tổng quan trạm làm việc chẩn đoán NeuroScan PACS Workstation
+Nhằm đưa các thuật toán xử lý ảnh số kinh điển từ lý thuyết thực nghiệm vào môi trường ứng dụng lâm sàng trực quan, đề tài đã xây dựng hoàn chỉnh trạm làm việc chẩn đoán hình ảnh thần kinh mang tên **NeuroScan PACS Workstation**. Ứng dụng được phát triển trên nền tảng **Streamlit** kết hợp bộ thư viện tính toán hiệu năng cao **NumPy** và **OpenCV**, đáp ứng tiêu chuẩn phản hồi thời gian thực với độ trễ xử lý cực thấp ($< 15\text{ ms}$ cho một chu trình chẩn đoán hoàn chỉnh).
+
+Hệ thống tuân thủ kiến trúc phân tầng module hóa nghiêm ngặt:
+* **Tầng lõi thuật toán (`src/`):** Chứa các pipeline xử lý tiền xử lý, tách sọ não, phân đoạn Watershed/Region Growing, tính toán chỉ số hình học và bộ đo tương quan y sinh.
+* **Tầng trợ năng giao diện (`demo/utils.py`):** Đảm nhiệm các chức năng đọc nạp ảnh xám Unicode, trực quan hóa bản đồ sai số y sinh (Clinical Error Map), và quản lý danh mục ca bệnh chuẩn.
+* **Tầng điều phối trạm làm việc (`demo/app.py`):** Quản lý trạng thái phiên làm việc (Session State), chuyển đổi theme giao diện, điều hướng 3 phân hệ dữ liệu và kết xuất dữ liệu lâm sàng.
+
+### 7.2. Cơ chế chuyển đổi giao diện kép (Clinical Light & Dark Mode)
+Một trong những yêu cầu đặc thù của môi trường y tế là sự biến thiên về điều kiện ánh sáng làm việc giữa phòng khám ban ngày và phòng đọc ảnh chuyên biệt (Reading Room). NeuroScan PACS Workstation được tích hợp cơ chế chuyển đổi giao diện Kép (Dual Theme Engine) dựa trên hệ thống biến CSS toàn cục:
+1. **Chế độ Sáng (Clinical Light Mode):** Sử dụng tông nền xám trắng trang nhã (`#f8fafc`), độ tương phản cao, tối ưu cho việc in ấn bệnh án, trình chiếu giảng dạy hoặc hội chẩn trong điều kiện ánh sáng tự nhiên.
+2. **Chế độ Tối (Clinical Dark Mode):** Được thiết kế chuyên biệt cho phòng đọc ảnh chẩn đoán của bác sĩ X-quang/MRI. Giao diện sử dụng nền xanh đen sâu (`#0d1322`, `#111827`) đạt chuẩn chống mỏi thị giác (Eye-strain Reduction) khi làm việc liên tục trong thời gian dài. Toàn bộ các thành phần tương tác (khung chọn lát cắt, thanh cuộn, thanh trượt tinh chỉnh tham số, khung nạp tệp và mã lát cắt dạng Cyan Badge `rgba(14, 165, 233, 0.15)`) đều được tối ưu hóa độ tương phản và tự động đảo màu chữ, triệt tiêu hoàn toàn hiện tượng chói mắt hoặc mất chữ.
+
+### 7.3. Ba phân hệ nạp dữ liệu lâm sàng độc lập
+Để tạo sự thuận tiện tối đa cho bác sĩ và hội đồng đánh giá, bảng điều khiển (Sidebar) của trạm làm việc được quy hoạch thành 3 phân hệ nạp dữ liệu tách biệt rõ ràng:
+1. **Phân hệ 1: 4 Ca lâm sàng tiêu biểu (Benchmark Presets):** Tuyển chọn 4 trường hợp kinh điển từ tập dữ liệu TCGA-LGG nhằm minh họa tức thì các tình huống chẩn đoán:
+   * *Ca 1 (`TCGA_CS_6290_20000917_10`):* Khối u điển hình, bờ rõ ràng, độ tương phản cao (Đạt chỉ số Dice $0.971$).
+   * *Ca 2 (`TCGA_CS_6186_20000601_16`):* Khối u kích thước lớn ($2,079\text{ px}$), chiếm tỷ lệ lớn khoang sọ não.
+   * *Ca 3 (`TCGA_CS_4942_19970222_12`):* Khối u bờ phức tạp, ranh giới thâm nhiễm (Infiltrative border, Dice $0.943$).
+   * *Ca 4 (`TCGA_DU_5851_19950428_2`):* Lát cắt não lành hoàn toàn không có u ($0\text{ px}$ u), đóng vai trò ca đối chứng âm tính.
+2. **Phân hệ 2: Kho chuẩn TCGA-LGG (3,929 lát cắt):** Cho phép truy xuất toàn bộ kho dữ liệu thực nghiệm. Bác sĩ có thể lọc dữ liệu theo từng bệnh nhân trong số 110 bệnh nhân hoặc duyệt theo toàn bộ danh mục lát cắt. Khi chọn bất kỳ lát cắt nào, hệ thống tự động tải mặt nạ đối chứng Ground Truth chuyên gia tương ứng.
+3. **Phân hệ 3: Tải ảnh từ máy tính (Custom Clinical Upload):** Hỗ trợ bác sĩ tải lên tệp ảnh MRI mới ngoài tập dữ liệu (.png, .jpg, .tif) kèm tùy chọn tải thêm mặt nạ Ground Truth chuyên gia để kiểm thử tính tương thích tổng quát của pipeline trên dữ liệu ngoại vi.
+
+### 7.4. Phân hệ Phân đoạn u & Tích hợp Cổng Anomaly Gate tiền lọc
+Trạm làm việc cho phép linh hoạt cấu hình giải thuật phân đoạn cốt lõi và các tham số vận hành:
+* **Lựa chọn giải thuật:** Bác sĩ có thể chuyển đổi tức thì giữa **Marker-controlled Watershed** (Phương án khuyến nghị chính) và **Seeded Region Growing** (Phương án đối chứng) để so sánh hiệu năng trên cùng một lát cắt.
+* **Bộ tinh chỉnh tham số thời gian thực (Interactive Parameter Tuning):** Bố trí trong khung mở rộng (Expander) bao gồm: Hệ số ngưỡng Otsu ($0.8 - 1.5$), Kích thước phần tử cấu trúc Morphological Kernel ($3 \times 3 - 7 \times 7$), và Bán kính làm mờ Gaussian.
+* **Cổng kiểm tra tổn thương Anomaly Gate (Clinical Anomaly Gate):** Tích hợp thuật toán tiền lọc 2 tầng dựa trên phân tích phân bố cường độ mô não ($Z$-score $\ge 2.3$ và Độ tương phản cực đại $\ge 15\%$). Khi kích hoạt trên các lát cắt não lành (như Ca 4), hệ thống tự động phát hiện không có tổn thương tăng sáng bất thường, chặn hoàn toàn việc phân đoạn giả và trả về mặt nạ rỗng với độ đặc hiệu $100\%$ ($Dice = 1.0000$).
+
+### 7.5. Khu vực Chẩn đoán đa chế độ & Trực quan hóa y sinh chuyên sâu
+Khu vực trung tâm trạm làm việc cung cấp đầy đủ các góc nhìn khoa học hỗ trợ quyết định chẩn đoán:
+* **Hệ thống 5 thẻ chỉ số chẩn đoán (KPI Metric Cards):**
+  1. *Trạng thái chẩn đoán:* Báo động đỏ "PHÁT HIỆN KHỐI U" hoặc nhãn xanh "NÃO LÀNH (ÂM TÍNH)".
+  2. *Diện tích khối u:* Đo đếm chính xác số lượng pixel và quy đổi diện tích thực tế.
+  3. *Tỷ lệ chiếm chỗ:* Tỷ lệ phần trăm diện tích u trên tổng thiết diện nhu mô não sạch sọ.
+  4. *Độ tròn bờ u (Circularity):* Định lượng độ gồ ghề của đường biên ($C \approx 1$ dạng tròn đều, $C \ll 1$ bờ thâm nhiễm).
+  5. *Độ tương đồng y khoa:* Hiển thị điểm số Dice Similarity Coefficient và chỉ số Jaccard (IoU) đối chiếu với Ground Truth.
+* **Chế độ Lưới hiển thị 4 ô (Quad View):** Hiển thị trực quan toàn bộ tiến trình biến đổi ảnh số qua 4 khung hình song song:
+  $$[Ảnh\text{ MRI Gốc} \mid Ảnh\text{ Não Sạch Sọ} \mid Mặt\text{ Nạ Phân Đoạn U} \mid Khoanh\text{ Vùng Bounding Box Đỏ}]$$
+* **Chế độ So sánh đối chứng trực tiếp (Dual Comparison View):** Đặt mặt nạ phân đoạn của thuật toán cạnh mặt nạ Ground Truth của bác sĩ để đối chiếu bờ khối u.
+* **Bản đồ phân tích sai số y sinh (Clinical Error Map):** Mã hóa màu sai số trực quan trên nền ảnh MRI gốc giảm độ sáng ($40\%$ luminance):
+  * *Màu Xanh lá cây (True Positive - TP):* Vùng thuật toán định vị và phân đoạn hoàn toàn trùng khớp với chuyên gia.
+  * *Màu Đỏ tươi (False Positive - FP):* Vùng thuật toán nhận nhầm mô lành thành u (Báo động giả).
+  * *Màu Vàng cam (False Negative - FN):* Vùng khối u thực tế bị thuật toán bỏ sót (Bỏ sót tổn thương).
+* **Xuất báo cáo kết quả (CSV Export):** Cung cấp nút bấm tải xuống bảng dữ liệu tổng hợp các thông số chẩn đoán (ID ca bệnh, thuật toán, diện tích, tỷ lệ, độ tròn, điểm Dice/IoU, thời gian xử lý) phục vụ tích hợp trực tiếp vào Bệnh án điện tử (EMR/EHR).
 
 ![Hình 7.1: Giao diện trực quan hóa Quad View chẩn đoán và khoanh vùng Bounding Box đỏ](docs/images/pipeline_quad_sample.png)  
 *Hình 7.1: Giao diện trực quan hóa Quad View chẩn đoán và khoanh vùng Bounding Box đỏ cảnh báo u não*
 
-### 7.2. Hướng dẫn cài đặt và khởi chạy ứng dụng
+### 7.6. Hướng dẫn cài đặt và vận hành hệ thống
+Để khởi chạy trạm làm việc, người dùng chỉ cần thực hiện câu lệnh duy nhất từ thư mục gốc của dự án:
 ```bash
 streamlit run demo/app.py
 ```
-Giao diện ứng dụng mở trên trình duyệt tại địa chỉ `http://localhost:8501` sẵn sàng phục vụ bác sĩ chẩn đoán tương tác.
+Ứng dụng sẽ tự động mở trên trình duyệt mặc định tại địa chỉ `http://localhost:8501`. Hệ thống yêu cầu môi trường Python 3.10+ với các thư viện `streamlit`, `opencv-python`, `numpy`, `pandas`, `scipy` và sẵn sàng vận hành trên các máy trạm y tế chuẩn mà không đòi hỏi phần cứng GPU chuyên dụng.
 
 ---
 

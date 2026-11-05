@@ -17,7 +17,9 @@ def run_benchmark(
     images_dir: str,
     masks_dir: str,
     predict_fn: Callable[[np.ndarray], np.ndarray],
-    method_name: str = "method"
+    method_name: str = "method",
+    max_samples: Optional[int] = None,
+    sample_ids: Optional[List[str]] = None,
 ) -> pd.DataFrame:
     """Chạy thực nghiệm đánh giá trên tập dữ liệu và tính toán độ trễ trung bình.
     
@@ -26,11 +28,19 @@ def run_benchmark(
         masks_dir: Đường dẫn thư mục mặt nạ Ground Truth (.png).
         predict_fn: Hàm nhận ảnh MRI gốc và trả về mặt nạ phân đoạn u nhị phân.
         method_name: Tên phương pháp để ghi nhận vào bảng báo cáo.
+        max_samples: Số lượng mẫu tối đa cần đánh giá (mặc định None là toàn bộ).
+        sample_ids: Danh sách mã ca cụ thể cần đánh giá (mặc định None).
         
     Returns:
         pd.DataFrame: Bảng kết quả chi tiết từng ca bệnh và dòng Mean ± Std ở cuối.
     """
     image_files = sorted([f for f in os.listdir(images_dir) if f.endswith(".png")])
+    if sample_ids is not None:
+        target_set = {s if s.endswith(".png") else f"{s}.png" for s in sample_ids}
+        image_files = [f for f in image_files if f in target_set]
+    elif max_samples is not None:
+        image_files = image_files[:max_samples]
+
     records: List[Dict[str, Any]] = []
     latencies: List[float] = []
 
