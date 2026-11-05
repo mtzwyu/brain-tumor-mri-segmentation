@@ -78,6 +78,9 @@ if is_light:
         --scrollbar-track: #f1f5f9;
         --scrollbar-thumb: #94a3b8;
         --scrollbar-thumb-hover: #0284c7;
+        --code-bg: #e0f2fe;
+        --code-border: #bae6fd;
+        --code-text: #0284c7;
     """
 else:
     theme_vars = """
@@ -112,6 +115,9 @@ else:
         --scrollbar-track: #0d1322;
         --scrollbar-thumb: #475569;
         --scrollbar-thumb-hover: #0284c7;
+        --code-bg: rgba(14, 165, 233, 0.15);
+        --code-border: rgba(56, 189, 248, 0.35);
+        --code-text: #38bdf8;
     """
 
 st.markdown(
@@ -523,6 +529,25 @@ st.markdown(
         border-color: #0284c7 !important;
       }
 
+
+      /* Inline Code & Mã Lát Cắt (Hiển thị rõ nét ở cả 2 chế độ) */
+      code,
+      kbd,
+      samp,
+      .stMarkdown code,
+      [data-testid="stMarkdownContainer"] code {
+        background-color: var(--code-bg) !important;
+        color: var(--code-text) !important;
+        -webkit-text-fill-color: var(--code-text) !important;
+        border: 1px solid var(--code-border) !important;
+        border-radius: 6px !important;
+        padding: 3px 8px !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 0.88em !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.02em !important;
+      }
+
       /* Top Header Hub */
       .pacs-header {
         background: var(--pacs-header-bg);
@@ -874,6 +899,14 @@ with st.sidebar:
                 st.session_state["current_sample_id"] = sample_id
                 input_img, input_gt_mask = load_image_and_mask(sample_id)
                 case_clinical_desc = f"Lát cắt chuẩn hóa từ kho dữ liệu TCGA-LGG ({len(filtered)} ảnh phù hợp bộ lọc)."
+                st.markdown(
+                    f"""
+                    <div style="margin-top: 0.4rem; font-size: 0.8rem; color: var(--text-secondary);">
+                      Đang nạp lát: <code>{sample_id}</code>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
             else:
                 st.warning("Không tìm thấy ảnh nào khớp với mã lọc.")
         else:
@@ -1010,7 +1043,7 @@ st.markdown(
           {mode_short_title}
         </span>
         <span style="font-size: 0.85rem; color: var(--text-secondary);">
-          Mã lát cắt: <code style="color: var(--text-primary); font-weight: 700;">{sample_id if sample_id else "Chưa chọn"}</code>
+          Mã lát cắt: <code>{sample_id if sample_id else "Chưa chọn"}</code>
         </span>
       </div>
       <div style="font-size: 0.8rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
