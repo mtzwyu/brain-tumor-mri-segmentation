@@ -348,10 +348,8 @@ brain-tumor-mri-segmentation/
 ## 10. Nhóm Tác giả & Đơn vị Đào tạo
 
 ### Nhóm Sinh viên Thực hiện:
-| STT | Họ và Tên | Mã số sinh viên |
-| :---: | :--- | :---: |
-| 1 | **Hà Mạnh Trường** | **2045240326** |
-| 2 | **Huỳnh Tâm Trí** | **2045240315** |
+- **Hà Mạnh Trường**
+- **Huỳnh Tâm Trí**
 
 ### Đơn vị Đào tạo & Quản lý Học phần:
 - **Trường Đại học Công Thương TP. Hồ Chí Minh (HUIT)**
