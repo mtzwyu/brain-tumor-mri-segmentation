@@ -178,18 +178,6 @@ pytest -v
 ```
 Kiểm thử toàn diện **27 bài test** bao quát các trường hợp biên: ma trận rỗng, mặt nạ hoàn hảo, mặt nạ lệch hoàn toàn, tính toán đặc trưng hình học, phân đoạn Watershed/Region Growing và kiểm định bất biến DIP.
 
-### 6.7. Thực thi 4 Jupyter Notebooks & Xuất Báo cáo HTML
-```bash
-python scripts/run_notebooks.py
-```
-Tự động chạy lần lượt 4 notebooks nghiên cứu và xuất bản báo cáo HTML hoàn chỉnh vào thư mục `reports/notebooks/`.
-
-### 6.8. Xuất Báo cáo Đồ án Toàn văn Word (.docx)
-```bash
-python scripts/export_report_docx.py
-```
-Sinh tệp báo cáo toàn văn [BAO_CAO_DO_AN_XLAS.docx](docs/BAO_CAO_DO_AN_XLAS.docx) tuân thủ 100% quy chuẩn văn bản của Bộ môn Xử lý ảnh số - HUIT.
-
 ---
 
 ## 7. Cấu trúc Thư mục Dự án (Repository Structure)
@@ -229,14 +217,9 @@ brain-tumor-mri-segmentation/
 ├── scripts/                        # Scripts tự động hóa và tiện ích
 │   ├── analyze_watershed_sensitivity.py # Phân tích độ nhạy siêu tham số Watershed
 │   ├── download_full_dataset.py    # Tải 3.929 ảnh TCGA-LGG từ Hugging Face
-│   ├── enrich_slide_animations.py  # Tối ưu hiệu ứng hoạt họa bài thuyết trình
 │   ├── export_demo_quad.py         # Kết xuất ảnh Quad View chẩn đoán
-│   ├── export_report_docx.py       # Xuất báo cáo đồ án toàn văn Microsoft Word
 │   ├── export_skull_stripping_figure.py # Xuất hình minh họa 6 bước bóc sọ
-│   ├── generate_slides.js          # Sinh file thuyết trình PowerPoint 20 slide
-│   ├── run_all_experiments.py      # Benchmark đa tiến trình 3.929 lát cắt
-│   ├── run_notebooks.py            # Chạy tự động 4 notebooks và kết xuất HTML
-│   └── verify_docx_style_rules.py  # Kiểm chuẩn tự động 10 quy tắc định dạng báo cáo Word
+│   └── run_all_experiments.py      # Benchmark đa tiến trình 3.929 lát cắt
 ├── src/                            # Mã nguồn module xử lý ảnh số lõi
 │   ├── __init__.py
 │   ├── pipeline.py                 # Bộ điều phối toàn trình BrainTumorPipeline
