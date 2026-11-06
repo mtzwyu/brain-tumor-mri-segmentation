@@ -249,9 +249,6 @@ Thuật toán xác định tọa độ điểm pixel có cường độ sáng c�
 ![Hình 6.1: Biểu đồ cột so sánh hiệu năng Dice, IoU, Sensitivity, Specificity](reports/figures/benchmark_metrics_comparison.png)  
 *Hình 6.1: Biểu đồ cột so sánh hiệu năng Dice, IoU, Sensitivity, Specificity giữa Watershed và Region Growing trên 3,929 lát cắt*
 
-![Hình 6.2: Biểu đồ phân bố mật độ phân vị của chỉ số tương đồng Dice và độ trễ thực thi](reports/figures/benchmark_distribution.png)  
-*Hình 6.2: Biểu đồ phân bố mật độ phân vị của chỉ số tương đồng Dice và độ trễ thực thi (ms) trên tập benchmark*
-
 ### 6.3. Phân tích kết quả thực nghiệm và các ca thất bại (Failure Cases)
 1. **Ưu thế vượt trội của Marker-controlled Watershed:** Nhờ cơ chế gieo mầm dựa trên biến đổi khoảng cách Euclidean (EDT), Watershed đạt chỉ số Dice trung bình 0.4446 (gấp 2.23 lần Region Growing: 0.1990) và thời gian thực thi ổn định chỉ ~6.13 ms/lát cắt. Thuật toán neo hạt giống vững chắc ở tâm u ngay cả khi biên u có độ dốc mức xám yếu.
 2. **Hạn chế của Seeded Region Growing khi mở rộng quy mô:** Việc tìm hạt giống bằng giá trị cực đại cường độ đơn lẻ rất nhạy cảm với các tàn dư mạch máu hoặc vùng chất xám tăng quang. Ở các ca u nhỏ ($< 1.5\%$ diện tích não), hạt giống dễ bị lệch ra ngoài ổ u dẫn đến độ tương đồng thấp ($Dice \approx 0$).

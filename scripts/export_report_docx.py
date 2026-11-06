@@ -37,7 +37,6 @@ from src.report.docx_builder import ReportBuilder
 FIG_SKULL = REPO_ROOT / "reports" / "figures" / "skull_stripping_steps.png"
 FIG_SENS = REPO_ROOT / "reports" / "figures" / "watershed_param_sensitivity.png"
 FIG_METRICS = REPO_ROOT / "reports" / "figures" / "benchmark_metrics_comparison.png"
-FIG_DIST = REPO_ROOT / "reports" / "figures" / "benchmark_distribution.png"
 FIG_QUAD = REPO_ROOT / "docs" / "images" / "pipeline_quad_sample.png"
 
 
@@ -171,7 +170,6 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
         ("Hình 4.1: Chi tiết 6 bước trong quy trình Tách sọ não Skull Stripping trên ảnh MRI", "15"),
         ("Hình 5.1: Đồ thị khảo sát độ nhạy của siêu tham số dist_thresh_ratio trong giải thuật Marker-controlled Watershed", "17"),
         ("Hình 6.1: Biểu đồ cột so sánh hiệu năng Dice, IoU, Sensitivity, Specificity giữa Watershed và Region Growing trên 3,929 lát cắt", "20"),
-        ("Hình 6.2: Biểu đồ phân bố mật độ phân vị của chỉ số tương đồng Dice và độ trễ thực thi (ms) trên tập benchmark", "21"),
         ("Hình 7.1: Giao diện trực quan hóa Quad View chẩn đoán và khoanh vùng Bounding Box đỏ cảnh báo u não", "24"),
     ]
     for f_title, f_pg in list_figures:
@@ -472,8 +470,8 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
 
     builder.add_heading_2("6.2. Đồ thị đối chiếu chỉ số y sinh và phân bố hiệu năng")
     builder.add_paragraph(
-        "Nhằm phân tích trực quan sự chênh lệch hiệu năng giữa hai phương pháp, nhóm đã xuất bản bộ đồ thị nghiên cứu độ phân giải cao "
-        "đối chiếu toàn diện 4 chỉ số chất lượng phân đoạn và phân bố mật độ phân vị:"
+        "Nhằm phân tích trực quan sự chênh lệch hiệu năng giữa hai phương pháp, nhóm đã xuất bản đồ thị nghiên cứu độ phân giải cao "
+        "đối chiếu toàn diện 4 chỉ số chất lượng phân đoạn:"
     )
 
     if FIG_METRICS.exists():
@@ -481,13 +479,6 @@ def build_full_report_docx(output_path: str = "docs/BAO_CAO_DO_AN_XLAS.docx") ->
             str(FIG_METRICS),
             caption="Hình 6.1: Biểu đồ cột so sánh hiệu năng Dice, IoU, Sensitivity, Specificity giữa Watershed và Region Growing trên 3,929 lát cắt",
             width=14.5
-        )
-
-    if FIG_DIST.exists():
-        builder.add_figure(
-            str(FIG_DIST),
-            caption="Hình 6.2: Biểu đồ phân bố mật độ phân vị của chỉ số tương đồng Dice và độ trễ thực thi (ms) trên tập benchmark",
-            width=14.0
         )
 
     builder.add_heading_2("6.3. Phân tích kết quả thực nghiệm và các ca thất bại (Failure Cases Analysis)")
@@ -753,8 +744,6 @@ def sync_document_via_word_com(docx_path: str) -> None:
                     figure_pages["Hình 5.1:"] = p.Range.Information(3)
                 elif txt.startswith("Hình 6.1:"):
                     figure_pages["Hình 6.1:"] = p.Range.Information(3)
-                elif txt.startswith("Hình 6.2:"):
-                    figure_pages["Hình 6.2:"] = p.Range.Information(3)
                 elif txt.startswith("Hình 7.1:"):
                     figure_pages["Hình 7.1:"] = p.Range.Information(3)
 
