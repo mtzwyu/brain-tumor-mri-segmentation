@@ -203,7 +203,7 @@ brain-tumor-mri-segmentation/
 ├── scripts/                        # Scripts tự động hóa
 │   ├── download_full_dataset.py    # Tải 3.929 ảnh TCGA-LGG từ Hugging Face
 │   ├── run_all_experiments.py      # Benchmark đa tiến trình 3.929 lát cắt
-│   └── verify_day2_contract.py     # Kiểm chuẩn tự động hợp đồng kỹ thuật DIP
+│   └── verify_docx_style_rules.py  # Kiểm chuẩn tự động 10 quy tắc định dạng báo cáo Word
 ├── src/                            # Mã nguồn module xử lý ảnh số lõi
 │   ├── __init__.py
 │   ├── pipeline.py                 # Bộ điều phối toàn trình BrainTumorPipeline
