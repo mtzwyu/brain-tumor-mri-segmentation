@@ -7811,14 +7811,15 @@ a.anchor-link {
 </ul>
 <hr/>
 <h2 id="1.-C%C6%A1-s%E1%BB%9F-l%C3%BD-thuy%E1%BA%BFt-DIP-(Gonzalez-&amp;-Woods-Ch.-3,-5-&amp;-9)">1. Cơ sở lý thuyết DIP (Gonzalez &amp; Woods Ch. 3, 5 &amp; 9)<a class="anchor-link" href="#1.-C%C6%A1-s%E1%BB%9F-l%C3%BD-thuy%E1%BA%BFt-DIP-(Gonzalez-&amp;-Woods-Ch.-3,-5-&amp;-9)">¶</a></h2><ol>
-<li><strong>Khử nhiễu Rician:</strong> Áp dụng <strong>Bilateral Filter</strong> phi tuyến nhằm lọc nhiễu hạt y tế nhưng bảo toàn độ dốc cường độ tại ranh giới khối u (tránh làm nhòe biên như bộ lọc Gaussian).</li>
+<li><strong>Khử nhiễu Rician:</strong> Áp dụng <strong>Bilateral Filter</strong> phi tuyến nhằm lọc nhiễu hạt y tế nhưng bảo toàn độ dốc cường độ tại ranh giới khối u:
+$$I_{\text{filtered}}(p) = \frac{1}{W_p} \sum_{q \in \Omega} I(q) \cdot g_{\sigma_s}(\|p - q\|) \cdot g_{\sigma_r}(|I(p) - I(q)|)$$</li>
 <li><strong>Cân bằng tương phản:</strong> Áp dụng <strong>CLAHE</strong> (Contrast Limited Adaptive Histogram Equalization) làm rõ cấu trúc mô mềm chất trắng / chất xám.</li>
 <li><strong>Kỹ thuật Tách sọ não kinh điển (Skull Stripping):</strong><ul>
-<li><em>Otsu Thresholding:</em> Nhị phân hóa tự động phân tách phần đầu khỏi nền đen.</li>
-<li><em>Morphological Opening:</em> Phép mở với phần tử cấu trúc dạng đĩa (Disk/Ellipse structuring element) cắt đứt các "cầu nối mô" giữa màng não và xương sọ.</li>
+<li><em>Otsu Thresholding:</em> Nhị phân hóa tự động phân tách phần đầu khỏi nền đen dựa trên cực đại hóa phương sai giữa các lớp $\sigma_B^2(t)$.</li>
+<li><em>Morphological Opening:</em> Phép mở với phần tử cấu trúc dạng elip $B_{5 \times 5}$: $A \circ B = (A \ominus B) \oplus B$ cắt đứt các cầu nối mô giữa màng não và xương sọ.</li>
 <li><em>Largest Connected Component (LCC):</em> Trích xuất thành phần liên thông có diện tích lớn nhất (nhu mô não).</li>
-<li><em>Hole Filling:</em> Lấp đầy lỗ trống não thất bằng phép bù nhị phân và thuật toán FloodFill.</li>
-<li><em>Bitwise-AND:</em> Nhân mặt nạ não với ảnh gốc để thu được ảnh não sạch sọ hoàn hảo.</li>
+<li><em>Hole Filling:</em> Lấp đầy lỗ trống não thất bằng phép bù nhị phân và toán tử đóng hình thái học $A \bullet B = (A \oplus B) \ominus B$.</li>
+<li><em>Bitwise-AND:</em> Nhân mặt nạ não với ảnh gốc để thu được ảnh não sạch sọ hoàn hảo: $I_{\text{stripped}} = I \odot M_{\text{brain}}$.</li>
 </ul>
 </li>
 </ol>

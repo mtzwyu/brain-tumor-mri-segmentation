@@ -7815,11 +7815,17 @@ a.anchor-link {
 </ul>
 <hr/>
 <h2 id="1.-B%E1%BB%99-%C4%91o-%C4%91%E1%BB%8Bnh-l%C6%B0%E1%BB%A3ng-y-khoa-chu%E1%BA%A9n-m%E1%BB%B1c-(Theo-Khung-T%E1%BB%95ng-Qu%C3%A1t-M%E1%BB%A5c-II.6-&amp;-IV)">1. Bộ đo định lượng y khoa chuẩn mực (Theo Khung Tổng Quát Mục II.6 &amp; IV)<a class="anchor-link" href="#1.-B%E1%BB%99-%C4%91o-%C4%91%E1%BB%8Bnh-l%C6%B0%E1%BB%A3ng-y-khoa-chu%E1%BA%A9n-m%E1%BB%B1c-(Theo-Khung-T%E1%BB%95ng-Qu%C3%A1t-M%E1%BB%A5c-II.6-&amp;-IV)">¶</a></h2><ol>
-<li><strong>Dice Similarity Coefficient (DSC / F1):</strong> $	ext{Dice} = rac{2|P \cap G|}{|P| + |G|}$</li>
-<li><strong>Jaccard Index (IoU):</strong> $	ext{IoU} = rac{|P \cap G|}{|P \cup G|} = rac{	ext{Dice}}{2 - 	ext{Dice}}$</li>
-<li><strong>Độ nhạy (Sensitivity / Recall):</strong> $	ext{Sensitivity} = rac{	ext{TP}}{	ext{TP} + 	ext{FN}}$ (Đo khả năng không bỏ sót pixel u)</li>
-<li><strong>Độ đặc hiệu (Specificity):</strong> $	ext{Specificity} = rac{	ext{TN}}{	ext{TN} + 	ext{FP}}$ (Đo khả năng không nhận nhầm não lành)</li>
-<li><strong>Độ trễ tính toán:</strong> Thời gian xử lý trung bình trên từng khung hình/ảnh (Latency ms).</li>
+<li><strong>Dice Similarity Coefficient (DSC / F1-score):</strong>
+$$\text{Dice} = \frac{2|P \cap G|}{|P| + |G|} = \frac{2\text{TP}}{2\text{TP} + \text{FP} + \text{FN}}$$</li>
+<li><strong>Jaccard Index (IoU - Intersection over Union):</strong>
+$$\text{IoU} = \frac{|P \cap G|}{|P \cup G|} = \frac{\text{Dice}}{2 - \text{Dice}} = \frac{\text{TP}}{\text{TP} + \text{FP} + \text{FN}}$$</li>
+<li><strong>Độ nhạy (Sensitivity / Recall):</strong>
+$$\text{Sensitivity} = \frac{\text{TP}}{\text{TP} + \text{FN}}$$
+<em>(Đo lường khả năng không bỏ sót pixel u não, cực kỳ quan trọng trong sàng lọc y tế).</em></li>
+<li><strong>Độ đặc hiệu (Specificity):</strong>
+$$\text{Specificity} = \frac{\text{TN}}{\text{TN} + \text{FP}}$$
+<em>(Đo lường khả năng không nhận nhầm mô não lành là khối u).</em></li>
+<li><strong>Độ trễ tính toán (Computational Latency):</strong> Thời gian xử lý trung bình trên từng khung hình/lát cắt (ms/slice).</li>
 </ol>
 </div>
 </div>
@@ -7916,13 +7922,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Đã hoàn thành đánh giá 20 mẫu cho Watershed và 20 mẫu cho Region Growing.</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
+<pre>Đã hoàn thành đánh giá 20 mẫu cho Watershed và 20 mẫu cho Region Growing.
 </pre>
 </div>
 </div>
@@ -8035,8 +8035,8 @@ a.anchor-link {
 <tr>
 <th>4</th>
 <td>5. Thời gian xử lý trung bình (Latency)</td>
-<td>3.35 ± 0.79 ms</td>
-<td>1.73 ± 0.54 ms</td>
+<td>3.73 ± 1.04 ms</td>
+<td>1.78 ± 0.41 ms</td>
 </tr>
 </tbody>
 </table>

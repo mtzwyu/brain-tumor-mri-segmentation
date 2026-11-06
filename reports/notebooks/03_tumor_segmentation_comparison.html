@@ -7817,23 +7817,24 @@ a.anchor-link {
 <h2 id="1.-Quy-t%E1%BA%AFc-v%C3%A0ng-c%E1%BB%A7a-B%E1%BB%99-m%C3%B4n:-B%E1%BA%AFt-bu%E1%BB%99c-so-s%C3%A1nh-t%E1%BB%91i-thi%E1%BB%83u-02-ph%C6%B0%C6%A1ng-%C3%A1n">1. Quy tắc vàng của Bộ môn: Bắt buộc so sánh tối thiểu 02 phương án<a class="anchor-link" href="#1.-Quy-t%E1%BA%AFc-v%C3%A0ng-c%E1%BB%A7a-B%E1%BB%99-m%C3%B4n:-B%E1%BA%AFt-bu%E1%BB%99c-so-s%C3%A1nh-t%E1%BB%91i-thi%E1%BB%83u-02-ph%C6%B0%C6%A1ng-%C3%A1n">¶</a></h2><p>Đồ án cài đặt và so sánh đối chứng 2 thuật toán DIP kinh điển:</p>
 <ul>
 <li><strong>Phương án A (Baseline chính):</strong> <strong>Marker-controlled Watershed</strong><ul>
-<li>Phân vị cường độ cao $
-ightarrow$ Biến đổi khoảng cách Euclidean (<code>cv2.distanceTransform</code>) $
-ightarrow$ Tìm Sure Foreground &amp; Sure Background $
-ightarrow$ Đánh dấu Markers $
-ightarrow$ Phân thủy Watershed.</li>
+<li>Phân vị cường độ cao $\rightarrow$ Biến đổi khoảng cách Euclidean (<code>cv2.distanceTransform</code>):
+$$D(p) = \min_{q \in \text{Background}} \|p - q\|_2$$</li>
+<li>Tìm Sure Foreground ($D \ge \text{threshold}$) &amp; Sure Background $\rightarrow$ Đánh dấu Markers $\rightarrow$ Phân thủy Watershed theo bề mặt gradient mức xám.</li>
 </ul>
 </li>
 <li><strong>Phương án B (Phương án đối chứng):</strong> <strong>Seeded Region Growing</strong><ul>
-<li>Tự động tìm hạt giống tại vị trí cực đại cường độ trong nhu mô não $
-ightarrow$ Lan truyền 8 hướng láng giềng theo hàng đợi BFS với ngưỡng dung sai $|I(p) - I(seed)| \le 	ext{tolerance}$ $
-ightarrow$ Hậu xử lý hình thái học.</li>
+<li>Tự động tìm hạt giống $(x_0, y_0)$ tại vị trí cực đại cường độ trong nhu mô não $\rightarrow$ Lan truyền 8 hướng láng giềng theo hàng đợi BFS với ngưỡng dung sai:
+$$|I(p) - I(x_0, y_0)| \le T_{\text{tolerance}}$$</li>
+<li>Hậu xử lý hình thái học loại bỏ các cụm điểm rời rạc.</li>
 </ul>
 </li>
 </ul>
 <h2 id="2.-%C4%90o-%C4%91%E1%BA%A1c-%C4%91%E1%BA%B7c-tr%C6%B0ng-h%C3%ACnh-h%E1%BB%8Dc:-R%C3%BAt-tr%C3%ADch-%C4%91%E1%BA%B7c-tr%C6%B0ng-h%C3%ACnh-h%E1%BB%8Dc-v%C3%A0-%C4%91o-l%C6%B0%E1%BB%9Dng-(B%C6%B0%E1%BB%9Bc-4)">2. Đo đạc đặc trưng hình học: Rút trích đặc trưng hình học và đo lường (Bước 4)<a class="anchor-link" href="#2.-%C4%90o-%C4%91%E1%BA%A1c-%C4%91%E1%BA%B7c-tr%C6%B0ng-h%C3%ACnh-h%E1%BB%8Dc:-R%C3%BAt-tr%C3%ADch-%C4%91%E1%BA%B7c-tr%C6%B0ng-h%C3%ACnh-h%E1%BB%8Dc-v%C3%A0-%C4%91o-l%C6%B0%E1%BB%9Dng-(B%C6%B0%E1%BB%9Bc-4)">¶</a></h2><ul>
-<li><strong>Diện tích u:</strong> $S_{	ext{tumor}} = \sum 	ext{pixel}$ và tỷ lệ $\%$ u / diện tích não.</li>
-<li><strong>Độ tròn (Circularity / Compactness):</strong> $C = rac{4\pi \cdot 	ext{Area}}{	ext{Perimeter}^2}$ ($C pprox 1$: u tròn đều lành tính Meningioma; $C \ll 1$: bờ gồ ghề ác tính Glioma).</li>
+<li><strong>Diện tích u:</strong> $S_{\text{tumor}} = \sum_{p \in \text{Tumor}} 1 \text{ (pixels)}$ và diện tích thực tế: $S_{\text{mm}^2} = S_{\text{tumor}} \cdot \Delta x \cdot \Delta y$.</li>
+<li><strong>Tỷ lệ chiếm dụng não:</strong> $R = \frac{S_{\text{tumor}}}{S_{\text{brain}}} \times 100\%$.</li>
+<li><strong>Độ tròn (Circularity / Compactness):</strong>
+$$C = \frac{4\pi \cdot \text{Area}}{\text{Perimeter}^2}$$
+($C \approx 1$: u tròn đều lành tính Meningioma; $C \ll 1$: bờ gồ ghề, xâm lấn ác tính Glioma).</li>
 <li><strong>Định vị:</strong> Trích xuất Bounding Box màu đỏ cảnh báo quanh khối u.</li>
 </ul>
 </div>
