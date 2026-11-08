@@ -1,14 +1,32 @@
+# =============================================================================
+# Brain Tumor MRI Segmentation & Quantitative Analysis (TCGA-LGG)
+# Khoa CNTT - Bộ môn Xử lý ảnh số - Trường ĐH Công Thương TP.HCM (HUIT)
+# =============================================================================
+
+# --- 1. Core DIP & Scientific Computing ---
 numpy>=1.24.0
 scipy>=1.10.0
 opencv-python-headless>=4.8.0
 scikit-image>=0.20.0
 scikit-learn>=1.2.0
+pandas>=2.0.0
+pillow>=9.5.0
+
+# --- 2. Data Visualization & Statistical Plotting ---
 matplotlib>=3.7.0
 seaborn>=0.12.0
-pillow>=9.5.0
+
+# --- 3. Interactive Web Demo GUI (Streamlit PACS Workstation) ---
 streamlit>=1.25.0
-pypdf>=3.9.0
-typst>=0.11.0
+
+# --- 4. Dataset Ingestion & Remote Hub ---
+huggingface_hub>=0.20.0
+
+# --- 5. Jupyter Notebooks Execution & Export ---
+ipykernel>=6.20.0
+nbformat>=5.9.0
+nbconvert>=7.10.0
+
+# --- 6. Testing, Quality Assurance & Configuration ---
 pytest>=7.0.0
 pyyaml>=6.0.0
-pandas>=2.0.0

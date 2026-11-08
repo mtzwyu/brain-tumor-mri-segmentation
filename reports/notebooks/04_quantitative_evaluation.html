@@ -7840,22 +7840,26 @@ $$\text{Specificity} = \frac{\text{TN}}{\text{TN} + \text{FP}}$$
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">".."</span><span class="p">))</span>
+<span class="n">REPO_ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span> <span class="k">if</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span> <span class="o">/</span> <span class="s2">"src"</span><span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="k">else</span> <span class="n">Path</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">REPO_ROOT</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">REPO_ROOT</span><span class="p">))</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">src.preprocessing.skull_strip</span><span class="w"> </span><span class="kn">import</span> <span class="n">strip_skull</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">src.segmentation.watershed</span><span class="w"> </span><span class="kn">import</span> <span class="n">segment_watershed</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">src.segmentation.region_growing</span><span class="w"> </span><span class="kn">import</span> <span class="n">segment_region_growing</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">src.evaluation.benchmark</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_benchmark</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">src.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">verify_tumor_presence</span>
 
-<span class="n">base_dir</span> <span class="o">=</span> <span class="s2">"../data/full"</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">"../data/full/images"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">"../data/full/images"</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">50</span> <span class="k">else</span> <span class="s2">"../data/full"</span>
-<span class="n">img_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"images"</span><span class="p">)</span>
-<span class="n">mask_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">"masks"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sẵn sàng thực thi benchmark trên tập dữ liệu: </span><span class="si">{</span><span class="n">base_dir</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">img_dir</span><span class="p">))</span><span class="si">}</span><span class="s2"> lát cắt)..."</span><span class="p">)</span>
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"full"</span>
+<span class="n">img_dir</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">DATA_DIR</span> <span class="o">/</span> <span class="s2">"images"</span><span class="p">)</span>
+<span class="n">mask_dir</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">DATA_DIR</span> <span class="o">/</span> <span class="s2">"masks"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sẵn sàng thực thi benchmark trên tập dữ liệu: </span><span class="si">{</span><span class="n">DATA_DIR</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">img_dir</span><span class="p">))</span><span class="si">}</span><span class="s2"> lát cắt)..."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7868,7 +7872,7 @@ $$\text{Specificity} = \frac{\text{TN}}{\text{TN} + \text{FP}}$$
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Sẵn sàng thực thi benchmark trên tập dữ liệu: ../data/full (3929 lát cắt)...
+<pre>Sẵn sàng thực thi benchmark trên tập dữ liệu: C:\Users\xpaga\Documents\xlas\data\full (3929 lát cắt)...
 </pre>
 </div>
 </div>
@@ -8035,8 +8039,8 @@ $$\text{Specificity} = \frac{\text{TN}}{\text{TN} + \text{FP}}$$
 <tr>
 <th>4</th>
 <td>5. Thời gian xử lý trung bình (Latency)</td>
-<td>3.73 ± 1.04 ms</td>
-<td>1.78 ± 0.41 ms</td>
+<td>3.48 ± 1.43 ms</td>
+<td>1.72 ± 0.87 ms</td>
 </tr>
 </tbody>
 </table>

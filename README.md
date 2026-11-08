@@ -28,6 +28,7 @@
 ---
 
 ## Mục lục điều hướng (Table of Contents)
+- [📖 Cẩm nang Hướng dẫn Sử dụng Chi tiết (Full User Guide)](docs/HUONG_DAN_SU_DUNG.md)
 - [1. Giới thiệu & Động lực nghiên cứu (Overview & Motivation)](#1-giới-thiệu--động-lực-nghiên-cứu)
 - [2. Tính năng Nổi bật (Key Features)](#2-tính-năng-nổi-bật)
 - [3. Kiến trúc Pipeline 4 Tầng (System Architecture)](#3-kiến-trúc-pipeline-4-tầng)
@@ -173,6 +174,9 @@ Dự án sử dụng bộ dữ liệu chuẩn y sinh quốc tế **TCGA-LGG (The
 
 ## 6. Hướng dẫn Cài đặt & Khởi chạy (Quickstart)
 
+> [!TIP]
+> 📖 **Cẩm nang vận hành đầy đủ:** Quý Thầy/Cô và người dùng có thể tham khảo tài liệu chi tiết tại **[docs/HUONG_DAN_SU_DUNG.md](docs/HUONG_DAN_SU_DUNG.md)** bao gồm **Kịch bản nghiệm thu nhanh 5 phút**, hướng dẫn chi tiết từng nút bấm trên trạm Streamlit PACS, giải thích chỉ số y sinh và xử lý sự cố.
+
 ### 6.1. Yêu cầu Hệ thống
 - **Hệ điều hành:** Windows 10/11, macOS, hoặc Linux Ubuntu 20.04+.
 - **Python:** Phiên bản **3.10** trở lên.
@@ -288,6 +292,7 @@ brain-tumor-mri-segmentation/
 │   ├── app.py                      # Mã nguồn chính giao diện chẩn đoán trực quan (Dual-mode)
 │   └── utils.py                    # Tiện ích nạp ảnh, tạo ảnh trung gian và xuất file
 ├── docs/                           # Báo cáo đồ án toàn văn và tài liệu kỹ thuật
+│   ├── HUONG_DAN_SU_DUNG.md        # Cẩm nang hướng dẫn sử dụng & kịch bản nghiệm thu 5 phút
 │   ├── BAO_CAO_DO_AN_XLAS.docx     # Báo cáo tổng kết đồ án toàn văn Microsoft Word (chuẩn HUIT)
 │   ├── BAO_CAO_DO_AN_XLAS.md       # Toàn văn báo cáo đồ án định dạng Markdown
 │   ├── BENCHMARK_RESULTS.csv       # Tổng hợp định lượng theo lát u và não lành
