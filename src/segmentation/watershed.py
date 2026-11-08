@@ -4,7 +4,7 @@ Phụ trách: Hà Mạnh Trường (MSSV: 2045240326).
 Tài liệu tham khảo: Gonzalez & Woods (4th Ed), Chapter 10 (Image Segmentation - Watersheds).
 """
 
-from typing import Dict, Tuple, Union
+from typing import Dict, Literal, Tuple, Union, overload
 import numpy as np
 import cv2
 from .base import BaseSegmenter
@@ -57,6 +57,30 @@ class WatershedSegmenter(BaseSegmenter):
         self.bg_dilate_kernel = bg_dilate_kernel
         self.min_tumor_area = min_tumor_area
 
+    @overload
+    def segment(
+        self,
+        brain_image: np.ndarray,
+        return_intermediates: Literal[False] = False
+    ) -> np.ndarray:
+        ...
+
+    @overload
+    def segment(
+        self,
+        brain_image: np.ndarray,
+        return_intermediates: Literal[True] = True
+    ) -> Tuple[np.ndarray, Dict[str, np.ndarray]]:
+        ...
+
+    @overload
+    def segment(
+        self,
+        brain_image: np.ndarray,
+        return_intermediates: bool = False
+    ) -> Union[np.ndarray, Tuple[np.ndarray, Dict[str, np.ndarray]]]:
+        ...
+
     def segment(
         self,
         brain_image: np.ndarray,
@@ -69,6 +93,39 @@ class WatershedSegmenter(BaseSegmenter):
             min_tumor_area=self.min_tumor_area,
             return_intermediates=return_intermediates
         )
+
+
+@overload
+def segment_watershed(
+    brain_image: np.ndarray,
+    dist_thresh_ratio: float = 0.4,
+    bg_dilate_kernel: int = 3,
+    min_tumor_area: int = 50,
+    return_intermediates: Literal[False] = False,
+) -> np.ndarray:
+    ...
+
+
+@overload
+def segment_watershed(
+    brain_image: np.ndarray,
+    dist_thresh_ratio: float = 0.4,
+    bg_dilate_kernel: int = 3,
+    min_tumor_area: int = 50,
+    return_intermediates: Literal[True] = True,
+) -> Tuple[np.ndarray, Dict[str, np.ndarray]]:
+    ...
+
+
+@overload
+def segment_watershed(
+    brain_image: np.ndarray,
+    dist_thresh_ratio: float = 0.4,
+    bg_dilate_kernel: int = 3,
+    min_tumor_area: int = 50,
+    return_intermediates: bool = False,
+) -> Union[np.ndarray, Tuple[np.ndarray, Dict[str, np.ndarray]]]:
+    ...
 
 
 def segment_watershed(

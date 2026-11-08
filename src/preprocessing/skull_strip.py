@@ -12,7 +12,7 @@ Quy trình 6 bước DIP:
 6. Phép nhân Bitwise-AND với ảnh gốc để thu được ảnh não sạch sọ.
 """
 
-from typing import Dict, Optional, Tuple, Union
+from typing import Dict, Literal, Optional, Tuple, Union, overload
 import numpy as np
 import cv2
 
@@ -76,6 +76,33 @@ def _build_brain_mask_steps(
     return brain_mask, steps
 
 
+@overload
+def extract_brain_mask(
+    image: np.ndarray,
+    kernel_size: int = 5,
+    return_intermediates: Literal[False] = False
+) -> np.ndarray:
+    ...
+
+
+@overload
+def extract_brain_mask(
+    image: np.ndarray,
+    kernel_size: int = 5,
+    return_intermediates: Literal[True] = True
+) -> Tuple[np.ndarray, Dict[str, np.ndarray]]:
+    ...
+
+
+@overload
+def extract_brain_mask(
+    image: np.ndarray,
+    kernel_size: int = 5,
+    return_intermediates: bool = False
+) -> Union[np.ndarray, Tuple[np.ndarray, Dict[str, np.ndarray]]]:
+    ...
+
+
 def extract_brain_mask(
     image: np.ndarray,
     kernel_size: int = 5,
@@ -103,6 +130,34 @@ def extract_brain_mask(
     if return_intermediates:
         return brain_mask, steps
     return brain_mask
+
+
+@overload
+def strip_skull(
+    image: np.ndarray,
+    brain_mask: Optional[np.ndarray] = None,
+    return_intermediates: Literal[False] = False
+) -> Tuple[np.ndarray, np.ndarray]:
+    ...
+
+
+@overload
+def strip_skull(
+    image: np.ndarray,
+    brain_mask: Optional[np.ndarray] = None,
+    return_intermediates: Literal[True] = True
+) -> Tuple[np.ndarray, np.ndarray, Dict[str, np.ndarray]]:
+    ...
+
+
+@overload
+def strip_skull(
+    image: np.ndarray,
+    brain_mask: Optional[np.ndarray] = None,
+    return_intermediates: bool = False
+) -> Union[Tuple[np.ndarray, np.ndarray],
+           Tuple[np.ndarray, np.ndarray, Dict[str, np.ndarray]]]:
+    ...
 
 
 def strip_skull(
