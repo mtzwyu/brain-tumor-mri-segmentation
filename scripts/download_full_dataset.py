@@ -70,9 +70,11 @@ def process_single_patient(patient_dir, output_img_dir, output_mask_dir):
             "mask_file": out_mask_name,
             "width": w,
             "height": h,
+            "tumor_pixels": tumor_pixels,
+            "tumor_ratio": tumor_ratio,
+            "has_tumor": has_tumor,
             "tumor_area_pixels": tumor_pixels,
-            "tumor_ratio_percent": tumor_ratio,
-            "has_tumor": has_tumor
+            "tumor_ratio_percent": tumor_ratio
         })
         
     return records
@@ -128,11 +130,36 @@ def main():
             
     print(f"✅ Đã xử lý và chuẩn hóa {len(all_records)} lát cắt trong {round(time.time() - t1, 2)} giây.")
     
-    # 4. Xuất metadata.csv
+    # 4. Xuất metadata.csv và tích hợp dữ liệu lâm sàng từ web (data.csv)
     print("\n[Bước 3/3] Đang lập bảng metadata.csv thống kê toàn diện...")
     df = pd.DataFrame(all_records)
     # Sắp xếp theo patient_id và sample_id
     df = df.sort_values(by=["patient_id", "sample_id"]).reset_index(drop=True)
+
+    # Nếu có tệp lâm sàng data.csv từ nguồn tải Hugging Face, hợp nhất thông tin bệnh nhân
+    raw_clinical_csv = os.path.join(raw_hf_dir, "data.csv")
+    if os.path.exists(raw_clinical_csv):
+        try:
+            df_clinical = pd.read_csv(raw_clinical_csv)
+            # Sao lưu bản riêng biệt vào data/full/clinical_data.csv
+            df_clinical.to_csv(os.path.join(full_dir, "clinical_data.csv"), index=False, encoding="utf-8")
+            
+            # Khóa nối: 12 ký tự đầu 'TCGA_XX_XXXX'
+            df["patient_base_id"] = df["patient_id"].apply(lambda x: "_".join(str(x).split("_")[:3]))
+            merged = df.merge(df_clinical, left_on="patient_base_id", right_on="Patient", how="left")
+            merged = merged.drop(columns=["patient_base_id", "Patient"], errors="ignore")
+            
+            first_cols = [
+                "sample_id", "patient_id", "source_file", "image_file", "mask_file",
+                "width", "height", "tumor_pixels", "tumor_ratio", "has_tumor",
+                "tumor_area_pixels", "tumor_ratio_percent"
+            ]
+            other_cols = [c for c in merged.columns if c not in first_cols]
+            df = merged[first_cols + other_cols]
+            print(f"✅ Đã hợp nhất thành công 18 thuộc tính lâm sàng gốc (Tổng cộng: {len(df.columns)} cột).")
+        except Exception as e:
+            print(f"⚠️ Cảnh báo: Không thể hợp nhất dữ liệu lâm sàng: {e}")
+
     metadata_path = os.path.join(full_dir, "metadata.csv")
     df.to_csv(metadata_path, index=False, encoding='utf-8')
     
