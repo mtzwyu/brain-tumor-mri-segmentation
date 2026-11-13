@@ -29,6 +29,9 @@
 
 ## Mục lục điều hướng (Table of Contents)
 - [📖 Cẩm nang Hướng dẫn Sử dụng Chi tiết (Full User Guide)](docs/HUONG_DAN_SU_DUNG.md)
+- [📑 Tóm tắt Toàn diện Tiến trình Dự án (Project Executive Summary)](docs/TOM_TAT_TONG_QUAN_DU_AN.md)
+- [🌊 Giải thích Chi tiết Mã nguồn Watershed (Code Deep Dive)](docs/GIAI_THICH_WATERSHED.md)
+- [🔬 Giải thích Chi tiết Mã nguồn Region Growing (Code Deep Dive)](docs/GIAI_THICH_REGION_GROWING.md)
 - [1. Giới thiệu & Động lực nghiên cứu (Overview & Motivation)](#1-giới-thiệu--động-lực-nghiên-cứu)
 - [2. Tính năng Nổi bật (Key Features)](#2-tính-năng-nổi-bật)
 - [3. Kiến trúc Pipeline 4 Tầng (System Architecture)](#3-kiến-trúc-pipeline-4-tầng)

@@ -182,7 +182,7 @@ def segment_watershed(
     # 2. Phép mở nhẹ làm sạch nhiễu hạt
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
     opened = cv2.morphologyEx(binary_high, cv2.MORPH_OPEN, kernel, iterations=1)
-    steps["opened"] = opened
+    steps["opened"] = opened  
 
     # 3. Biến đổi khoảng cách Euclidean
     dist_transform = cv2.distanceTransform(opened, cv2.DIST_L2, 5)

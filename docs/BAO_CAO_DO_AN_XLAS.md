@@ -33,16 +33,24 @@ Nhóm chúng em xin bày tỏ lòng biết ơn sâu sắc và chân thành nhấ
 
 ---
 
-# TÓM TẮT ĐỒ ÁN
+# TÓM TẮT ĐỒ ÁN (EXECUTIVE SUMMARY)
 
-Báo cáo này trình bày quá trình nhóm nghiên cứu tìm hiểu, thiết kế và xây dựng hệ thống phần mềm xử lý ảnh số hỗ trợ chẩn đoán khối u não trên ảnh cộng hưởng từ MRI. Hệ thống giải quyết 3 bài toán kỹ thuật cốt lõi:
-1. **Khử nhiễu Rician và bảo toàn ranh giới mô u:** Sử dụng bộ lọc Bilateral kết hợp cân bằng tương phản thích nghi CLAHE.
-2. **Thuật toán Tách sọ não (Skull Stripping) 6 bước:** Kết hợp hình thái học toán học và thành phần liên thông lớn nhất (LCC), loại bỏ xương sọ và da đầu ra khỏi ảnh.
-3. **Cài đặt và thực nghiệm đối chứng 02 phương án phân đoạn u não độc lập:** Marker-controlled Watershed (dựa trên biến đổi khoảng cách Euclidean EDT) và Seeded Region Growing (phát triển vùng từ hạt giống cực đại cường độ).
+Báo cáo này trình bày toàn bộ quá trình tìm hiểu, thiết kế kiến trúc, cài đặt thuật toán và kiểm nghiệm thực nghiệm của hệ thống phần mềm Xử lý ảnh số hỗ trợ phát hiện và phân đoạn định lượng tổn thương khối u não trên ảnh cộng hưởng từ MRI chuỗi xung FLAIR. Toàn bộ giải pháp được xây dựng theo nguyên tắc giải trình toán học minh bạch của Xử lý ảnh số cổ điển (Classical Digital Image Processing - DIP), hoàn toàn không sử dụng mạng nơ-ron học sâu "hộp đen", cho phép vận hành siêu tốc và ổn định trên phần cứng CPU thông thường (~6.13 ms / lát cắt) mà không phụ thuộc vào hạ tầng GPU tốn kém.
 
-Hệ thống được kiểm thử thực nghiệm quy mô lớn trên toàn bộ kho dữ liệu chuẩn quốc tế TCGA-LGG gồm 3,929 lát cắt MRI từ 110 bệnh nhân (1,373 lát có u và 2,556 lát não lành). Kết quả cho thấy phương pháp Marker-controlled Watershed đạt chỉ số tương đồng Dice trung bình 0.4446 ± 0.3014, vượt trội gấp 2.23 lần so với Seeded Region Growing (0.1990 ± 0.2682) với độ trễ xử lý ổn định chỉ 6.13 ms/lát cắt. Đặc biệt, trên 2,556 lát não lành, cả hai giải thuật đều đạt độ đặc hiệu trên 97.6% (Watershed đạt 99.04%), chứng minh khả năng triệt tiêu hầu như hoàn toàn báo động giả ngoài sọ. Hệ thống được đóng gói với giao diện web Streamlit cho phép bác sĩ thao tác chẩn đoán tương tác thời gian thực.
+Hệ thống được tổ chức theo kiến trúc luồng dữ liệu 4 tầng độc lập khép kín:
+1. **Tầng 1 - Tiền xử lý & Khử nhiễu bảo toàn biên:** Ứng dụng bộ lọc song phương phi tuyến (Bilateral Filter, $d=9, \sigma_r=75, \sigma_s=75$) triệt tiêu nhiễu Rician mà không làm mờ đường biên khối u, kết hợp cân bằng tương phản thích nghi cục bộ CLAHE ($8 \times 8$, Clip Limit = 2.0).
+2. **Tầng 2 - Quy trình Tách sọ não hình thái học 6 bước (Skull Stripping Pipeline):** Kết hợp phân ngưỡng Otsu toàn cục, phép mở hình thái học ($5 \times 5$), trích xuất thành phần liên thông lớn nhất (Largest Connected Component - LCC) và phép lấp đầy khoang nội sọ (FloodFill Hole Filling) để loại bỏ hoàn toàn xương sọ và da đầu ra khỏi ảnh.
+3. **Tầng 3 - Cổng Anomaly Gate & Động cơ phân đoạn đối chứng độc lập:** Tích hợp cổng kiểm định thống kê Z-score ($z_{\max} < 2.3$) lọc bỏ sớm các ca lành, cùng 02 phương án phân đoạn độc lập: Marker-controlled Watershed (dựa trên biến đổi khoảng cách Euclidean EDT) và Seeded Region Growing (phát triển vùng từ hạt giống cực đại cường độ theo BFS 8 láng giềng).
+4. **Tầng 4 - Rút trích đặc trưng hình học & Cảnh báo thị giác:** Tự động đo đạc diện tích u ($S_{\text{tumor}}$ mm²), tỷ lệ u/não ($R\%$), chỉ số độ tròn bờ viền ($C = 4\pi \cdot \text{Area} / \text{Perimeter}^2$) hỗ trợ phân loại u lành/ác tính, và khoanh vùng Bounding Box đỏ cảnh báo thị giác.
 
-**Từ khóa:** Xử lý ảnh số, Ảnh MRI sọ não, Tách sọ não (Skull Stripping), Phân thủy Marker-controlled Watershed, Phát triển vùng Seeded Region Growing, TCGA-LGG Benchmark, Đánh giá định lượng y sinh.
+Hệ thống được kiểm định và đánh giá định lượng quy mô lớn trên toàn bộ kho dữ liệu chuẩn quốc tế **TCGA-LGG** gồm **3,929 lát cắt MRI từ 110 bệnh nhân** (gồm 1,373 lát có u và 2,556 lát não lành):
+* **Hiệu năng phân đoạn u:** Phương pháp Marker-controlled Watershed đạt chỉ số tương đồng Dice trung bình **0.4446 ± 0.3014** (IoU: **0.3368 ± 0.2677**, Độ nhạy: **0.4436 ± 0.3170**), vượt trội **gấp 2.23 lần** so với Seeded Region Growing (Dice: $0.1990 \pm 0.2682$) với độ trễ xử lý cực thấp chỉ **6.13 ± 3.32 ms / lát cắt**.
+* **Khả năng triệt tiêu báo động giả:** Trên 2,556 lát não lành, cả hai giải thuật đều đạt độ đặc hiệu trên $97.6\%$ (Watershed đạt **99.04%**), chứng minh thuật toán tách sọ não 6 bước đã loại bỏ triệt để tín hiệu xương sọ và da đầu.
+* **Hệ sinh thái chuyển giao hoàn chỉnh:** Toàn bộ 27 bài kiểm thử đơn vị (*Unit Tests*) đều đạt tỷ lệ vượt qua 100%, chuỗi 4 Jupyter Notebooks được thi hành tự động kèm bộ tài liệu giải thích chi tiết từng dòng code (`*_explained.md`), trạm làm việc chẩn đoán Streamlit Web PACS trực quan với 2 chế độ Dark/Light mode, cùng trọn bộ Slide thuyết trình 20 trang và Kịch bản bảo vệ 15 phút.
+
+*(Xem bản tóm tắt tổng quan chuyên sâu toàn diện 8 chương tại: [`docs/TOM_TAT_TONG_QUAN_DU_AN.md`](file:///c:/Users/xpaga/Documents/xlas/docs/TOM_TAT_TONG_QUAN_DU_AN.md))*
+
+**Từ khóa:** Xử lý ảnh số, Ảnh MRI sọ não, Tách sọ não (Skull Stripping), Phân thủy Marker-controlled Watershed, Phát triển vùng Seeded Region Growing, TCGA-LGG Benchmark, Đánh giá định lượng y sinh, NeuroScan PACS Workstation.
 
 ---
 
